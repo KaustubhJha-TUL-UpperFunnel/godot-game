@@ -1,0 +1,153 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/stat_bar.tscn" id="2_stat_bar"]
+[ext_resource type="Texture2D" path="res://descent/assets/game/portrait.png" id="3_portrait"]
+
+[node name="Hud" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hud")
+
+[node name="Portrait" type="TextureRect" parent="."]
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 86.0
+offset_bottom = 82.0
+mouse_filter = 2
+texture = ExtResource("3_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Vitals" type="VBoxContainer" parent="."]
+offset_left = 96.0
+offset_top = 22.0
+offset_right = 396.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Health" parent="Vitals" instance=ExtResource("2_stat_bar")]
+layout_mode = 2
+fill_color = Color(1, 0.31, 0.384, 1)
+chip_color = Color(0.65, 0.15, 0.2, 0.85)
+
+[node name="Mana" parent="Vitals" instance=ExtResource("2_stat_bar")]
+custom_minimum_size = Vector2(280, 16)
+layout_mode = 2
+fill_color = Color(0.35, 0.56, 1, 1)
+chip_color = Color(0.18, 0.28, 0.6, 0.85)
+
+[node name="Upgrades" type="VBoxContainer" parent="."]
+offset_left = 24.0
+offset_top = 96.0
+offset_right = 300.0
+offset_bottom = 320.0
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="RunInfo" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -320.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 140.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 4
+alignment = 0
+
+[node name="Floor" type="Label" parent="RunInfo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.98, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 24
+text = "FLOOR 1 / 8"
+horizontal_alignment = 2
+
+[node name="Room" type="Label" parent="RunInfo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 15
+text = "STANDARD CHAMBER"
+horizontal_alignment = 2
+
+[node name="Modifier" type="Label" parent="RunInfo"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.31, 0.384, 1)
+theme_override_font_sizes/font_size = 15
+text = "OVERCLOCKED"
+horizontal_alignment = 2
+
+[node name="Counters" type="HBoxContainer" parent="RunInfo"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 2
+
+[node name="Coins" type="Label" parent="RunInfo/Counters"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.886, 0.682, 0.322, 1)
+theme_override_font_sizes/font_size = 16
+text = "COINS  0"
+
+[node name="Echoes" type="Label" parent="RunInfo/Counters"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.604, 0.843, 0.776, 1)
+theme_override_font_sizes/font_size = 16
+text = "ECHOES  0"
+
+[node name="BossPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 96.0
+offset_right = 260.0
+offset_bottom = 168.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="BossPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Name" type="Label" parent="BossPanel/Rows"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.31, 0.384, 1)
+theme_override_font_sizes/font_size = 20
+text = "THE WARDEN"
+horizontal_alignment = 1
+
+[node name="Bar" parent="BossPanel/Rows" instance=ExtResource("2_stat_bar")]
+custom_minimum_size = Vector2(480, 20)
+layout_mode = 2
+fill_color = Color(0.85, 0.24, 0.35, 1)
+
+[node name="Objective" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 92.0
+offset_right = 200.0
+offset_bottom = 118.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.62, 0.68, 0.72, 1)
+theme_override_font_sizes/font_size = 15
+text = "ENEMIES REMAINING: 0"
+horizontal_alignment = 1

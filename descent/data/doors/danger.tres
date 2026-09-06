@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DoorDestinationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/door_destination_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+destination_type = 2
+display_name = "DANGER"
+description = "Elite enemies and hazards"
+reward = "Double coins and bonus Echoes"
+risk = "HIGH RISK"
+accent = Color(1, 0.31, 0.384, 1)

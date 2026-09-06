@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://csir36bq7wlw2"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://b5pdx4h57lum" path="res://descent/assets/maps/map_14_poison_venomous_alcove_flat.png" id="2_map"]
+[ext_resource type="Script" uid="uid://boeerswaj1v5s" path="res://descent/scripts/world/hazard_zone.gd" id="4_hazard"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8qqdr"]
+size = Vector2(80, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bd175"]
+size = Vector2(80, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1xr3"]
+size = Vector2(40, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rquek"]
+size = Vector2(40, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_walkable"]
+size = Vector2(1314.5, 577)
+
+[node name="Map14PoisonVenomousAlcoveFlat" type="Node2D" unique_id=1857922308]
+script = ExtResource("1_level")
+hazard_kind = 2
+display_name = "VENOMOUS ALCOVE"
+theme = "poison"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1248454579]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=435237222 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1218155204]
+position = Vector2(84, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=146598310]
+position = Vector2(1445, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=740019134]
+position = Vector2(768, 115)
+shape = SubResource("Shape_wall_h")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls" unique_id=1298165176]
+position = Vector2(768, 943)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=531440606]
+
+[node name="Hazards" type="Node2D" parent="." unique_id=921885316]
+
+[node name="Hazard0" type="Area2D" parent="Hazards" unique_id=863118956]
+position = Vector2(400, 210)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(80, 60)
+hazard_name = "TOXIC SLUDGE"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard0" unique_id=1181452302]
+shape = SubResource("RectangleShape2D_8qqdr")
+
+[node name="Hazard1" type="Area2D" parent="Hazards" unique_id=592391082]
+position = Vector2(1200, 210)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(80, 60)
+hazard_name = "TOXIC SLUDGE"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard1" unique_id=68207336]
+shape = SubResource("RectangleShape2D_bd175")
+
+[node name="Hazard2" type="Area2D" parent="Hazards" unique_id=365110498]
+position = Vector2(360, 470)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(40, 100)
+hazard_name = "TOXIC SLUDGE"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard2" unique_id=1778250445]
+shape = SubResource("RectangleShape2D_d1xr3")
+
+[node name="Hazard3" type="Area2D" parent="Hazards" unique_id=1985179710]
+position = Vector2(740, 800)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(40, 80)
+hazard_name = "TOXIC SLUDGE"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard3" unique_id=340805253]
+shape = SubResource("RectangleShape2D_rquek")
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=1575115705]
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1947601013]
+position = Vector2(764, 528)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=431137897]
+position = Vector2(2, 157)
+shape = SubResource("Shape_walkable")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=230778368]
+position = Vector2(764, 655)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1692918558]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1929746452]
+position = Vector2(317, 332)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=169143293]
+position = Vector2(540, 332)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=1530523423]
+position = Vector2(764, 332)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1782100132]
+position = Vector2(987, 332)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=93716190]
+position = Vector2(1210, 332)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=1130244930]
+position = Vector2(317, 528)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=842656914]
+position = Vector2(540, 528)
+
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=552623823]
+position = Vector2(764, 528)
+
+[node name="Spawn8" type="Marker2D" parent="SpawnPoints" unique_id=856132785]
+position = Vector2(987, 528)
+
+[node name="Spawn9" type="Marker2D" parent="SpawnPoints" unique_id=329035405]
+position = Vector2(1210, 528)
+
+[node name="Spawn10" type="Marker2D" parent="SpawnPoints" unique_id=1079006096]
+position = Vector2(345, 724)
+
+[node name="Spawn11" type="Marker2D" parent="SpawnPoints" unique_id=2081689519]
+position = Vector2(624, 724)
+
+[node name="Spawn12" type="Marker2D" parent="SpawnPoints" unique_id=202220133]
+position = Vector2(903, 724)
+
+[node name="Spawn13" type="Marker2D" parent="SpawnPoints" unique_id=519877961]
+position = Vector2(1182, 724)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=1491093204]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=595581995]
+position = Vector2(451, 200)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=1606887708]
+position = Vector2(764, 200)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=664316175]
+position = Vector2(1076, 200)

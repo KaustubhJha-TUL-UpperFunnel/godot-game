@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/enemy_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "The Warden"
+maximum_health = 920.0
+movement_speed = 78.0
+damage = 20.0
+coin_reward = 40

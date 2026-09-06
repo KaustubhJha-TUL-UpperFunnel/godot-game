@@ -1,0 +1,24 @@
+# Godot engine binaries & caches
+godot.bin
+.godot/
+.cache/
+.config/
+.local/
+*.import
+
+# Build artifacts
+builds/
+descent/bin/
+*.os
+*.o
+*.a
+.sconsign.dblite
+
+# Level-detection overlays, regenerate with tools/map_debug.py
+tools/_debug/
+__pycache__/
+
+# Media recordings & screenshots
+combat_gameplay.mp4
+in_game_screenshot.png
+in_game_combat_screenshot.png

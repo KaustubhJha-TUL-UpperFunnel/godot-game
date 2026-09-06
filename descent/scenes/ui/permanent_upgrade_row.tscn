@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/permanent_upgrade_row.gd" id="1_row"]
+
+[sub_resource type="StyleBoxFlat" id="Style_row"]
+bg_color = Color(0.047, 0.063, 0.09, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 0.45)
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+
+[node name="PermanentUpgradeRow" type="PanelContainer"]
+custom_minimum_size = Vector2(560, 0)
+offset_right = 560.0
+offset_bottom = 116.0
+theme_override_styles/panel = SubResource("Style_row")
+script = ExtResource("1_row")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Header" type="HBoxContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Name" type="Label" parent="Rows/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.98, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 19
+text = "REINFORCED ARMOR"
+
+[node name="Pips" type="HBoxContainer" parent="Rows/Header"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 2
+
+[node name="Description" type="Label" parent="Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.839, 0.855, 1)
+theme_override_font_sizes/font_size = 14
+text = "+5 starting maximum health"
+autowrap_mode = 2
+
+[node name="Buy" type="Button" parent="Rows"]
+layout_mode = 2
+text = "18 ECHOES"

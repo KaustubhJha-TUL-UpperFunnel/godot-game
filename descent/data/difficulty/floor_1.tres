@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DifficultyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/difficulty_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+floor_number = 1
+enemy_count = 3
+pressure = 1.00
+elite_chance = 0.0

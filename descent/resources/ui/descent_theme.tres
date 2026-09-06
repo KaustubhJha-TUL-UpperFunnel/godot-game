@@ -1,0 +1,91 @@
+[gd_resource type="Theme" format=3 uid="uid://cg4vm4ohedk62"]
+
+[sub_resource type="StyleBoxFlat" id="Style_button_disabled"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.04, 0.04, 0.05, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.333, 0.4, 0.42, 1)
+
+[sub_resource type="StyleBoxEmpty" id="Style_empty"]
+
+[sub_resource type="StyleBoxFlat" id="Style_button_hover"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.11, 0.15, 0.21, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.85, 0.45, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_button_normal"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_button_pressed"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.16, 0.12, 0.05, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.92, 0.55, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.04, 0.06, 0.09, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 1)
+
+[sub_resource type="StyleBoxFlat" id="Style_scrim"]
+bg_color = Color(0.01, 0.02, 0.03, 0.85)
+
+[sub_resource type="SystemFont" id="Font_ui"]
+font_names = PackedStringArray("Segoe UI", "Noto Sans", "DejaVu Sans", "Arial")
+subpixel_positioning = 0
+
+[resource]
+default_font = SubResource("Font_ui")
+default_font_size = 16
+Button/colors/font_color = Color(0.91, 0.957, 0.961, 1)
+Button/colors/font_disabled_color = Color(0.333, 0.4, 0.42, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 0.92, 0.55, 1)
+Button/font_sizes/font_size = 19
+Button/styles/disabled = SubResource("Style_button_disabled")
+Button/styles/focus = SubResource("Style_empty")
+Button/styles/hover = SubResource("Style_button_hover")
+Button/styles/normal = SubResource("Style_button_normal")
+Button/styles/pressed = SubResource("Style_button_pressed")
+Label/colors/font_color = Color(0.91, 0.957, 0.961, 1)
+Label/colors/font_outline_color = Color(0.02, 0.03, 0.04, 1)
+Label/constants/outline_size = 4
+Panel/styles/panel = SubResource("Style_panel")
+PanelContainer/styles/panel = SubResource("Style_panel")
+ScrimPanel/base_type = &"Panel"
+ScrimPanel/styles/panel = SubResource("Style_scrim")

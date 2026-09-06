@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://desjlfwycgto1"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://de8ju4p7baij6" path="res://descent/assets/maps/map_18_poison_plague_sanctum_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ke88g"]
+size = Vector2(1310, 167)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vpucy"]
+size = Vector2(1156, 430.12848)
+
+[node name="Map18PoisonPlagueSanctumVertical" type="Node2D" unique_id=2125624950]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 2
+display_name = "PLAGUE SANCTUM"
+theme = "poison"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=88698326]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=2016031171 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=166526136]
+position = Vector2(89, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=2023500306]
+position = Vector2(1447, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=663515678]
+position = Vector2(768, 96)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1544898393]
+
+[node name="Hazards" type="Node2D" parent="." unique_id=25635164]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=637960425]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=332238195]
+position = Vector2(768, 940)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1310, 167)
+hazard_name = "THE SLUDGE BELOW"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=927566303]
+shape = SubResource("RectangleShape2D_ke88g")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1942811315]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=1453449701]
+position = Vector2(773, 578)
+scale = Vector2(1.29682, 1.3037981)
+shape = SubResource("RectangleShape2D_vpucy")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=881063189]
+position = Vector2(460, 730)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1097102775]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1664647819]
+position = Vector2(766, 286)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=1228641842]
+position = Vector2(768, 660)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=1982044272]
+position = Vector2(516, 730)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1642139707]
+position = Vector2(1013, 730)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=844333153]
+position = Vector2(762, 789)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=36042589]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1142280553]
+position = Vector2(646, 274)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=859466877]
+position = Vector2(766, 274)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1023357009]
+position = Vector2(886, 274)

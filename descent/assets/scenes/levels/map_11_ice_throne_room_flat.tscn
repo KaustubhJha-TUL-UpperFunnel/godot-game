@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://cri4h2iysmiaj"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://eqtrqqyoedlq" path="res://descent/assets/maps/map_11_ice_throne_room_flat.png" id="2_map"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="Shape_walkable"]
+size = Vector2(1369, 506)
+
+[node name="Map11IceThroneRoomFlat" type="Node2D" unique_id=252975428]
+script = ExtResource("1_level")
+hazard_kind = 1
+display_name = "THRONE ROOM"
+theme = "ice"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=2079044939]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=977153310 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=26004188]
+position = Vector2(63, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=1632288120]
+position = Vector2(1467, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=1362029219]
+position = Vector2(768, 148)
+shape = SubResource("Shape_wall_h")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls" unique_id=1389385031]
+position = Vector2(768, 881)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1012916680]
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1130997466]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=1631151837]
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1835199383]
+position = Vector2(764, 514)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=675425850]
+position = Vector2(-4.5, 293)
+shape = SubResource("Shape_walkable")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=2057859352]
+position = Vector2(764, 625)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1921167391]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1199555570]
+position = Vector2(303, 341)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=1064009880]
+position = Vector2(533, 341)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=745513461]
+position = Vector2(764, 341)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1372421666]
+position = Vector2(994, 341)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=1254223268]
+position = Vector2(1224, 341)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=1276808826]
+position = Vector2(303, 514)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=927853773]
+position = Vector2(533, 514)
+
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=1578373991]
+position = Vector2(764, 514)
+
+[node name="Spawn8" type="Marker2D" parent="SpawnPoints" unique_id=1105376528]
+position = Vector2(994, 514)
+
+[node name="Spawn9" type="Marker2D" parent="SpawnPoints" unique_id=1508789479]
+position = Vector2(1224, 514)
+
+[node name="Spawn10" type="Marker2D" parent="SpawnPoints" unique_id=1951382019]
+position = Vector2(332, 686)
+
+[node name="Spawn11" type="Marker2D" parent="SpawnPoints" unique_id=1100279673]
+position = Vector2(620, 686)
+
+[node name="Spawn12" type="Marker2D" parent="SpawnPoints" unique_id=1970165587]
+position = Vector2(908, 686)
+
+[node name="Spawn13" type="Marker2D" parent="SpawnPoints" unique_id=384082028]
+position = Vector2(1196, 686)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=1028216259]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1089938133]
+position = Vector2(441, 221)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=1589883416]
+position = Vector2(764, 221)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1761369610]
+position = Vector2(1086, 221)

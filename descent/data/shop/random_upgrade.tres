@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ShopOfferData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/shop_offer_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+offer_kind = 2
+display_name = "Salvaged Module"
+description = "Install a random run upgrade"
+base_price = 30

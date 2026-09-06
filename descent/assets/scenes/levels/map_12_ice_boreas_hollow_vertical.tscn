@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://y42fi7agan46"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://dwiljju1sftgg" path="res://descent/assets/maps/map_12_ice_boreas_hollow_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fahnh"]
+size = Vector2(1324, 116)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p5rvm"]
+size = Vector2(1369, 571)
+
+[node name="Map12IceBoreasHollowVertical" type="Node2D" unique_id=878654827]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 1
+display_name = "BOREAS HOLLOW"
+theme = "ice"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=648127191]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=183843922 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1927338295]
+position = Vector2(79, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=963464424]
+position = Vector2(1451, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=33420906]
+position = Vector2(768, 83)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1969316695]
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1405324342]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=610327925]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=653681694]
+position = Vector2(765, 966)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1324, 116)
+hazard_name = "THE GLACIAL ABYSS"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=1075280474]
+shape = SubResource("RectangleShape2D_fahnh")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1687532495]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=850049386]
+position = Vector2(771, 623)
+shape = SubResource("RectangleShape2D_p5rvm")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=1469939133]
+position = Vector2(698, 573)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=564857038]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=823660636]
+position = Vector2(768, 316)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=42599959]
+position = Vector2(769, 573)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=688721209]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=188944810]
+position = Vector2(662, 304)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=923039598]
+position = Vector2(768, 304)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1303764024]
+position = Vector2(874, 304)

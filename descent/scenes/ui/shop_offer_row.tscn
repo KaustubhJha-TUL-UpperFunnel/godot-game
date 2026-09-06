@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/shop_offer_row.gd" id="1_offer"]
+
+[sub_resource type="StyleBoxFlat" id="Style_offer"]
+bg_color = Color(0.055, 0.075, 0.11, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 0.6)
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+
+[node name="ShopOfferRow" type="PanelContainer"]
+custom_minimum_size = Vector2(280, 190)
+offset_right = 280.0
+offset_bottom = 190.0
+theme_override_styles/panel = SubResource("Style_offer")
+script = ExtResource("1_offer")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Name" type="Label" parent="Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 20
+text = "FIELD REPAIR"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Description" type="Label" parent="Rows"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.788, 0.839, 0.855, 1)
+theme_override_font_sizes/font_size = 14
+text = "Restore 45 health"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Buy" type="Button" parent="Rows"]
+layout_mode = 2
+text = "12 COINS"

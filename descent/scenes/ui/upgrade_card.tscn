@@ -1,0 +1,129 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/upgrade_card.gd" id="1_card"]
+
+[sub_resource type="Animation" id="Animation_deal"]
+resource_name = "deal"
+length = 0.32
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.32),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.32),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.88, 0.88), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_take"]
+resource_name = "take"
+length = 0.26
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.26),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.08, 1.08), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.26),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(2, 1.8, 1.2, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_card"]
+_data = {
+&"deal": SubResource("Animation_deal"),
+&"take": SubResource("Animation_take")
+}
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(0.043, 0.063, 0.094, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 0.8)
+content_margin_left = 18.0
+content_margin_top = 18.0
+content_margin_right = 18.0
+content_margin_bottom = 18.0
+
+[node name="UpgradeCard" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 268)
+offset_right = 300.0
+offset_bottom = 268.0
+pivot_offset = Vector2(150, 134)
+theme_override_styles/panel = SubResource("Style_card")
+script = ExtResource("1_card")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Rarity" type="Label" parent="Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.624, 0.702, 0.741, 1)
+theme_override_font_sizes/font_size = 13
+text = "COMMON"
+horizontal_alignment = 1
+
+[node name="Name" type="Label" parent="Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "COPPER BORE"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Description" type="Label" parent="Rows"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.788, 0.839, 0.855, 1)
+theme_override_font_sizes/font_size = 15
+text = "+25% weapon damage"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Stacks" type="Label" parent="Rows"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604, 0.843, 0.776, 1)
+theme_override_font_sizes/font_size = 13
+text = "OWNED x1"
+horizontal_alignment = 1
+
+[node name="Take" type="Button" parent="Rows"]
+layout_mode = 2
+text = "INSTALL"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_card")
+}

@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://b0ooj8k36ukkv"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://bdmvsalxh7efl" path="res://descent/assets/maps/map_47_clockwork_ironworks_flat.png" id="2_map"]
+[ext_resource type="Script" uid="uid://boeerswaj1v5s" path="res://descent/scripts/world/hazard_zone.gd" id="4_hazard"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k5sft"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4n3fr"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="Shape_walkable"]
+size = Vector2(1376.25, 609)
+
+[node name="Map47ClockworkIronworksFlat" type="Node2D" unique_id=1567065743]
+script = ExtResource("1_level")
+hazard_kind = 8
+display_name = "IRONWORKS"
+theme = "clockwork"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=605856204]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1782930864 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=503967726]
+position = Vector2(68, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=1905736581]
+position = Vector2(1466, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=25535517]
+position = Vector2(768, 64)
+shape = SubResource("Shape_wall_h")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls" unique_id=283369977]
+position = Vector2(768, 936)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1428887873]
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1664148994]
+
+[node name="Hazard0" type="Area2D" parent="Hazards" unique_id=2098456838]
+position = Vector2(490, 170)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(60, 60)
+damage = 18.0
+hazard_name = "MACHINERY"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard0" unique_id=249757622]
+shape = SubResource("RectangleShape2D_k5sft")
+
+[node name="Hazard1" type="Area2D" parent="Hazards" unique_id=755658304]
+position = Vector2(1130, 170)
+collision_layer = 16
+monitoring = false
+script = ExtResource("4_hazard")
+size = Vector2(60, 60)
+damage = 18.0
+hazard_name = "MACHINERY"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard1" unique_id=618269700]
+shape = SubResource("RectangleShape2D_4n3fr")
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=1976097671]
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=43121044]
+position = Vector2(766, 499)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=1284107370]
+position = Vector2(10.125, 107)
+shape = SubResource("Shape_walkable")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=1837465465]
+position = Vector2(766, 633)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=2130454439]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1322836848]
+position = Vector2(307, 292)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=232461836]
+position = Vector2(537, 292)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=1641845803]
+position = Vector2(766, 292)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=783013222]
+position = Vector2(995, 292)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=1175165488]
+position = Vector2(1225, 292)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=403899192]
+position = Vector2(307, 499)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=2097676236]
+position = Vector2(537, 499)
+
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=1493778121]
+position = Vector2(766, 499)
+
+[node name="Spawn8" type="Marker2D" parent="SpawnPoints" unique_id=1200881360]
+position = Vector2(995, 499)
+
+[node name="Spawn9" type="Marker2D" parent="SpawnPoints" unique_id=1375453074]
+position = Vector2(1225, 499)
+
+[node name="Spawn10" type="Marker2D" parent="SpawnPoints" unique_id=482093638]
+position = Vector2(336, 706)
+
+[node name="Spawn11" type="Marker2D" parent="SpawnPoints" unique_id=1928631093]
+position = Vector2(623, 706)
+
+[node name="Spawn12" type="Marker2D" parent="SpawnPoints" unique_id=1121585718]
+position = Vector2(909, 706)
+
+[node name="Spawn13" type="Marker2D" parent="SpawnPoints" unique_id=2019959455]
+position = Vector2(1196, 706)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=378599200]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=602554689]
+position = Vector2(445, 155)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=1730995199]
+position = Vector2(766, 155)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=275349107]
+position = Vector2(1087, 155)

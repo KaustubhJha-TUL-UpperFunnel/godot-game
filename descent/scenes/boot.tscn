@@ -1,0 +1,210 @@
+[gd_scene format=3 uid="uid://2narfr0y85d5"]
+
+[ext_resource type="Script" uid="uid://blicxdubb0s0u" path="res://descent/scripts/ui/boot_screen.gd" id="1_boot"]
+[ext_resource type="Texture2D" uid="uid://bwnmyiuqc533q" path="res://descent/assets/game/dungeon_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://b7ey6arts2etb" path="res://descent/assets/animations/knight/idle/idle_1.png" id="3_1poft"]
+[ext_resource type="Texture2D" uid="uid://dm3aef65tu7eh" path="res://descent/assets/animations/knight/idle/idle_2.png" id="4_28l5j"]
+[ext_resource type="Texture2D" uid="uid://222txe0f8jex" path="res://descent/assets/animations/knight/idle/idle_3.png" id="5_nqpfh"]
+[ext_resource type="Texture2D" uid="uid://tyciab4tk2oj" path="res://descent/assets/animations/knight/idle/idle_4.png" id="6_dc6ij"]
+[ext_resource type="Texture2D" uid="uid://csgxcfne4re8a" path="res://descent/assets/animations/knight/idle/idle_5.png" id="7_y60ux"]
+[ext_resource type="Texture2D" uid="uid://ko7ochpf4nfg" path="res://descent/assets/animations/knight/run/run_1.png" id="8_528v5"]
+[ext_resource type="Texture2D" uid="uid://mx66tqujk04g" path="res://descent/assets/animations/knight/run/run_2.png" id="9_0wxan"]
+[ext_resource type="Texture2D" uid="uid://c4t511h85wpyv" path="res://descent/assets/animations/knight/run/run_3.png" id="10_kqqhy"]
+[ext_resource type="Texture2D" uid="uid://c2fs3i3h6x6jk" path="res://descent/assets/animations/knight/run/run_4.png" id="11_0p5gt"]
+[ext_resource type="Texture2D" uid="uid://duqrhdwtdha53" path="res://descent/assets/animations/knight/run/run_5.png" id="12_5xfrv"]
+[ext_resource type="Texture2D" uid="uid://dejokugv10ldy" path="res://descent/assets/animations/knight/run/run_6.png" id="13_0oidp"]
+[ext_resource type="Texture2D" uid="uid://bjgl4lh50vg4t" path="res://descent/assets/animations/knight/slash/slash_1.png" id="14_sopci"]
+[ext_resource type="Texture2D" uid="uid://bmbo4px25c857" path="res://descent/assets/animations/knight/slash/slash_2.png" id="15_pxyod"]
+[ext_resource type="Texture2D" uid="uid://bu25l77dh2y64" path="res://descent/assets/animations/knight/slash/slash_3.png" id="16_g3kh8"]
+[ext_resource type="Texture2D" uid="uid://27gmoppa3m0k" path="res://descent/assets/animations/knight/slash/slash_4.png" id="17_48woc"]
+[ext_resource type="Texture2D" uid="uid://180agkfxwl3h" path="res://descent/assets/animations/knight/slash/slash_5.png" id="18_2amd2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_13qdw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_1poft")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_28l5j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nqpfh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_dc6ij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_y60ux")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.1,
+"texture": ExtResource("8_528v5")
+}, {
+"duration": 1.2,
+"texture": ExtResource("9_0wxan")
+}, {
+"duration": 1.2,
+"texture": ExtResource("10_kqqhy")
+}, {
+"duration": 1.1,
+"texture": ExtResource("11_0p5gt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_5xfrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_0oidp")
+}],
+"loop": 0,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_sopci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_pxyod")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_g3kh8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_48woc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_2amd2")
+}],
+"loop": 0,
+"name": &"slash",
+"speed": 8.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_bg"]
+bg_color = Color(0.055, 0.07, 0.09, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.886, 0.682, 0.322, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="Style_progress_fill"]
+bg_color = Color(0.886, 0.682, 0.322, 1)
+
+[sub_resource type="Animation" id="Animation_flicker"]
+resource_name = "flicker"
+length = 2.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Backdrop:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1.1, 1.8, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.32, 0.32, 0.36, 1), Color(0.4, 0.38, 0.4, 1), Color(0.28, 0.29, 0.34, 1), Color(0.38, 0.36, 0.39, 1), Color(0.32, 0.32, 0.36, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_boot"]
+_data = {
+&"flicker": SubResource("Animation_flicker")
+}
+
+[node name="Boot" type="Control" unique_id=900705693]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_boot")
+
+[node name="Backdrop" type="TextureRect" parent="." unique_id=1512786308]
+modulate = Color(0.32, 0.32, 0.36, 1)
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Vignette" type="ColorRect" parent="." unique_id=541014248]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.012, 0.02, 0.031, 0.55)
+
+[node name="Knight" type="AnimatedSprite2D" parent="." unique_id=522921541]
+position = Vector2(646, 455.00003)
+scale = Vector2(0.30078122, 0.18945313)
+sprite_frames = SubResource("SpriteFrames_13qdw")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Center" type="Control" parent="." unique_id=979885594]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="Center" unique_id=36399274]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 130.0
+offset_right = 300.0
+offset_bottom = 330.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Center/Rows" unique_id=43618988]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.85, 0.45, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 72
+text = "DESCENT"
+horizontal_alignment = 1
+
+[node name="Tagline" type="Label" parent="Center/Rows" unique_id=450431158]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.839, 0.855, 1)
+theme_override_font_sizes/font_size = 17
+text = "EIGHT FLOORS DOWN. ONE WAY OUT."
+horizontal_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Center/Rows" unique_id=329922874]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("Style_progress_bg")
+theme_override_styles/fill = SubResource("Style_progress_fill")
+max_value = 10.0
+show_percentage = false
+
+[node name="Status" type="Label" parent="Center/Rows" unique_id=187258464]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.624, 0.702, 0.741, 1)
+theme_override_font_sizes/font_size = 13
+text = "LOADING"
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=106306232]
+libraries/ = SubResource("AnimationLibrary_boot")

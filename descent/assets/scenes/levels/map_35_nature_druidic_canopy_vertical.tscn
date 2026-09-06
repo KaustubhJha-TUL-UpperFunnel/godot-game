@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://c7dvg25oep5g5"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://bq2ntnpoaig5u" path="res://descent/assets/maps/map_35_nature_druidic_canopy_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v11hk"]
+size = Vector2(250, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0qalu"]
+size = Vector2(212, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y4uc7"]
+size = Vector2(166, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bbl4x"]
+size = Vector2(166, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hsbp5"]
+size = Vector2(921, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yn840"]
+size = Vector2(1334, 127)
+
+[node name="Map35NatureDruidicCanopyVertical" type="Node2D" unique_id=552652314]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 5
+display_name = "DRUIDIC CANOPY"
+theme = "nature"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1085187958]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=492660746 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1453556390]
+position = Vector2(79, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=1078581624]
+position = Vector2(1461, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=1342977753]
+position = Vector2(768, 73)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=243779241]
+
+[node name="Platform0" type="StaticBody2D" parent="Platforms" unique_id=1515472818]
+position = Vector2(254, 412)
+scale = Vector2(1.4259701, 1.0459327)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(250, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform0" unique_id=358548264]
+shape = SubResource("RectangleShape2D_v11hk")
+
+[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=1234904741]
+position = Vector2(1405, 409.00003)
+scale = Vector2(-3.2455947, 0.9073661)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(212, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=1787313681]
+shape = SubResource("RectangleShape2D_0qalu")
+one_way_collision = true
+
+[node name="Platform3" type="StaticBody2D" parent="Platforms" unique_id=187388212]
+position = Vector2(905, 485)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(166, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform3" unique_id=1114668945]
+shape = SubResource("RectangleShape2D_y4uc7")
+one_way_collision = true
+
+[node name="Platform6" type="StaticBody2D" parent="Platforms" unique_id=1882771931]
+position = Vector2(552, 403)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(166, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform6" unique_id=1069618394]
+shape = SubResource("RectangleShape2D_bbl4x")
+one_way_collision = true
+
+[node name="Platform4" type="StaticBody2D" parent="Platforms" unique_id=346507432]
+position = Vector2(744.00006, 880.00006)
+scale = Vector2(1.5948455, 0.91686326)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(921, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform4" unique_id=605888992]
+shape = SubResource("RectangleShape2D_hsbp5")
+
+[node name="Hazards" type="Node2D" parent="." unique_id=2034387280]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=119473449]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=2136730481]
+position = Vector2(770, 960)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1334, 127)
+hazard_name = "THE HOLLOW BELOW"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=1257913410]
+shape = SubResource("RectangleShape2D_yn840")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1603621136]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=1025971618]
+position = Vector2(267, 829)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1907148323]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1778835701]
+position = Vector2(308, 361)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=1418712303]
+position = Vector2(1138, 361)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=86446092]
+position = Vector2(905, 436)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1738754749]
+position = Vector2(260, 829)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=653547192]
+position = Vector2(567, 829)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=1836472187]
+position = Vector2(874, 829)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=1850750817]
+position = Vector2(1207, 829)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=97899411]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1431958151]
+position = Vector2(291, 817)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=808748540]
+position = Vector2(567, 817)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1608676064]
+position = Vector2(843, 817)

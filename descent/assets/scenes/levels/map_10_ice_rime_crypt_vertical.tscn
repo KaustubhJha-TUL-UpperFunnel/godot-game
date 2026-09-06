@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://bovu3jgb6o6ef"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://c2b5q13dthssr" path="res://descent/assets/maps/map_10_ice_rime_crypt_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q0sfr"]
+size = Vector2(1310, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7qoo"]
+size = Vector2(1310, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_246h1"]
+size = Vector2(1314, 138)
+
+[node name="Map10IceRimeCryptVertical" type="Node2D" unique_id=273142959]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 1
+display_name = "RIME CRYPT"
+theme = "ice"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=425965392]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1054659009 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1516910625]
+position = Vector2(85, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=2121476025]
+position = Vector2(1447, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=658546834]
+position = Vector2(768, 68)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1765936387]
+
+[node name="Platform0" type="StaticBody2D" parent="Platforms" unique_id=1493968380]
+position = Vector2(768, 377)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(1310, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform0" unique_id=1216086239]
+shape = SubResource("RectangleShape2D_q0sfr")
+
+[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=1896294673]
+position = Vector2(765, 861)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(1310, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=227558142]
+shape = SubResource("RectangleShape2D_p7qoo")
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1804360260]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=973543141]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=1426677748]
+position = Vector2(766, 955)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1314, 138)
+hazard_name = "THE GLACIAL ABYSS"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=275107751]
+shape = SubResource("RectangleShape2D_246h1")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=874761940]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=78965607]
+position = Vector2(273, 328)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=894056867]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=390178237]
+position = Vector2(276, 328)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=36511600]
+position = Vector2(604, 328)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=1305864301]
+position = Vector2(931, 328)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=2037266179]
+position = Vector2(1259, 328)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=1164512214]
+position = Vector2(409, 818)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=1609031549]
+position = Vector2(1343, 818)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=693559916]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1623200154]
+position = Vector2(375, 316)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=329946733]
+position = Vector2(768, 316)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1897447969]
+position = Vector2(1161, 316)

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/health_bar.gd" id="1_bar"]
+
+[node name="HealthBar" type="Node2D"]
+script = ExtResource("1_bar")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+offset_left = -29.0
+offset_top = -2.0
+offset_right = 29.0
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(0.04, 0.03, 0.03, 0.95)
+
+[node name="Fill" type="ColorRect" parent="."]
+offset_left = -27.0
+offset_right = 27.0
+offset_bottom = 7.0
+mouse_filter = 2
+color = Color(0.878, 0.149, 0.169, 1)

@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/touch_controls.gd" id="1_touch"]
+[ext_resource type="GradientTexture2D" path="res://descent/resources/fx/soft_circle.tres" id="2_soft"]
+
+[node name="TouchControls" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_touch")
+
+[node name="MoveStick" type="Control" parent="."]
+visible = false
+mouse_filter = 2
+
+[node name="Base" type="TextureRect" parent="MoveStick"]
+modulate = Color(0.55, 0.75, 1, 0.25)
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+mouse_filter = 2
+texture = ExtResource("2_soft")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Knob" type="Control" parent="MoveStick"]
+mouse_filter = 2
+
+[node name="Cap" type="TextureRect" parent="MoveStick/Knob"]
+modulate = Color(0.8, 0.9, 1, 0.55)
+offset_left = -34.0
+offset_top = -34.0
+offset_right = 34.0
+offset_bottom = 34.0
+mouse_filter = 2
+texture = ExtResource("2_soft")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AimStick" type="Control" parent="."]
+visible = false
+mouse_filter = 2
+
+[node name="Base" type="TextureRect" parent="AimStick"]
+modulate = Color(1, 0.75, 0.45, 0.25)
+offset_left = -85.0
+offset_top = -85.0
+offset_right = 85.0
+offset_bottom = 85.0
+mouse_filter = 2
+texture = ExtResource("2_soft")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Knob" type="Control" parent="AimStick"]
+mouse_filter = 2
+
+[node name="Cap" type="TextureRect" parent="AimStick/Knob"]
+modulate = Color(1, 0.88, 0.6, 0.6)
+offset_left = -34.0
+offset_top = -34.0
+offset_right = 34.0
+offset_bottom = 34.0
+mouse_filter = 2
+texture = ExtResource("2_soft")
+expand_mode = 1
+stretch_mode = 5

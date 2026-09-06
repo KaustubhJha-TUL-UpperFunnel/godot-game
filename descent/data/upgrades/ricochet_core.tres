@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/upgrade_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = 8
+display_name = "Ricochet Core"
+description = "25% chance to ricochet"
+rarity = "RARE"
+value = 0.25

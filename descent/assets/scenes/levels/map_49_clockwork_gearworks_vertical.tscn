@@ -1,0 +1,269 @@
+[gd_scene format=3 uid="uid://jmnydimradgq"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://b4pdo7kyfi07h" path="res://descent/assets/maps/map_49_clockwork_gearworks_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2duj0"]
+size = Vector2(278, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ioakv"]
+size = Vector2(175, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dahno"]
+size = Vector2(115, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_si1n6"]
+size = Vector2(115, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oc3wh"]
+size = Vector2(115, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lwalq"]
+size = Vector2(115, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u1ko5"]
+size = Vector2(243, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ib7kk"]
+size = Vector2(553, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wqjfp"]
+size = Vector2(164, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5v8lu"]
+size = Vector2(230, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6fcw"]
+size = Vector2(879, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l05kb"]
+size = Vector2(1353, 103)
+
+[node name="Map49ClockworkGearworksVertical" type="Node2D" unique_id=192985994]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 8
+display_name = "GEARWORKS"
+theme = "clockwork"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1510333486]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1527384255 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1765208823]
+position = Vector2(67, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=1100799848]
+position = Vector2(1468, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=472853262]
+position = Vector2(768, 79)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1872208767]
+
+[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=2025937228]
+position = Vector2(606, 276)
+scale = Vector2(1.28, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(278, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=2081999637]
+shape = SubResource("RectangleShape2D_2duj0")
+
+[node name="Platform2" type="StaticBody2D" parent="Platforms" unique_id=2038905668]
+position = Vector2(865, 276)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(175, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform2" unique_id=1747204223]
+shape = SubResource("RectangleShape2D_ioakv")
+one_way_collision = true
+
+[node name="Platform3" type="StaticBody2D" parent="Platforms" unique_id=158944929]
+position = Vector2(1005, 354)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(115, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform3" unique_id=1460171809]
+shape = SubResource("RectangleShape2D_dahno")
+one_way_collision = true
+
+[node name="Platform11" type="StaticBody2D" parent="Platforms" unique_id=263344183]
+position = Vector2(887, 489)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(115, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform11" unique_id=1685823202]
+shape = SubResource("RectangleShape2D_si1n6")
+one_way_collision = true
+
+[node name="Platform12" type="StaticBody2D" parent="Platforms" unique_id=1510217250]
+position = Vector2(580, 648)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(115, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform12" unique_id=2114752377]
+shape = SubResource("RectangleShape2D_oc3wh")
+one_way_collision = true
+
+[node name="Platform13" type="StaticBody2D" parent="Platforms" unique_id=1198170624]
+position = Vector2(968, 749)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(115, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform13" unique_id=1316014519]
+shape = SubResource("RectangleShape2D_lwalq")
+one_way_collision = true
+
+[node name="Platform4" type="StaticBody2D" parent="Platforms" unique_id=277673097]
+position = Vector2(1322, 394)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(243, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform4" unique_id=1295457734]
+shape = SubResource("RectangleShape2D_u1ko5")
+
+[node name="Platform5" type="StaticBody2D" parent="Platforms" unique_id=1830626566]
+position = Vector2(367, 444)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(553, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform5" unique_id=115187094]
+shape = SubResource("RectangleShape2D_ib7kk")
+
+[node name="Platform6" type="StaticBody2D" parent="Platforms" unique_id=1060702530]
+position = Vector2(740, 588)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(164, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform6" unique_id=522249801]
+shape = SubResource("RectangleShape2D_wqjfp")
+one_way_collision = true
+
+[node name="Platform9" type="StaticBody2D" parent="Platforms" unique_id=2000838294]
+position = Vector2(269, 902)
+scale = Vector2(2.6799989, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(230, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform9" unique_id=1163434924]
+shape = SubResource("RectangleShape2D_5v8lu")
+
+[node name="Platform10" type="StaticBody2D" parent="Platforms" unique_id=733084266]
+position = Vector2(1004, 902)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(879, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform10" unique_id=498399061]
+shape = SubResource("RectangleShape2D_i6fcw")
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1096393527]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=1443815238]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=1514528953]
+position = Vector2(767, 972)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1353, 103)
+hazard_name = "THE GEARWORKS BELOW"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=1353375399]
+shape = SubResource("RectangleShape2D_l05kb")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=1168744594]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=438925666]
+position = Vector2(211, 853)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=422394980]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1694025848]
+position = Vector2(606, 227)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=863314263]
+position = Vector2(865, 227)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=1060032749]
+position = Vector2(1322, 345)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=5722513]
+position = Vector2(229, 395)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=1073988701]
+position = Vector2(505, 395)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=1021963226]
+position = Vector2(740, 539)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=800381147]
+position = Vector2(269, 853)
+
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=1533168978]
+position = Vector2(711, 853)
+
+[node name="Spawn8" type="Marker2D" parent="SpawnPoints" unique_id=709817697]
+position = Vector2(1004, 853)
+
+[node name="Spawn9" type="Marker2D" parent="SpawnPoints" unique_id=1362505725]
+position = Vector2(1297, 853)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=1378374570]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1382673130]
+position = Vector2(522, 215)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=1378155623]
+position = Vector2(606, 215)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=2018514468]
+position = Vector2(689, 215)

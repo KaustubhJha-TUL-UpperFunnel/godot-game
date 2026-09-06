@@ -1,0 +1,132 @@
+[gd_scene load_steps=34 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/systems/gameplay_controller.gd" id="1_controller"]
+[ext_resource type="Script" path="res://descent/scripts/world/level_host.gd" id="2_level_host"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/projectile.tscn" id="4_projectile"]
+[ext_resource type="PackedScene" path="res://descent/scenes/world/hazard.tscn" id="5_hazard"]
+[ext_resource type="PackedScene" path="res://descent/scenes/world/room_door.tscn" id="6_door"]
+[ext_resource type="Resource" path="res://descent/data/doors/loot.tres" id="7_loot"]
+[ext_resource type="Resource" path="res://descent/data/doors/danger.tres" id="8_danger"]
+[ext_resource type="Resource" path="res://descent/data/doors/shop.tres" id="9_shop"]
+[ext_resource type="Script" path="res://descent/scripts/systems/fx_director.gd" id="10_fx"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/impact_burst.tscn" id="11_burst"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/damage_number.tscn" id="12_number"]
+[ext_resource type="Script" path="res://descent/scripts/systems/camera_shake.gd" id="13_camera"]
+[ext_resource type="Script" path="res://descent/scripts/systems/hit_stop.gd" id="14_hitstop"]
+[ext_resource type="Script" path="res://descent/scripts/systems/spawn_director.gd" id="15_spawn"]
+[ext_resource type="Script" path="res://descent/scripts/systems/upgrade_catalog.gd" id="16_upgrades"]
+[ext_resource type="Script" path="res://descent/scripts/systems/shop_catalog.gd" id="17_shop_catalog"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/enemy_slime.tscn" id="18_slime"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/enemy_goblin.tscn" id="19_goblin"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/enemy_sorcerer.tscn" id="20_sorcerer"]
+[ext_resource type="PackedScene" path="res://descent/scenes/actors/enemy_boss.tscn" id="21_boss"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/hud.tscn" id="22_hud"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/hotbar.tscn" id="23_hotbar"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/door_prompt.tscn" id="24_prompt"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/shop_panel.tscn" id="25_shop_panel"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/upgrade_selection.tscn" id="26_selection"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/announcement.tscn" id="27_announcement"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/toast_layer.tscn" id="28_toast"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/touch_controls.tscn" id="29_touch"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/pause_menu.tscn" id="30_pause"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/run_summary.tscn" id="31_summary"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/floor_transition.tscn" id="32_transition"]
+
+[node name="Gameplay" type="Node2D"]
+script = ExtResource("1_controller")
+projectile_scene = ExtResource("4_projectile")
+hazard_scene = ExtResource("5_hazard")
+
+[node name="LevelHost" type="Node2D" parent="."]
+script = ExtResource("2_level_host")
+
+[node name="Doors" type="Node2D" parent="."]
+visible = false
+
+[node name="Loot" parent="Doors" instance=ExtResource("6_door")]
+position = Vector2(300, 280)
+destination = ExtResource("7_loot")
+
+[node name="Danger" parent="Doors" instance=ExtResource("6_door")]
+position = Vector2(640, 280)
+destination = ExtResource("8_danger")
+
+[node name="Shop" parent="Doors" instance=ExtResource("6_door")]
+position = Vector2(980, 280)
+destination = ExtResource("9_shop")
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Hazards" type="Node2D" parent="Actors"]
+
+[node name="Enemies" type="Node2D" parent="Actors"]
+
+[node name="Player" parent="Actors" instance=ExtResource("3_player")]
+position = Vector2(640, 460)
+
+[node name="Projectiles" type="Node2D" parent="Actors"]
+
+[node name="FxDirector" type="Node2D" parent="."]
+z_index = 40
+script = ExtResource("10_fx")
+burst_scene = ExtResource("11_burst")
+damage_number_scene = ExtResource("12_number")
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+script = ExtResource("13_camera")
+
+[node name="HitStop" type="Node" parent="."]
+script = ExtResource("14_hitstop")
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="SpawnDirector" type="Node" parent="Systems"]
+script = ExtResource("15_spawn")
+slime_scene = ExtResource("18_slime")
+goblin_scene = ExtResource("19_goblin")
+sorcerer_scene = ExtResource("20_sorcerer")
+boss_scene = ExtResource("21_boss")
+
+[node name="UpgradeCatalog" type="Node" parent="Systems"]
+script = ExtResource("16_upgrades")
+
+[node name="ShopCatalog" type="Node" parent="Systems" node_paths=PackedStringArray("upgrade_catalog")]
+script = ExtResource("17_shop_catalog")
+upgrade_catalog = NodePath("../UpgradeCatalog")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="IntroTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="ClearedTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Hud" parent="UI" instance=ExtResource("22_hud")]
+
+[node name="Hotbar" parent="UI" instance=ExtResource("23_hotbar")]
+
+[node name="DoorPrompt" parent="UI" instance=ExtResource("24_prompt")]
+
+[node name="ShopPanel" parent="UI" instance=ExtResource("25_shop_panel")]
+
+[node name="Announcement" parent="UI" instance=ExtResource("27_announcement")]
+
+[node name="UpgradeSelection" parent="UI" instance=ExtResource("26_selection")]
+
+[node name="ToastLayer" parent="UI" instance=ExtResource("28_toast")]
+
+[node name="TouchControls" parent="UI" instance=ExtResource("29_touch")]
+
+[node name="PauseMenu" parent="UI" instance=ExtResource("30_pause")]
+
+[node name="RunSummary" parent="UI" instance=ExtResource("31_summary")]
+
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="FloorTransition" parent="TransitionLayer" instance=ExtResource("32_transition")]

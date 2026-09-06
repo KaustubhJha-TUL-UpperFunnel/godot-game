@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/ui/run_summary.gd" id="1_summary"]
+
+[sub_resource type="StyleBoxFlat" id="Style_scrim"]
+bg_color = Color(0.008, 0.012, 0.02, 0.93)
+
+[node name="RunSummary" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_summary")
+
+[node name="Scrim" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_scrim")
+
+[node name="Frame" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -260.0
+offset_right = 300.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Rows" type="VBoxContainer" parent="Frame"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Frame/Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.31, 0.384, 1)
+theme_override_font_sizes/font_size = 34
+text = "YOU FELL"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Subtitle" type="Label" parent="Frame/Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.839, 0.855, 1)
+theme_override_font_sizes/font_size = 15
+text = "Floor 1 claimed you."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Divider" type="ColorRect" parent="Frame/Rows"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.886, 0.682, 0.322, 0.35)
+
+[node name="Stats" type="VBoxContainer" parent="Frame/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Reward" type="Label" parent="Frame/Rows"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.604, 0.843, 0.776, 1)
+theme_override_font_sizes/font_size = 22
+text = "ECHOES BANKED: 0"
+horizontal_alignment = 1
+
+[node name="Continue" type="Button" parent="Frame/Rows"]
+layout_mode = 2
+text = "RETURN TO THE SURFACE"

@@ -1,0 +1,90 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/actors/player_avatar.gd" id="1_player"]
+[ext_resource type="Script" path="res://descent/scripts/actors/player_input.gd" id="2_input"]
+[ext_resource type="Script" path="res://descent/scripts/components/health_component.gd" id="3_health"]
+[ext_resource type="Script" path="res://descent/scripts/components/mana_component.gd" id="4_mana"]
+[ext_resource type="Script" path="res://descent/scripts/components/hit_flash.gd" id="5_flash"]
+[ext_resource type="Script" path="res://descent/scripts/components/melee_hitbox.gd" id="6_hitbox"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/blob_shadow.tscn" id="7_shadow"]
+[ext_resource type="SpriteFrames" path="res://descent/resources/actors/knight_frames.tres" id="8_knight_frames"]
+[ext_resource type="GradientTexture2D" path="res://descent/resources/fx/soft_circle.tres" id="10_circle"]
+
+[sub_resource type="CircleShape2D" id="Shape_body"]
+radius = 17.0
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 1
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape_body")
+
+[node name="Shadow" parent="." instance=ExtResource("7_shadow")]
+
+[node name="Facing" type="Node2D" parent="."]
+
+[node name="Body" type="Node2D" parent="Facing"]
+
+[node name="Sprite" type="AnimatedSprite2D" parent="Facing/Body"]
+scale = Vector2(0.11, 0.11)
+sprite_frames = ExtResource("8_knight_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -428)
+
+[node name="MeleeHitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+monitorable = false
+script = ExtResource("6_hitbox")
+base_reach = 84.0
+
+[node name="Cone" type="CollisionPolygon2D" parent="MeleeHitbox"]
+polygon = PackedVector2Array(0, 0, 59.7, -59.1, 72.9, -41.7, 81.2, -21.6, 84, 0, 81.2, 21.6, 72.9, 41.7, 59.7, 59.1)
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_health")
+maximum = 100.0
+start_full = true
+
+[node name="Mana" type="Node" parent="."]
+script = ExtResource("4_mana")
+maximum = 60.0
+starting = 40.0
+regen_per_second = 8.0
+
+[node name="Flash" type="Node" parent="."]
+script = ExtResource("5_flash")
+target_path = NodePath("../Facing/Body/Sprite")
+duration = 0.16
+
+[node name="Input" type="Node" parent="."]
+script = ExtResource("2_input")
+
+[node name="DashCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="FireCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="IceCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="DashTrail" type="CPUParticles2D" parent="."]
+modulate = Color(0.35, 0.9, 1, 0.6)
+emitting = false
+amount = 14
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.65
+texture = ExtResource("10_circle")
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 95.0
+scale_amount_min = 0.15
+scale_amount_max = 0.35
+

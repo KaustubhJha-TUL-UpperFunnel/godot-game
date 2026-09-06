@@ -1,0 +1,187 @@
+[gd_scene format=3 uid="uid://dtxg3cwumotlf"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://b8d2qfbtq2bj5" path="res://descent/assets/maps/map_43_gold_midas_chasm_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ob2go"]
+size = Vector2(517, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hrcxf"]
+size = Vector2(526, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwpej"]
+size = Vector2(517, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hgobt"]
+size = Vector2(490, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r76w8"]
+size = Vector2(565, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d4sa8"]
+size = Vector2(474, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3d4v"]
+size = Vector2(1335, 135)
+
+[node name="Map43GoldMidasChasmVertical" type="Node2D" unique_id=1722757601]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 7
+display_name = "MIDAS CHASM"
+theme = "gold"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=633468840]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=1089291748 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=747209406]
+position = Vector2(77, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=1668564448]
+position = Vector2(1460, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=1198529750]
+position = Vector2(768, 53)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=1285770348]
+
+[node name="Platform0" type="StaticBody2D" parent="Platforms" unique_id=1795244931]
+position = Vector2(359, 326)
+scale = Vector2(2.2, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(517, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform0" unique_id=874742901]
+shape = SubResource("RectangleShape2D_ob2go")
+
+[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=466078848]
+position = Vector2(1173, 326)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(526, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=1672270988]
+shape = SubResource("RectangleShape2D_hrcxf")
+
+[node name="Platform3" type="StaticBody2D" parent="Platforms" unique_id=1096531591]
+position = Vector2(360, 599)
+scale = Vector2(2.3200002, 0.98350877)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(517, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform3" unique_id=1631045621]
+shape = SubResource("RectangleShape2D_wwpej")
+
+[node name="Platform4" type="StaticBody2D" parent="Platforms" unique_id=88688787]
+position = Vector2(1192, 599)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(490, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform4" unique_id=1432437627]
+shape = SubResource("RectangleShape2D_hgobt")
+
+[node name="Platform5" type="StaticBody2D" parent="Platforms" unique_id=930599365]
+position = Vector2(383, 870)
+scale = Vector2(2.050001, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(565, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform5" unique_id=968332691]
+shape = SubResource("RectangleShape2D_r76w8")
+
+[node name="Platform6" type="StaticBody2D" parent="Platforms" unique_id=1712238550]
+position = Vector2(1199, 872)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(474, 22)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform6" unique_id=1443218840]
+shape = SubResource("RectangleShape2D_d4sa8")
+
+[node name="Hazards" type="Node2D" parent="." unique_id=1834136516]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=1233833329]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=1436545152]
+position = Vector2(768, 956)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1335, 135)
+hazard_name = "THE MOLTEN VAULT"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=271180291]
+shape = SubResource("RectangleShape2D_f3d4v")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=2123634692]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=1158728872]
+position = Vector2(242, 821)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=383922786]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=1067326521]
+position = Vector2(359, 260)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=1242245903]
+position = Vector2(1041, 260)
+
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=330381594]
+position = Vector2(1304, 260)
+
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1376112230]
+position = Vector2(359, 533)
+
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=535510262]
+position = Vector2(1191, 533)
+
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=19678319]
+position = Vector2(242, 821)
+
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=1012667693]
+position = Vector2(524, 821)
+
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=2077510676]
+position = Vector2(1199, 821)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=1545774749]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1890959932]
+position = Vector2(204, 248)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=2020363573]
+position = Vector2(359, 248)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=776211085]
+position = Vector2(514, 248)

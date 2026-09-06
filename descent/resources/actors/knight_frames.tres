@@ -1,0 +1,172 @@
+[gd_resource type="SpriteFrames" load_steps=25 format=3]
+
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/idle/idle_1.png" id="1_idle_1"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/idle/idle_2.png" id="2_idle_2"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/idle/idle_3.png" id="3_idle_3"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/idle/idle_4.png" id="4_idle_4"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/idle/idle_5.png" id="5_idle_5"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_1.png" id="6_run_1"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_2.png" id="7_run_2"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_3.png" id="8_run_3"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_4.png" id="9_run_4"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_5.png" id="10_run_5"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/run/run_6.png" id="11_run_6"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/slash/slash_1.png" id="12_slash_1"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/slash/slash_2.png" id="13_slash_2"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/slash/slash_3.png" id="14_slash_3"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/slash/slash_4.png" id="15_slash_4"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/slash/slash_5.png" id="16_slash_5"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_1_front.png" id="17_front"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_2_front_right.png" id="18_front_right"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_3_right.png" id="19_right"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_4_back_right.png" id="20_back_right"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_5_back.png" id="21_back"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_6_back_left.png" id="22_back_left"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_7_left.png" id="23_left"]
+[ext_resource type="Texture2D" path="res://descent/assets/animations/knight/rotation/rotate_8_front_left.png" id="24_front_left"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_idle_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_idle_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_idle_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_idle_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_run_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_run_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_run_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_run_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_run_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_run_6")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_slash_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_slash_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_slash_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_slash_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_slash_5")
+}],
+"loop": false,
+"name": &"slash",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_back_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_back")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_back_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_left")
+}],
+"loop": false,
+"name": &"turn_back_left",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_back_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_back")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_back_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_right")
+}],
+"loop": false,
+"name": &"turn_back_right",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_front_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_front")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_front_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_left")
+}],
+"loop": false,
+"name": &"turn_front_left",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("23_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_front_left")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_front")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_front_right")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_right")
+}],
+"loop": false,
+"name": &"turn_front_right",
+"speed": 14.0
+}]

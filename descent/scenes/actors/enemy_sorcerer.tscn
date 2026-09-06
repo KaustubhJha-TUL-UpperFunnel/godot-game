@@ -1,0 +1,79 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/actors/enemy_sorcerer.gd" id="1_sorcerer"]
+[ext_resource type="Script" path="res://descent/scripts/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://descent/scripts/components/hit_flash.gd" id="3_flash"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/blob_shadow.tscn" id="4_shadow"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/enemy_health_bar.tscn" id="5_bar"]
+[ext_resource type="Resource" path="res://descent/data/enemies/shooter.tres" id="6_stats"]
+[ext_resource type="Texture2D" path="res://descent/assets/game/sorcerer.png" id="7_sorcerer"]
+
+[sub_resource type="CircleShape2D" id="Shape_sorcerer"]
+radius = 17.0
+
+[sub_resource type="Animation" id="Animation_hover"]
+resource_name = "hover"
+length = 2.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Facing/Sprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.1, 2.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -19), Vector2(0, -24), Vector2(0, -19)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sorcerer"]
+_data = {
+&"hover": SubResource("Animation_hover")
+}
+
+[node name="EnemySorcerer" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_sorcerer")
+stats = ExtResource("6_stats")
+contact_radius = 34.0
+projectile_radius = 24.0
+health_bar_height = 58.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape_sorcerer")
+
+[node name="Shadow" parent="." instance=ExtResource("4_shadow")]
+scale = Vector2(0.7, 0.32)
+
+[node name="Facing" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Facing"]
+position = Vector2(0, -19)
+scale = Vector2(2.3, 2.3)
+texture = ExtResource("7_sorcerer")
+
+[node name="Telegraph" type="Line2D" parent="."]
+visible = false
+width = 3.0
+default_color = Color(1, 0.18, 0.2, 0.7)
+
+[node name="HealthBar" parent="." instance=ExtResource("5_bar")]
+bar_width = 48.0
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_health")
+maximum = 36.0
+
+[node name="Flash" type="Node" parent="."]
+script = ExtResource("3_flash")
+target_path = NodePath("../Facing/Sprite")
+duration = 0.09
+
+[node name="FloatAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_sorcerer")
+}

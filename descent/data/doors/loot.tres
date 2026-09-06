@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DoorDestinationData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/data/door_destination_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+destination_type = 1
+display_name = "LOOT"
+description = "Choose one of three upgrades"
+reward = "Guaranteed power"
+risk = "LOW RISK"
+accent = Color(0.886, 0.682, 0.322, 1)

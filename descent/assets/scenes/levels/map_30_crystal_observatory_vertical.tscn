@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://dg4355gt0dsoe"]
+
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://cu81mx6h2ulmi" path="res://descent/assets/maps/map_30_crystal_observatory_vertical.png" id="2_map"]
+[ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+[ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_v"]
+size = Vector2(48, 1024)
+
+[sub_resource type="RectangleShape2D" id="Shape_wall_h"]
+size = Vector2(1536, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7jtfn"]
+size = Vector2(746, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r473j"]
+size = Vector2(1208, 108)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afowx"]
+size = Vector2(1031, 183.625)
+
+[node name="Map30CrystalObservatoryVertical" type="Node2D" unique_id=312213996]
+script = ExtResource("1_level")
+kind = 1
+hazard_kind = 4
+display_name = "OBSERVATORY"
+theme = "crystal"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=4990522]
+texture = ExtResource("2_map")
+centered = false
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=634708027 groups=["walls"]]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=262532814]
+position = Vector2(133, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=382090830]
+position = Vector2(1389, 512)
+shape = SubResource("Shape_wall_v")
+
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=358892716]
+position = Vector2(768, 76)
+shape = SubResource("Shape_wall_h")
+
+[node name="Platforms" type="Node2D" parent="." unique_id=66984867]
+
+[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=187997178]
+position = Vector2(814, 483)
+scale = Vector2(1.88, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(746, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=1704875849]
+shape = SubResource("RectangleShape2D_7jtfn")
+
+[node name="Hazards" type="Node2D" parent="." unique_id=2095771060]
+
+[node name="DeathZones" type="Node2D" parent="." unique_id=2065398712]
+
+[node name="Pit" type="Area2D" parent="DeathZones" unique_id=634681045]
+position = Vector2(743, 1042)
+collision_layer = 16
+collision_mask = 3
+monitoring = false
+script = ExtResource("5_death")
+size = Vector2(1208, 108)
+hazard_name = "THE CHASM"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=395770388]
+shape = SubResource("RectangleShape2D_r473j")
+
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=989351364]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape5" type="CollisionShape2D" parent="WalkableRegion" unique_id=1447466536]
+position = Vector2(847.5, 870.1875)
+shape = SubResource("RectangleShape2D_afowx")
+
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=1572699620]
+position = Vector2(625, 435)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1101429044]
+
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=545444262]
+position = Vector2(651, 435)
+
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=514828445]
+position = Vector2(1024, 435)
+
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=741777445]
+
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=2050623968]
+position = Vector2(614, 423)
+
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=39817891]
+position = Vector2(838, 423)
+
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1832131450]
+position = Vector2(1061, 423)
