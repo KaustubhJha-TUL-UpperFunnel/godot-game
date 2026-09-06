@@ -31,6 +31,12 @@ const HIT_INVULNERABILITY := 0.035
 const STUCK_THRESHOLD := 5.0
 const STUCK_TIMEOUT := 0.7
 const STEERING_ACCELERATION := 1000.0
+const PLATFORM_GRAVITY := 1850.0
+const PLATFORM_JUMP_SPEED := 840.0
+const MAX_PLATFORM_SWITCH_HEIGHT := 190.0
+const SAFE_EDGE_LOOKAHEAD := 34.0
+const WALLS_LAYER_NUMBER := 3
+const DROP_IGNORE_SECONDS := 0.12
 
 var speed: float = 120.0
 var contact_damage: float = 10.0
@@ -44,12 +50,15 @@ var facing: Vector2 = Vector2.RIGHT
 var locked_direction: Vector2 = Vector2.RIGHT
 var movement_bounds: Rect2 = Rect2(105, 380, 1070, 240)
 var player: Node2D
+var level: Level
 
 var _age: float = 0.0
 var _attack_timer: float = 0.7
 var _state_timer: float = 0.0
 var _stuck_time: float = 0.0
 var _last_progress_position: Vector2
+var _vertical_level: bool = false
+var _drop_ignore_time: float = 0.0
 
 @onready var health: HealthComponent = $Health
 @onready var _flash: HitFlash = $Flash
@@ -109,6 +118,20 @@ func set_combat_enabled(enabled: bool) -> void:
 		velocity = Vector2.ZERO
 
 
+func configure_navigation(room: Level) -> void:
+	level = room
+	_vertical_level = room != null and room.is_vertical()
+	motion_mode = (
+		CharacterBody2D.MOTION_MODE_GROUNDED
+		if _vertical_level
+		else CharacterBody2D.MOTION_MODE_FLOATING
+	)
+	up_direction = Vector2.UP
+	floor_snap_length = 10.0 if _vertical_level else 1.0
+	_drop_ignore_time = 0.0
+	set_collision_mask_value(WALLS_LAYER_NUMBER, true)
+
+
 func _physics_process(delta: float) -> void:
 	if is_dead or not combat_enabled or player == null:
 		return
@@ -123,11 +146,103 @@ func _physics_process(delta: float) -> void:
 	var desired := _steer(delta, facing, distance)
 	desired = _unstick(desired, delta)
 
-	velocity = velocity.move_toward(desired, STEERING_ACCELERATION * delta)
+	if _vertical_level:
+		_update_platform_navigation(desired, delta)
+	else:
+		velocity = velocity.move_toward(desired, STEERING_ACCELERATION * delta)
 	move_and_slide()
 
 	position.x = clampf(position.x, movement_bounds.position.x, movement_bounds.end.x)
-	position.y = clampf(position.y, movement_bounds.position.y, movement_bounds.end.y)
+	if not _vertical_level:
+		position.y = clampf(position.y, movement_bounds.position.y, movement_bounds.end.y)
+
+
+func _update_platform_navigation(desired: Vector2, delta: float) -> void:
+	_tick_drop_collision(delta)
+
+	var current := level.supporting_platform(position, projectile_radius, 52.0)
+	var target := level.supporting_platform(player.position, 20.0, 62.0)
+	var horizontal := desired.x
+
+	if current != null and target != null and current != target:
+		var route_target := level.next_platform_toward(
+			current,
+			target,
+			(projectile_radius + 4.0) * 2.0,
+			MAX_PLATFORM_SWITCH_HEIGHT
+		)
+		if route_target != null:
+			if level.platforms_share_route(current, route_target):
+				var route_range := route_target.navigation_x_range()
+				var route_x := (route_range.x + route_range.y) * 0.5
+				if route_range.y - route_range.x >= projectile_radius * 2.0:
+					route_x = clampf(
+						player.position.x,
+						route_range.x + projectile_radius,
+						route_range.y - projectile_radius
+					)
+				horizontal = signf(route_x - position.x) * maxf(absf(horizontal), speed * 0.7)
+			else:
+				horizontal = _approach_platform_switch(current, route_target, horizontal)
+
+	if is_on_floor() and current != null and absf(horizontal) > 0.1:
+		var look_x := position.x + signf(horizontal) * (projectile_radius + SAFE_EDGE_LOOKAHEAD)
+		var own_surface := current.surface_y_at(look_x, 2.0)
+		if is_inf(own_surface) \
+			and not level.has_support_below(look_x, position.y, 68.0, current):
+			horizontal = 0.0
+
+	velocity.x = move_toward(velocity.x, horizontal, STEERING_ACCELERATION * delta)
+	if not is_on_floor():
+		velocity.y = minf(velocity.y + PLATFORM_GRAVITY * delta, PLATFORM_GRAVITY)
+	elif velocity.y > 0.0:
+		velocity.y = 0.0
+
+
+func _approach_platform_switch(
+	current: LevelPlatform, target: LevelPlatform, fallback_horizontal: float
+) -> float:
+	var current_range := current.navigation_x_range()
+	var target_range := target.navigation_x_range()
+	var overlap_left := maxf(current_range.x, target_range.x)
+	var overlap_right := minf(current_range.y, target_range.y)
+	var switch_margin := projectile_radius + 4.0
+	if overlap_right - overlap_left < switch_margin * 2.0:
+		return fallback_horizontal
+
+	var switch_x := clampf(
+		player.position.x, overlap_left + switch_margin, overlap_right - switch_margin
+	)
+	var toward_switch := signf(switch_x - position.x) * maxf(absf(fallback_horizontal), speed * 0.7)
+	if absf(position.x - switch_x) > 18.0:
+		return toward_switch
+
+	var current_y := current.surface_y_at(position.x, 20.0)
+	var target_y := target.surface_y_at(position.x, 20.0)
+	if is_inf(current_y) or is_inf(target_y):
+		return fallback_horizontal
+	var height_delta := current_y - target_y
+
+	if height_delta > 28.0 and height_delta <= MAX_PLATFORM_SWITCH_HEIGHT and is_on_floor():
+		velocity.y = -PLATFORM_JUMP_SPEED
+	elif height_delta < -28.0 and is_on_floor() and _drop_ignore_time <= 0.0:
+		_begin_controlled_drop()
+	return toward_switch
+
+
+func _begin_controlled_drop() -> void:
+	_drop_ignore_time = DROP_IGNORE_SECONDS
+	set_collision_mask_value(WALLS_LAYER_NUMBER, false)
+	position.y += 7.0
+	velocity.y = 130.0
+
+
+func _tick_drop_collision(delta: float) -> void:
+	if _drop_ignore_time <= 0.0:
+		return
+	_drop_ignore_time -= delta
+	if _drop_ignore_time <= 0.0:
+		set_collision_mask_value(WALLS_LAYER_NUMBER, true)
 
 
 ## Returns the velocity this archetype wants. Overridden by every subclass.

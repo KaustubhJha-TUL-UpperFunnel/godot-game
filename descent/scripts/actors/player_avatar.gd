@@ -12,7 +12,7 @@ signal dash_started(origin: Vector2)
 signal hurt(amount: float)
 signal died()
 
-enum Slot { SWORD, FIRE, ICE, DASH, POTION_HEALTH, POTION_MANA }
+enum Slot { SWORD, FIRE, ICE, DASH, POTION_HEALTH, POTION_MANA, JUMP }
 
 const COMBO_DURATIONS: Array[float] = [0.30, 0.28, 0.38]
 ## Fraction of each swing's duration at which the blade actually connects.
@@ -23,6 +23,7 @@ const DASH_SPEED := 820.0
 const DASH_DURATION := 0.16
 const DASH_INVULNERABILITY := 0.22
 const HURT_INVULNERABILITY := 0.55
+const FLOOR_SPAWN_PROTECTION := 1.0
 const KNOCKBACK_ON_HURT := 170.0
 const FACING_DEADZONE := 0.15
 
@@ -30,6 +31,7 @@ const FIRE_COST := 15.0
 const FIRE_COOLDOWN := 2.8
 const FIRE_DAMAGE_SCALE := 1.85
 const FIRE_PROJECTILE_SPEED := 720.0
+const AIM_GUIDE_LENGTH := 140.0
 
 const ICE_COST := 20.0
 const ICE_COOLDOWN := 4.0
@@ -40,6 +42,19 @@ const POTION_HEAL := 35.0
 const POTION_MANA_RESTORE := 35.0
 const POTION_SPEED_BUFF := 1.4
 const POTION_SPEED_BUFF_DURATION := 6.0
+
+const PLATFORM_GRAVITY := 1850.0
+const JUMP_SPEED := 830.0
+const BODY_RADIUS := 17.0
+const AIR_CLIMB_REACH := 220.0
+const CLIMB_HORIZONTAL_REACH := 42.0
+const DASH_CLIMB_CONTACT_HEIGHT := 128.0
+const AIR_CLIMB_DURATION := 0.18
+const DASH_CLIMB_DURATION := 0.12
+const CLIMB_ARC_HEIGHT := 8.0
+const DROP_HOLD_SECONDS := 0.18
+const DROP_IGNORE_SECONDS := 0.16
+const WALLS_LAYER_NUMBER := 3
 
 @export var base_speed: float = 285.0
 @export var acceleration: float = 1800.0
@@ -81,6 +96,16 @@ var _dash_direction: Vector2 = Vector2.RIGHT
 var _speed_buff_left: float = 0.0
 var _facing_left: bool = false
 var _turning: bool = false
+var _projectile_aiming: bool = false
+var _level: Level
+var _vertical_level: bool = false
+var _drop_hold_time: float = 0.0
+var _drop_ignore_time: float = 0.0
+var _drop_consumed: bool = false
+var _climb_start: Vector2 = Vector2.ZERO
+var _climb_target: Vector2 = Vector2.ZERO
+var _climb_elapsed: float = 0.0
+var _climb_duration: float = 0.0
 
 @onready var health: HealthComponent = $Health
 @onready var mana: ManaComponent = $Mana
@@ -90,6 +115,7 @@ var _turning: bool = false
 @onready var _sprite: AnimatedSprite2D = $Facing/Body/Sprite
 @onready var _flash: HitFlash = $Flash
 @onready var _hitbox: MeleeHitbox = $MeleeHitbox
+@onready var _aim_guide: Line2D = $AimGuide
 @onready var _dash_cooldown: Timer = $DashCooldown
 @onready var _fire_cooldown: Timer = $FireCooldown
 @onready var _ice_cooldown: Timer = $IceCooldown
@@ -99,22 +125,37 @@ var _turning: bool = false
 func _ready() -> void:
 	health.depleted.connect(_on_health_depleted)
 	input.slot_activated.connect(activate_slot)
+	input.slot_hold_changed.connect(_on_input_slot_hold_changed)
 	_hitbox.hit_landed.connect(_on_melee_hit_landed)
 	_sprite.animation_finished.connect(_on_sprite_animation_finished)
 
 
 func _physics_process(delta: float) -> void:
 	_tick_timers(delta)
+	_tick_drop_collision(delta)
 	_update_facing()
 
+	if _climb_duration > 0.0:
+		_update_climb_transition(delta)
+		_clamp_to_bounds()
+		_update_locomotion_animation()
+		return
+
+	var upward_dashing := _dash_time_left > 0.0 and _dash_direction.y < -0.5
 	if _dash_time_left > 0.0:
 		_dash_time_left -= delta
 		velocity = _dash_direction * DASH_SPEED
 	else:
 		_update_attack(delta)
-		velocity = velocity.move_toward(_desired_velocity(), acceleration * delta)
+		if _vertical_level:
+			_update_platformer_velocity(delta)
+		else:
+			velocity = velocity.move_toward(_desired_velocity(), acceleration * delta)
 
-	move_and_slide()
+	if _climb_duration <= 0.0:
+		move_and_slide()
+	if upward_dashing:
+		_try_climb_overhead(DASH_CLIMB_CONTACT_HEIGHT, DASH_CLIMB_DURATION)
 	_clamp_to_bounds()
 	_update_locomotion_animation()
 
@@ -124,7 +165,7 @@ func _tick_timers(delta: float) -> void:
 
 
 func _desired_velocity() -> Vector2:
-	if not input.movement_enabled or is_dead:
+	if not input.movement_enabled or is_dead or _projectile_aiming:
 		return Vector2.ZERO
 	var attack_drag := 1.0
 	if is_attacking():
@@ -133,13 +174,159 @@ func _desired_velocity() -> Vector2:
 	return input.move_vector * base_speed * speed_multiplier * buff * attack_drag
 
 
+func configure_level(level: Level) -> void:
+	_level = level
+	_vertical_level = level != null and level.is_vertical()
+	motion_mode = (
+		CharacterBody2D.MOTION_MODE_GROUNDED
+		if _vertical_level
+		else CharacterBody2D.MOTION_MODE_FLOATING
+	)
+	up_direction = Vector2.UP
+	floor_snap_length = 12.0 if _vertical_level else 1.0
+	_drop_hold_time = 0.0
+	_drop_ignore_time = 0.0
+	_drop_consumed = false
+	_climb_duration = 0.0
+	set_collision_mask_value(WALLS_LAYER_NUMBER, true)
+
+
+func _update_platformer_velocity(delta: float) -> void:
+	var wanted := _desired_velocity()
+	velocity.x = move_toward(velocity.x, wanted.x, acceleration * delta)
+
+	if not is_on_floor():
+		velocity.y = minf(velocity.y + PLATFORM_GRAVITY * delta, PLATFORM_GRAVITY)
+	elif velocity.y > 0.0:
+		velocity.y = 0.0
+
+	if input.consume_jump() and not is_dead:
+		if is_on_floor():
+			velocity.y = -JUMP_SPEED
+			_drop_hold_time = 0.0
+		else:
+			_try_climb_overhead(AIR_CLIMB_REACH, AIR_CLIMB_DURATION)
+
+	_update_drop_through(delta)
+
+
+## A second jump while airborne is a contextual climb, not a free double jump.
+## It succeeds only when a safe platform is directly above or just beyond the
+## player's shoulder reach.
+func _try_climb_overhead(max_height: float, duration: float = AIR_CLIMB_DURATION) -> bool:
+	if not _vertical_level or _level == null:
+		return false
+
+	var best_platform: LevelPlatform = null
+	var best_position := Vector2.ZERO
+	var best_height := INF
+	for platform in _level.platforms():
+		var x_range := platform.navigation_x_range()
+		if (
+			position.x < x_range.x - CLIMB_HORIZONTAL_REACH
+			or position.x > x_range.y + CLIMB_HORIZONTAL_REACH
+		):
+			continue
+
+		var target_x := (x_range.x + x_range.y) * 0.5
+		if x_range.y - x_range.x >= BODY_RADIUS * 2.0:
+			target_x = clampf(position.x, x_range.x + BODY_RADIUS, x_range.y - BODY_RADIUS)
+		var surface_y := platform.surface_y_at(target_x, 1.0)
+		if is_inf(surface_y):
+			continue
+		var target := Vector2(target_x, surface_y - BODY_RADIUS - 2.0)
+		var climb_height := position.y - target.y
+		if climb_height < BODY_RADIUS or climb_height > max_height:
+			continue
+		if not _level.is_safe_spawn(target, BODY_RADIUS):
+			continue
+		if climb_height < best_height:
+			best_platform = platform
+			best_position = target
+			best_height = climb_height
+
+	if best_platform == null:
+		return false
+
+	_climb_start = position
+	_climb_target = best_position
+	_climb_elapsed = 0.0
+	_climb_duration = maxf(0.01, duration)
+	velocity.y = 0.0
+	_dash_time_left = 0.0
+	floor_snap_length = 12.0
+	return true
+
+
+func _update_climb_transition(delta: float) -> void:
+	_climb_elapsed = minf(_climb_elapsed + delta, _climb_duration)
+	var progress := _climb_elapsed / _climb_duration
+	var eased := 1.0 - pow(1.0 - progress, 3.0)
+	position = _climb_start.lerp(_climb_target, eased)
+	position.y -= sin(progress * PI) * CLIMB_ARC_HEIGHT
+	velocity = Vector2.ZERO
+	if progress >= 1.0:
+		position = _climb_target
+		_climb_duration = 0.0
+
+
+func _update_drop_through(delta: float) -> void:
+	if not input.drop_held():
+		_drop_hold_time = 0.0
+		_drop_consumed = false
+		return
+	if _drop_ignore_time > 0.0:
+		return
+	if _drop_consumed or not is_on_floor() or not _floor_is_platform():
+		_drop_hold_time = 0.0
+		return
+	_drop_hold_time += delta
+	if _drop_hold_time < DROP_HOLD_SECONDS:
+		return
+
+	_drop_hold_time = 0.0
+	_drop_consumed = true
+	_drop_ignore_time = DROP_IGNORE_SECONDS
+	set_collision_mask_value(WALLS_LAYER_NUMBER, false)
+	position.y += 8.0
+	velocity.y = 120.0
+
+
+func _tick_drop_collision(delta: float) -> void:
+	if _drop_ignore_time <= 0.0:
+		return
+	_drop_ignore_time -= delta
+	if _drop_ignore_time <= 0.0:
+		set_collision_mask_value(WALLS_LAYER_NUMBER, true)
+
+
+func _floor_is_platform() -> bool:
+	for index in get_slide_collision_count():
+		var collision := get_slide_collision(index)
+		if collision.get_normal().y > -0.45:
+			continue
+		var platform := collision.get_collider() as LevelPlatform
+		if platform != null:
+			return true
+	return false
+
+
 func _clamp_to_bounds() -> void:
 	position.x = clampf(position.x, movement_bounds.position.x, movement_bounds.end.x)
-	position.y = clampf(position.y, movement_bounds.position.y, movement_bounds.end.y)
+	if not _vertical_level:
+		position.y = clampf(position.y, movement_bounds.position.y, movement_bounds.end.y)
 
 
 func _update_facing() -> void:
-	_aim_direction = input.aim_vector
+	_aim_direction = (
+		input.move_vector.normalized()
+		if _projectile_aiming and input.move_vector.length_squared() > 0.04
+		else input.aim_vector
+	)
+	if _projectile_aiming:
+		_aim_guide.points = PackedVector2Array([
+			Vector2.ZERO, _aim_direction * AIM_GUIDE_LENGTH
+		])
 	if is_attacking() or absf(_aim_direction.x) < FACING_DEADZONE:
 		return
 
@@ -155,6 +342,12 @@ func _update_facing() -> void:
 
 
 func _update_locomotion_animation() -> void:
+	if _projectile_aiming:
+		_sprite.speed_scale = 1.0
+		_apply_facing()
+		if _sprite.animation != &"idle" or not _sprite.is_playing():
+			_sprite.play(&"idle")
+		return
 	if is_attacking() or _dash_time_left > 0.0:
 		return
 	if _turning:
@@ -203,11 +396,16 @@ func _on_sprite_animation_finished() -> void:
 func activate_slot(index: int) -> void:
 	if is_dead:
 		return
+	if _projectile_aiming and index != Slot.FIRE:
+		_cancel_projectile_aim()
 	match index:
 		Slot.SWORD:
 			_request_attack()
 		Slot.FIRE:
-			cast_fireball()
+			if _projectile_aiming:
+				release_projectile_aim()
+			else:
+				begin_projectile_aim()
 		Slot.ICE:
 			cast_frost_nova()
 		Slot.DASH:
@@ -216,6 +414,17 @@ func activate_slot(index: int) -> void:
 			use_health_potion()
 		Slot.POTION_MANA:
 			use_mana_potion()
+		Slot.JUMP:
+			input.request_touch_jump()
+
+
+func _on_input_slot_hold_changed(index: int, held: bool) -> void:
+	if index != Slot.FIRE:
+		return
+	if held:
+		begin_projectile_aim()
+	else:
+		release_projectile_aim()
 
 
 func slot_cooldown_ratio(index: int) -> float:
@@ -310,6 +519,9 @@ func _update_attack(delta: float) -> void:
 	if not input.movement_enabled:
 		_cancel_attack()
 		return
+	if _projectile_aiming:
+		_cancel_attack()
+		return
 
 	if input.attack_held:
 		_request_attack()
@@ -384,11 +596,25 @@ func _lunge(direction: Vector2, distance: float) -> void:
 func start_dash() -> bool:
 	if not input.movement_enabled or is_dead or not _dash_cooldown.is_stopped():
 		return false
-	_dash_direction = (
-		input.move_vector.normalized()
-		if input.move_vector.length_squared() > 0.04
-		else _aim_direction
-	)
+	_cancel_projectile_aim()
+	if _vertical_level:
+		var upward_boost := input.up_held() and (
+			not is_on_floor() or velocity.y < -1.0 or input.jump_requested()
+		)
+		if upward_boost:
+			input.consume_jump()
+			_dash_direction = Vector2.UP
+		else:
+			var horizontal := input.move_vector.x
+			if absf(horizontal) < 0.1:
+				horizontal = -1.0 if _facing_left else 1.0
+			_dash_direction = Vector2(signf(horizontal), 0.0)
+	else:
+		_dash_direction = (
+			input.move_vector.normalized()
+			if input.move_vector.length_squared() > 0.04
+			else _aim_direction
+		)
 	_dash_time_left = DASH_DURATION
 	_dash_cooldown.start(dash_cooldown_seconds * dash_cooldown_multiplier)
 	health.grant_invulnerability(DASH_INVULNERABILITY)
@@ -402,8 +628,42 @@ func start_dash() -> bool:
 # --- Spells and potions ------------------------------------------------------
 
 
+func begin_projectile_aim() -> bool:
+	if (
+		not input.movement_enabled
+		or not input.attack_enabled
+		or is_dead
+		or not _fire_cooldown.is_stopped()
+		or not mana.has(FIRE_COST)
+	):
+		return false
+	_projectile_aiming = true
+	_dash_time_left = 0.0
+	_cancel_attack()
+	if _vertical_level:
+		velocity.x = 0.0
+	else:
+		velocity = Vector2.ZERO
+	_aim_guide.show()
+	return true
+
+
+func release_projectile_aim() -> bool:
+	if not _projectile_aiming:
+		return false
+	_projectile_aiming = false
+	_aim_guide.hide()
+	return cast_fireball()
+
+
+func _cancel_projectile_aim() -> void:
+	_projectile_aiming = false
+	if is_instance_valid(_aim_guide):
+		_aim_guide.hide()
+
+
 func cast_fireball() -> bool:
-	if not input.movement_enabled or is_dead:
+	if not input.movement_enabled or not input.attack_enabled or is_dead:
 		return false
 	if not _fire_cooldown.is_stopped() or not mana.try_spend(FIRE_COST):
 		return false
@@ -417,7 +677,7 @@ func cast_fireball() -> bool:
 
 
 func cast_frost_nova() -> bool:
-	if not input.movement_enabled or is_dead:
+	if not input.movement_enabled or not input.attack_enabled or is_dead:
 		return false
 	if not _ice_cooldown.is_stopped() or not mana.try_spend(ICE_COST):
 		return false
@@ -487,6 +747,22 @@ func heal(amount: float) -> float:
 	return health.heal(amount)
 
 
+func restore_full_health() -> void:
+	if not is_dead:
+		health.heal(health.maximum)
+
+
+func prepare_floor_spawn() -> void:
+	velocity = Vector2.ZERO
+	_dash_time_left = 0.0
+	_climb_duration = 0.0
+	_drop_hold_time = 0.0
+	_drop_ignore_time = 0.0
+	_drop_consumed = false
+	set_collision_mask_value(WALLS_LAYER_NUMBER, true)
+	health.grant_invulnerability(FLOOR_SPAWN_PROTECTION)
+
+
 ## Called by DeathZone. A fall is not damage: the invulnerability window from a
 ## dash must not carry the knight across the bottom of a pit, and there is no
 ## knockback to apply because there is nothing to be knocked back onto.
@@ -504,6 +780,7 @@ func _on_health_depleted() -> void:
 		return
 	is_dead = true
 	set_control_enabled(false, false)
+	_cancel_projectile_aim()
 	_cancel_attack()
 	died.emit()
 
@@ -525,6 +802,7 @@ func set_control_enabled(movement: bool, attacks: bool) -> void:
 	if not movement:
 		velocity = Vector2.ZERO
 		input.clear_touch_state()
+		_cancel_projectile_aim()
 		_cancel_attack()
 
 
@@ -548,6 +826,7 @@ func reset_for_run(max_health: float, damage_multiplier: float, run_speed_multip
 	_dash_cooldown.stop()
 	_fire_cooldown.stop()
 	_ice_cooldown.stop()
+	_cancel_projectile_aim()
 	_cancel_attack()
 	velocity = Vector2.ZERO
 	set_control_enabled(false, false)

@@ -11,7 +11,7 @@ signal upgrades_changed()
 
 enum RoomType { STANDARD, LOOT, DANGER, SHOP, BOSS }
 
-const FINAL_FLOOR := 8
+const FINAL_FLOOR := LevelLibrary.PLAYABLE_LEVEL_COUNT
 
 const ROOM_TYPE_NAMES := {
 	RoomType.STANDARD: "STANDARD CHAMBER",
@@ -122,7 +122,7 @@ func has_upgrade(upgrade_id: int) -> bool:
 # --- Floor flow --------------------------------------------------------------
 
 
-func advance_floor(destination: RoomType) -> void:
+func advance_floor(destination: RoomType = RoomType.STANDARD) -> void:
 	next_room_type = destination
 	floor_number = mini(FINAL_FLOOR, floor_number + 1)
 	floor_changed.emit(floor_number)

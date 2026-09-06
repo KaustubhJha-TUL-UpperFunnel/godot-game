@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://descent/scripts/actors/animated_monster.gd" id="1_monster"]
+[ext_resource type="Script" path="res://descent/scripts/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" path="res://descent/scripts/components/hit_flash.gd" id="3_flash"]
+[ext_resource type="PackedScene" path="res://descent/scenes/fx/blob_shadow.tscn" id="4_shadow"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/enemy_health_bar.tscn" id="5_bar"]
+
+[sub_resource type="CircleShape2D" id="Shape_monster"]
+resource_local_to_scene = true
+radius = 20.0
+
+[node name="AnimatedMonster" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_monster")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape_monster")
+
+[node name="Shadow" parent="." instance=ExtResource("4_shadow")]
+scale = Vector2(0.82, 0.38)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+
+[node name="Telegraph" type="Line2D" parent="."]
+visible = false
+width = 3.0
+default_color = Color(1, 0.18, 0.2, 0.7)
+
+[node name="HealthBar" parent="." instance=ExtResource("5_bar")]
+bar_width = 54.0
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_health")
+maximum = 42.0
+
+[node name="Flash" type="Node" parent="."]
+script = ExtResource("3_flash")
+target_path = NodePath("../Sprite")
+duration = 0.09

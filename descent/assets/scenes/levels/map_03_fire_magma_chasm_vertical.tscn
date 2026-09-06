@@ -56,6 +56,9 @@ size = Vector2(97, 18)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u761f"]
 size = Vector2(357, 18)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ugut"]
+size = Vector2(357, 18)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qktma"]
 size = Vector2(383, 19)
 
@@ -269,6 +272,17 @@ size = Vector2(357, 18)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform10" unique_id=1822210960]
 shape = SubResource("RectangleShape2D_u761f")
 
+[node name="Platform17" type="StaticBody2D" parent="Platforms" unique_id=1012719727]
+position = Vector2(767, 1006)
+scale = Vector2(3.8800051, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(357, 18)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform17" unique_id=669688553]
+shape = SubResource("RectangleShape2D_2ugut")
+
 [node name="Platform11" type="StaticBody2D" parent="Platforms" unique_id=216078771]
 position = Vector2(1245, 903)
 collision_layer = 4
@@ -284,7 +298,7 @@ shape = SubResource("RectangleShape2D_qktma")
 [node name="DeathZones" type="Node2D" parent="." unique_id=1019270905]
 
 [node name="Pit" type="Area2D" parent="DeathZones" unique_id=11767968]
-position = Vector2(768, 974)
+position = Vector2(749, 1070)
 collision_layer = 16
 collision_mask = 3
 monitoring = false
@@ -317,9 +331,6 @@ position = Vector2(244, 527)
 
 [node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=1457866136]
 position = Vector2(1294, 527)
-
-[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=1616059841]
-position = Vector2(277, 854)
 
 [node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=604152314]
 position = Vector2(1245, 854)

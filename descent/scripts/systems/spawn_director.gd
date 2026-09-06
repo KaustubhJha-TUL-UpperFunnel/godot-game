@@ -1,12 +1,8 @@
 class_name SpawnDirector
 extends Node
 
-## Decides what fills a room: how many enemies, which archetypes, how strong,
-## and where they stand.
-##
-## The archetype mix widens with depth (slimes only at first, then shooters,
-## then chargers) so each floor introduces a new thing to read rather than
-## simply more of the same.
+## Decides how many animated monsters fill a floor, which visual variants they
+## use, how strong they are, and where they may safely stand.
 
 signal enemy_spawned(enemy: EnemyBase)
 
@@ -16,10 +12,7 @@ const MAX_ENEMIES := 12
 const MIN_PLAYER_CLEARANCE := 170.0
 const OVERCLOCKED_PRESSURE := 1.22
 
-@export var slime_scene: PackedScene
-@export var goblin_scene: PackedScene
-@export var sorcerer_scene: PackedScene
-@export var boss_scene: PackedScene
+@export var enemy_scene: PackedScene
 @export_dir var difficulty_directory: String = "res://descent/data/difficulty"
 
 ## One DifficultyData per floor, in floor order.
@@ -54,21 +47,14 @@ func populate(
 		push_warning("DESCENT: no difficulty data for floor %d" % floor_number)
 		return spawned
 
-	if RunState.current_room_type == RunState.RoomType.BOSS:
-		var boss := _spawn(boss_scene, level, player, container, _boss_position(level))
-		if boss != null:
-			boss.configure(floor_number, false, 1.0)
-			spawned.append(boss)
-		return spawned
-
 	var count := _encounter_size(difficulty)
 	var pressure := _encounter_pressure(difficulty)
 	var elite_chance := _elite_chance(difficulty)
 	var positions := _pick_positions(level, player, count, rng)
 
-	for index in count:
-		var scene := _scene_for(index, floor_number)
-		var enemy := _spawn(scene, level, player, container, positions[index])
+	for index in positions.size():
+		var variant := wrapi((floor_number - 1) * 3 + index, 0, 18) + 1
+		var enemy := _spawn(enemy_scene, level, player, container, positions[index], variant)
 		if enemy == null:
 			continue
 		enemy.configure(floor_number, rng.randf() < elite_chance, pressure)
@@ -102,24 +88,6 @@ func _elite_chance(difficulty: DifficultyData) -> float:
 	return clampf(chance, 0.0, 0.85)
 
 
-## Archetype rotation. The first enemy is the melee anchor; shooters join from
-## floor 2 and chargers from floor 3, both on a fixed cadence so the mix stays
-## legible instead of randomly lopsided.
-func _scene_for(index: int, floor_number: int) -> PackedScene:
-	if index == 0:
-		return goblin_scene if floor_number >= 2 else slime_scene
-	if floor_number >= 2 and index % 3 == 1:
-		return sorcerer_scene
-	if floor_number >= 3 and index % 4 == 3:
-		return goblin_scene
-	return slime_scene
-
-
-func _boss_position(level: LevelHost) -> Vector2:
-	var bounds := level.walkable_bounds()
-	return Vector2(bounds.get_center().x, bounds.position.y + bounds.size.y * 0.32)
-
-
 ## Shuffles the level's authored markers, drops any that are inside cover or
 ## on top of the player, and tops up with jittered fallbacks if that leaves
 ## fewer slots than the encounter needs.
@@ -133,21 +101,44 @@ func _pick_positions(
 	for point in candidates:
 		if chosen.size() >= count:
 			break
-		if player != null and point.distance_to(player.position) < MIN_PLAYER_CLEARANCE:
+		var safe := level.safe_spawn_position(point)
+		if safe == Vector2.INF:
 			continue
-		if level.is_blocked(point):
+		if player != null and safe.distance_to(player.position) < MIN_PLAYER_CLEARANCE:
 			continue
-		chosen.append(point)
+		if _too_close_to_chosen(safe, chosen):
+			continue
+		chosen.append(safe)
 
 	var bounds := level.walkable_bounds()
-	while chosen.size() < count:
-		chosen.append(
-			Vector2(
-				rng.randf_range(bounds.position.x + 60.0, bounds.end.x - 60.0),
-				rng.randf_range(bounds.position.y + 30.0, bounds.end.y - 30.0)
-			)
+	var attempts := 0
+	while chosen.size() < count and attempts < count * 30:
+		attempts += 1
+		var requested := Vector2(
+			rng.randf_range(bounds.position.x + 60.0, bounds.end.x - 60.0),
+			rng.randf_range(bounds.position.y + 30.0, bounds.end.y - 30.0)
+		)
+		var safe := level.safe_spawn_position(requested)
+		if safe == Vector2.INF:
+			continue
+		if player != null and safe.distance_to(player.position) < MIN_PLAYER_CLEARANCE:
+			continue
+		if _too_close_to_chosen(safe, chosen):
+			continue
+		chosen.append(safe)
+	if chosen.size() < count:
+		push_warning(
+			"DESCENT: only %d safe enemy spawns available for requested %d" \
+			% [chosen.size(), count]
 		)
 	return chosen
+
+
+func _too_close_to_chosen(point: Vector2, chosen: Array[Vector2]) -> bool:
+	for other in chosen:
+		if point.distance_to(other) < 58.0:
+			return true
+	return false
 
 
 func _shuffle(points: Array[Vector2], rng: RandomNumberGenerator) -> void:
@@ -159,14 +150,26 @@ func _shuffle(points: Array[Vector2], rng: RandomNumberGenerator) -> void:
 
 
 func _spawn(
-	scene: PackedScene, level: LevelHost, player: PlayerAvatar, container: Node2D, at: Vector2
+	scene: PackedScene,
+	level: LevelHost,
+	player: PlayerAvatar,
+	container: Node2D,
+	at: Vector2,
+	variant: int
 ) -> EnemyBase:
 	if scene == null:
 		return null
 	var enemy: EnemyBase = scene.instantiate()
-	enemy.position = at
+	if enemy is AnimatedMonster:
+		(enemy as AnimatedMonster).configure_variant(variant)
+	var safe := level.safe_spawn_position(at, maxf(20.0, enemy.projectile_radius))
+	if safe == Vector2.INF:
+		enemy.free()
+		return null
+	enemy.position = safe
 	enemy.player = player
 	enemy.movement_bounds = level.walkable_bounds()
 	container.add_child(enemy)
+	enemy.configure_navigation(level.current_level)
 	enemy_spawned.emit(enemy)
 	return enemy

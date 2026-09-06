@@ -25,10 +25,10 @@ func _ready() -> void:
 
 func present(victory: bool) -> void:
 	var accent := VICTORY_ACCENT if victory else DEFEAT_ACCENT
-	_title.text = "THE DEPTHS ARE CLEARED" if victory else "YOU FELL"
+	_title.text = "ALL FLOORS CLEARED" if victory else "YOU FELL"
 	_title.add_theme_color_override(&"font_color", accent)
 	_subtitle.text = (
-		"You reached the surface with the Warden's core."
+		"You cleared every map in the descent."
 		if victory
 		else "Floor %d claimed you. The echoes remain." % RunState.floor_number
 	)
@@ -48,7 +48,6 @@ func _fill_stats() -> void:
 	_add_stat("FLOOR REACHED", "%d / %d" % [RunState.floor_number, RunState.FINAL_FLOOR])
 	_add_stat("ENEMIES DEFEATED", str(RunState.enemies_defeated))
 	_add_stat("COINS COLLECTED", str(RunState.coins_collected))
-	_add_stat("DANGER ROOMS CLEARED", str(RunState.danger_rooms_cleared))
 	_add_stat("UPGRADES INSTALLED", str(RunState.run_upgrades.size()))
 
 

@@ -14,7 +14,6 @@ extends Area2D
 
 const HAZARD_LAYER := 16  # enemy_attacks
 const PLAYER_LAYER := 1
-const ENEMY_LAYER := 2
 
 @export var size: Vector2 = Vector2(200, 64):
 	set(value):
@@ -28,8 +27,8 @@ const ENEMY_LAYER := 2
 		instant_death = value
 		queue_redraw()
 
-## Off by default: a pool that melts anything walking through it turns a lava
-## room into a free win, since the enemies path straight at the player.
+## Retained for old scene compatibility. Monsters are always hazard-immune;
+## pits remain lethal through DeathZone instead.
 @export var affects_enemies: bool = false:
 	set(value):
 		affects_enemies = value
@@ -51,7 +50,7 @@ func _ready() -> void:
 
 func _apply_layers() -> void:
 	collision_layer = HAZARD_LAYER
-	collision_mask = PLAYER_LAYER | (ENEMY_LAYER if affects_enemies else 0)
+	collision_mask = PLAYER_LAYER
 
 
 func _apply() -> void:

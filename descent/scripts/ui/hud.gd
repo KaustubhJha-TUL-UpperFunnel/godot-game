@@ -49,16 +49,11 @@ func bind(player: PlayerAvatar, catalog: UpgradeCatalog) -> void:
 	_rebuild_upgrade_list()
 
 
-## Called at the start of every room so the header matches the room the player
-## actually walked into, not the one they picked a door for.
+## Called at the start of every floor after its sequential map is loaded.
 func refresh_room_header() -> void:
 	_on_floor_changed(RunState.floor_number)
-	_room.text = RunState.room_type_name()
-	_modifier.text = RunState.danger_modifier
-	_modifier.visible = (
-		RunState.current_room_type == RunState.RoomType.DANGER
-		and not RunState.danger_modifier.is_empty()
-	)
+	_room.text = "MAP %02d" % RunState.floor_number
+	_modifier.hide()
 
 
 func set_enemies_remaining(count: int) -> void:

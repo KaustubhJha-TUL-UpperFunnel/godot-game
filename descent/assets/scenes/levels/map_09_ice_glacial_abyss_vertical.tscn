@@ -215,8 +215,8 @@ size = Vector2(646, 18)
 shape = SubResource("RectangleShape2D_nvxhd")
 
 [node name="Platform11" type="StaticBody2D" parent="Platforms" unique_id=2044488482]
-position = Vector2(1060, 962)
-scale = Vector2(2.5199976, 1)
+position = Vector2(1109, 981)
+scale = Vector2(3.2399976, 1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
@@ -228,7 +228,7 @@ shape = SubResource("RectangleShape2D_stm13")
 one_way_collision = true
 
 [node name="Platform14" type="StaticBody2D" parent="Platforms" unique_id=476646281]
-position = Vector2(1346.0001, 927)
+position = Vector2(1349, 947)
 scale = Vector2(2.5199976, 1)
 collision_layer = 4
 collision_mask = 0

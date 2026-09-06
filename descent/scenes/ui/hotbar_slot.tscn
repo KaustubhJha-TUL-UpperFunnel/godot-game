@@ -3,16 +3,11 @@
 [ext_resource type="Script" path="res://descent/scripts/ui/hotbar_slot.gd" id="1_slot"]
 
 [sub_resource type="StyleBoxFlat" id="Style_slot"]
-bg_color = Color(0.055, 0.075, 0.105, 0.94)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.886, 0.682, 0.322, 0.75)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 42
+corner_radius_top_right = 42
+corner_radius_bottom_right = 42
+corner_radius_bottom_left = 42
 
 [sub_resource type="StyleBoxEmpty" id="Style_press"]
 
@@ -113,10 +108,10 @@ _data = {
 }
 
 [node name="HotbarSlot" type="Control"]
-custom_minimum_size = Vector2(84, 84)
-offset_right = 84.0
-offset_bottom = 84.0
-pivot_offset = Vector2(42, 42)
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
+pivot_offset = Vector2(28, 28)
 script = ExtResource("1_slot")
 
 [node name="Frame" type="Panel" parent="."]
@@ -134,10 +129,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
@@ -165,6 +160,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Hotkey" type="Label" parent="."]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0

@@ -10,9 +10,6 @@ extends SceneTree
 ##
 ## Exits non-zero if any level fails, so it can gate a commit.
 
-const DOOR_ANCHORS := ["Loot", "Danger", "Shop"]
-
-
 func _init() -> void:
 	var paths := LevelLibrary.all_paths()
 	print("levels found: %d" % paths.size())
@@ -48,8 +45,10 @@ func _init() -> void:
 		if spawns.is_empty():
 			print("FAIL no spawn points: %s" % path)
 			failures += 1
-		if not bounds.has_point(start):
-			print("WARN player start outside walkable bounds: %s" % path)
+		var safe_start := level.safe_spawn_position(start)
+		if safe_start == Vector2.INF:
+			print("FAIL no safe player start: %s" % path)
+			failures += 1
 
 		if level.is_vertical():
 			vertical += 1
@@ -61,13 +60,11 @@ func _init() -> void:
 				failures += 1
 		else:
 			flat += 1
-			if not level.death_zones().is_empty():
+			# A metadata-vertical hybrid may intentionally fall back to its
+			# WalkableRegion until platform collision is authored.
+			if level.kind == Level.Kind.FLAT and not level.death_zones().is_empty():
 				print("FAIL flat level has a death zone: %s" % path)
 				failures += 1
-
-		for anchor in DOOR_ANCHORS:
-			if level.door_anchor(anchor) == Vector2.INF:
-				print("WARN missing door anchor '%s': %s" % [anchor, path])
 
 		root.remove_child(level)
 		level.free()

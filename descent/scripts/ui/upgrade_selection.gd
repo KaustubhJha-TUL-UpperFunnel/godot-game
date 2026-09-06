@@ -1,7 +1,7 @@
 class_name UpgradeSelection
 extends Control
 
-## Post-loot-room reward screen. Deals three cards and reports the one the
+## Post-floor reward screen. Deals three cards and reports the one the
 ## player installs.
 
 signal upgrade_chosen(upgrade: UpgradeData)

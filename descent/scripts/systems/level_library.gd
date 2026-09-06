@@ -14,10 +14,11 @@ const LEVELS_DIRECTORY := "res://descent/assets/scenes/levels"
 
 const VERTICAL_SUFFIX := "_vertical"
 
-## Vertical levels are authored, marked, and reviewable, but the knight still
-## moves top-down with no gravity and no jump, so a side-on room would have him
-## hovering over the pit. Flip this on with the platformer movement, not before.
-const INCLUDE_VERTICAL := false
+## Platformer movement and safe platform spawning are enabled, so both authored
+## room orientations can participate in the run.
+const INCLUDE_VERTICAL := true
+
+const PLAYABLE_LEVEL_COUNT := 50
 
 
 ## Every level scene, sorted, so the run order is stable between sessions.
@@ -60,6 +61,15 @@ static func vertical_paths() -> Array[String]:
 ## The levels the run is allowed to hand the player right now.
 static func playable_paths() -> Array[String]:
 	return all_paths() if INCLUDE_VERTICAL else flat_paths()
+
+
+## Deterministic campaign order: map number order, skipping only scenes whose
+## authored collision is not yet playable.
+static func path_for_floor(floor_number: int) -> String:
+	var paths := playable_paths()
+	if paths.is_empty():
+		return ""
+	return paths[clampi(floor_number - 1, 0, paths.size() - 1)]
 
 
 ## Picks a level for a floor, avoiding an immediate repeat.

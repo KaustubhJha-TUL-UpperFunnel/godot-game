@@ -4,8 +4,8 @@ extends Area2D
 ## Every bolt in the game: the player's fireball and the sorcerer/boss shots.
 ##
 ## Collision layers are assigned in setup() from the `friendly` flag, so one
-## scene covers both directions of fire. Actors are recognised by having a
-## take_hit() method; anything else it touches is treated as wall geometry.
+## scene covers both directions of fire. Projectiles intentionally ignore the
+## walls/platform layer and only collide with their target actor layer.
 
 enum Element { PLAIN, FIRE, ICE }
 
@@ -21,11 +21,10 @@ const HOSTILE_LIFETIME := 3.2
 const FRIENDLY_RADIUS := 5.0
 const HOSTILE_RADIUS := 6.5
 
-# Layer bits from project.godot: player=1, enemies=2, walls=3,
+# Layer bits from project.godot: player=1, enemies=2,
 # player_attacks=4, enemy_attacks=5.
 const LAYER_PLAYER := 1
 const LAYER_ENEMIES := 2
-const LAYER_WALLS := 4
 const LAYER_PLAYER_ATTACKS := 8
 const LAYER_ENEMY_ATTACKS := 16
 
@@ -39,6 +38,8 @@ var bounds: Rect2 = Rect2(105, 380, 1070, 240)
 var _velocity: Vector2 = Vector2.RIGHT
 var _life_left: float = FRIENDLY_LIFETIME
 var _radius: float = FRIENDLY_RADIUS
+var _resolved: bool = false
+var _hit_actor_ids: Dictionary = {}
 
 @onready var _shape: CollisionShape2D = $CollisionShape2D
 @onready var _core: Sprite2D = $Core
@@ -67,10 +68,10 @@ func setup(
 
 	if friendly:
 		collision_layer = LAYER_PLAYER_ATTACKS
-		collision_mask = LAYER_ENEMIES | LAYER_WALLS
+		collision_mask = LAYER_ENEMIES
 	else:
 		collision_layer = LAYER_ENEMY_ATTACKS
-		collision_mask = LAYER_PLAYER | LAYER_WALLS
+		collision_mask = LAYER_PLAYER
 
 
 func _ready() -> void:
@@ -92,12 +93,29 @@ func _apply_appearance() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if _resolved:
+		return
 	_life_left -= delta
 	if _life_left <= 0.0:
 		_expire(false)
 		return
 
-	global_position += _velocity * delta
+	var previous := global_position
+	var next := previous + _velocity * delta
+	var query := PhysicsRayQueryParameters2D.create(
+		previous, next, collision_mask, [get_rid()]
+	)
+	query.collide_with_areas = false
+	query.hit_from_inside = true
+	var hit := get_world_2d().direct_space_state.intersect_ray(query)
+	global_position = next
+	if not hit.is_empty():
+		var collider := hit.get("collider") as Node2D
+		if collider != null:
+			global_position = hit.get("position", next)
+			_on_body_entered(collider)
+			if _resolved:
+				return
 	rotation = _velocity.angle()
 
 	if not bounds.has_point(global_position):
@@ -120,32 +138,42 @@ func _hit_boundary() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
+	if _resolved:
+		return
 	if not body.has_method("take_hit"):
-		_hit_wall()
 		return
 
-	body.take_hit(damage, _velocity.normalized(), _damage_style())
+	var actor_id := body.get_instance_id()
+	if _hit_actor_ids.has(actor_id):
+		global_position += _velocity.normalized() * (_radius * 2.0 + 2.0)
+		return
+	var dealt := float(body.call(
+		&"take_hit", damage, _velocity.normalized(), _damage_style()
+	))
+	# Do not consume a projectile on an invulnerability frame. This matters for
+	# rapid repeated shots and multi-projectile upgrades landing together.
+	if dealt <= 0.0:
+		global_position += _velocity.normalized() * (_radius * 2.0 + 2.0)
+		return
+	_hit_actor_ids[actor_id] = true
 	EventBus.burst_requested.emit(global_position, _color(), 5, 100.0, 2.5)
 	if friendly:
 		EventBus.shake_requested.emit(2.0, 0.06)
+		# Player projectiles pass through the whole encounter. The per-projectile
+		# actor set above prevents one bolt from repeatedly damaging one body.
+		global_position += _velocity.normalized() * (_radius * 2.0 + 2.0)
+		return
 
 	if pierce > 0:
 		pierce -= 1
 		global_position += _velocity.normalized() * 12.0
 	else:
+		_resolved = true
 		_expire(false)
 
 
-func _hit_wall() -> void:
-	if friendly and ricochets > 0:
-		ricochets -= 1
-		_velocity = -_velocity
-		global_position += _velocity.normalized() * 12.0
-		return
-	_expire(true)
-
-
 func _expire(spark: bool) -> void:
+	_resolved = true
 	if spark:
 		EventBus.burst_requested.emit(global_position, _color(), 4, 65.0, 2.0)
 	queue_free()

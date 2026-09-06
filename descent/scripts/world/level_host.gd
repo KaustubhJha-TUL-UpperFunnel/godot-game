@@ -66,7 +66,12 @@ func walkable_bounds() -> Rect2:
 func player_start() -> Vector2:
 	if current_level == null:
 		return FALLBACK_BOUNDS.get_center()
-	return current_level.player_start()
+	var authored := current_level.player_start()
+	var safe := current_level.safe_spawn_position(authored)
+	if safe == Vector2.INF:
+		push_warning("DESCENT: level has no safe player spawn; using authored marker")
+		return authored
+	return safe
 
 
 func spawn_positions() -> Array[Vector2]:
@@ -82,14 +87,13 @@ func is_blocked(point: Vector2, margin: float = 24.0) -> bool:
 	return current_level.is_blocked(point, margin)
 
 
-## Where the three exit doors belong in this level. Falls back to a row across
-## the top of the play area so a level missing its anchors still works.
-func door_anchor(door_name: StringName, index: int) -> Vector2:
-	if current_level != null:
-		var anchor := current_level.door_anchor(door_name)
-		if anchor != Vector2.INF:
-			return anchor
-	var bounds := walkable_bounds()
-	var fractions := [0.22, 0.5, 0.78]
-	var fraction: float = fractions[clampi(index, 0, fractions.size() - 1)]
-	return Vector2(bounds.position.x + bounds.size.x * fraction, bounds.position.y - 40.0)
+func safe_spawn_position(point: Vector2, actor_radius: float = 20.0) -> Vector2:
+	if current_level == null:
+		return point
+	return current_level.safe_spawn_position(point, actor_radius)
+
+
+func is_safe_spawn(point: Vector2, actor_radius: float = 20.0) -> bool:
+	if current_level == null:
+		return FALLBACK_BOUNDS.grow(-actor_radius).has_point(point)
+	return current_level.is_safe_spawn(point, actor_radius)

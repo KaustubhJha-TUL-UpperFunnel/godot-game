@@ -13,11 +13,10 @@ mouse_filter = 2
 script = ExtResource("1_touch")
 
 [node name="MoveStick" type="Control" parent="."]
-visible = false
 mouse_filter = 2
 
 [node name="Base" type="TextureRect" parent="MoveStick"]
-modulate = Color(0.55, 0.75, 1, 0.25)
+modulate = Color(0.55, 0.75, 1, 0.32)
 offset_left = -85.0
 offset_top = -85.0
 offset_right = 85.0
@@ -31,36 +30,7 @@ stretch_mode = 5
 mouse_filter = 2
 
 [node name="Cap" type="TextureRect" parent="MoveStick/Knob"]
-modulate = Color(0.8, 0.9, 1, 0.55)
-offset_left = -34.0
-offset_top = -34.0
-offset_right = 34.0
-offset_bottom = 34.0
-mouse_filter = 2
-texture = ExtResource("2_soft")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="AimStick" type="Control" parent="."]
-visible = false
-mouse_filter = 2
-
-[node name="Base" type="TextureRect" parent="AimStick"]
-modulate = Color(1, 0.75, 0.45, 0.25)
-offset_left = -85.0
-offset_top = -85.0
-offset_right = 85.0
-offset_bottom = 85.0
-mouse_filter = 2
-texture = ExtResource("2_soft")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Knob" type="Control" parent="AimStick"]
-mouse_filter = 2
-
-[node name="Cap" type="TextureRect" parent="AimStick/Knob"]
-modulate = Color(1, 0.88, 0.6, 0.6)
+modulate = Color(0.8, 0.9, 1, 0.62)
 offset_left = -34.0
 offset_top = -34.0
 offset_right = 34.0

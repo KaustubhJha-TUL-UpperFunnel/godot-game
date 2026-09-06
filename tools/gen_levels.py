@@ -5,7 +5,7 @@
 
 Everything written here is a starting point meant to be corrected by hand in the
 editor: the platforms, hazards and death zone come out of map_analysis.py, and
-the spawns, player start and door anchors are derived from them. Each level
+the spawns and player start are derived from them. Each level
 starts with `reviewed = false` so the editor shows a warning until a human has
 looked at it.
 
@@ -89,7 +89,6 @@ class LevelPlan:
     walkable: Rect | None
     player_start: tuple[int, int]
     spawns: list[tuple[int, int]]
-    door_anchors: list[tuple[int, int]]
 
 
 def plan(info: MapAnalysis) -> LevelPlan:
@@ -123,12 +122,10 @@ def plan(info: MapAnalysis) -> LevelPlan:
     if vertical:
         start = _vertical_start(platforms, interior)
         spawns = _vertical_spawns(platforms)
-        anchors = _vertical_anchors(platforms, interior)
     else:
         assert walkable is not None
         start = (int(walkable.cx), int(walkable.y + walkable.h * 0.72))
         spawns = _flat_spawns(walkable)
-        anchors = _flat_anchors(walkable)
 
     return LevelPlan(
         info=info,
@@ -138,7 +135,6 @@ def plan(info: MapAnalysis) -> LevelPlan:
         walkable=walkable,
         player_start=start,
         spawns=spawns,
-        door_anchors=anchors,
     )
 
 
@@ -172,17 +168,6 @@ def _vertical_spawns(platforms: list[Rect]) -> list[tuple[int, int]]:
     return spawns[:16]
 
 
-def _vertical_anchors(platforms: list[Rect], interior: Rect) -> list[tuple[int, int]]:
-    """Doors go on the highest broad ledge, so the exit is a climb."""
-    candidates = _wide_platforms(platforms, 260)
-    if not candidates:
-        y = int(interior.y + interior.h * 0.3)
-        return [(int(interior.x + interior.w * f), y) for f in (0.25, 0.5, 0.75)]
-    highest = min(candidates, key=lambda p: p.y)
-    y = int(highest.y - 52)
-    return [(int(highest.x + highest.w * f), y) for f in (0.2, 0.5, 0.8)]
-
-
 def _flat_spawns(walkable: Rect) -> list[tuple[int, int]]:
     """The old arena's 14 markers, re-laid over the new floor."""
     spawns: list[tuple[int, int]] = []
@@ -193,11 +178,6 @@ def _flat_spawns(walkable: Rect) -> list[tuple[int, int]]:
                 (int(walkable.x + walkable.w * fraction), int(walkable.y + walkable.h * row))
             )
     return spawns
-
-
-def _flat_anchors(walkable: Rect) -> list[tuple[int, int]]:
-    y = int(walkable.y - 40)
-    return [(int(walkable.x + walkable.w * f), y) for f in (0.22, 0.5, 0.78)]
 
 
 # --- Scene emission ----------------------------------------------------------
@@ -383,13 +363,6 @@ def emit(plan_data: LevelPlan, texture_uid: str) -> str:
     lines.append("")
     for index, (x, y) in enumerate(plan_data.spawns):
         lines.append(f'[node name="Spawn{index}" type="Marker2D" parent="SpawnPoints"]')
-        lines.append(f"position = Vector2({x}, {y})")
-        lines.append("")
-
-    lines.append('[node name="DoorAnchors" type="Node2D" parent="."]')
-    lines.append("")
-    for name, (x, y) in zip(("Loot", "Danger", "Shop"), plan_data.door_anchors):
-        lines.append(f'[node name="{name}" type="Marker2D" parent="DoorAnchors"]')
         lines.append(f"position = Vector2({x}, {y})")
         lines.append("")
 

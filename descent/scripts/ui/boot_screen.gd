@@ -10,10 +10,7 @@ extends Control
 const PRELOAD_PATHS: Array[String] = [
 	"res://descent/scenes/gameplay.tscn",
 	"res://descent/scenes/main_menu.tscn",
-	"res://descent/scenes/actors/enemy_slime.tscn",
-	"res://descent/scenes/actors/enemy_goblin.tscn",
-	"res://descent/scenes/actors/enemy_sorcerer.tscn",
-	"res://descent/scenes/actors/enemy_boss.tscn",
+	"res://descent/scenes/actors/animated_monster.tscn",
 	"res://descent/scenes/actors/projectile.tscn",
 	"res://descent/scenes/world/hazard.tscn",
 	"res://descent/scenes/fx/impact_burst.tscn",
