@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/visual_level_audit.gd" id="1_audit"]
+
+[node name="VisualLevelAudit" type="Node"]
+process_mode = 3
+script = ExtResource("1_audit")
+
+[node name="AuditUI" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="Controls" type="HBoxContainer" parent="AuditUI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -310.0
+offset_top = 14.0
+offset_right = -14.0
+offset_bottom = 58.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="Pause" type="Button" parent="AuditUI/Controls"]
+custom_minimum_size = Vector2(160, 44)
+layout_mode = 2
+text = "PAUSE AUDIT"
+
+[node name="Exit" type="Button" parent="AuditUI/Controls"]
+custom_minimum_size = Vector2(128, 44)
+layout_mode = 2
+text = "EXIT"

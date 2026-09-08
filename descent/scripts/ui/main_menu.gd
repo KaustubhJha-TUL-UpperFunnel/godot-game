@@ -6,6 +6,7 @@ extends Control
 @onready var _descend: Button = $Panel/Rows/Descend
 @onready var _upgrades_button: Button = $Panel/Rows/Upgrades
 @onready var _tutorial_button: Button = $Panel/Rows/Tutorial
+@onready var _audit_button: Button = $Panel/Rows/LevelAudit
 @onready var _quit: Button = $Panel/Rows/Quit
 @onready var _echoes: Label = $Panel/Rows/Echoes
 @onready var _best: Label = $Panel/Rows/Best
@@ -16,11 +17,13 @@ func _ready() -> void:
 	_descend.pressed.connect(func() -> void: SceneRouter.goto_gameplay())
 	_upgrades_button.pressed.connect(_permanent.open)
 	_tutorial_button.pressed.connect(_start_tutorial)
+	_audit_button.pressed.connect(SceneRouter.goto_level_audit)
 	_quit.pressed.connect(func() -> void: SceneRouter.quit_game())
 	_permanent.closed.connect(_descend.grab_focus)
 	SaveManager.echoes_changed.connect(_on_echoes_changed)
 
 	# Desktop builds get a quit button; on mobile the OS owns that gesture.
+	_audit_button.visible = OS.is_debug_build()
 	_quit.visible = not OS.has_feature("mobile")
 	_on_echoes_changed(SaveManager.echoes_total)
 	_best.text = _unlock_summary()

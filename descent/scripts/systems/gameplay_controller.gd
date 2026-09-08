@@ -1,6 +1,12 @@
 class_name GameplayController
 extends Node2D
 
+signal audit_issue_reported(message: String)
+signal audit_floor_started(floor_number: int)
+signal audit_floor_cleared(floor_number: int)
+signal audit_upgrade_selected(display_name: String)
+signal audit_completed()
+
 ## The run loop. Owns the room state machine and is the single place that
 ## wires actors to UI:
 ##
@@ -109,11 +115,14 @@ func _ready() -> void:
 	_connect_player()
 	_connect_ui()
 
-	player.reset_for_run(
-		SaveManager.starting_max_health(),
-		SaveManager.damage_multiplier(),
-		SaveManager.speed_multiplier()
-	)
+	if RunState.level_audit_active:
+		player.reset_for_run(100.0, 1.0, 1.0)
+	else:
+		player.reset_for_run(
+			SaveManager.starting_max_health(),
+			SaveManager.damage_multiplier(),
+			SaveManager.speed_multiplier()
+		)
 	_hud.bind(player, _upgrades)
 	_hotbar.bind(player)
 	_touch_controls.bind(player.input)
@@ -324,10 +333,92 @@ func begin_room() -> void:
 	_hud.refresh_room_header()
 	_hud.hide_boss()
 	_spike_pulse_timer = SPIKE_PULSE_INTERVAL
-	if RunState.floor_number == 1 and not SaveManager.tutorial_completed:
+	if (
+		RunState.floor_number == 1
+		and not SaveManager.tutorial_completed
+		and not RunState.level_audit_active
+	):
 		_start_tutorial.call_deferred()
 		return
 	_enter_encounter()
+	if RunState.level_audit_active:
+		audit_floor_started.emit(RunState.floor_number)
+
+
+func load_audit_floor(floor_number: int) -> void:
+	if not RunState.level_audit_active:
+		return
+	_intro_timer.stop()
+	_cleared_timer.stop()
+	_upgrade_selection.dismiss()
+	_announcement.dismiss_now()
+	RunState.floor_number = clampi(floor_number, 1, RunState.FINAL_FLOOR)
+	RunState.run_upgrades.clear()
+	RunState.floor_changed.emit(RunState.floor_number)
+	RunState.upgrades_changed.emit()
+	player.reset_for_run(100.0, 1.0, 1.0)
+	begin_room()
+
+
+func audit_select_upgrade_and_continue() -> void:
+	if not RunState.level_audit_active or state != State.CLEARED:
+		return
+	if RunState.is_final_floor():
+		state = State.FINISHED
+		player.set_control_enabled(false, false)
+		audit_completed.emit()
+		return
+
+	var offers := _upgrades.draw_offers(UPGRADE_OFFER_COUNT, _rng)
+	var best := _best_audit_upgrade(offers)
+	if best != null:
+		_upgrades.apply(best, player)
+		audit_upgrade_selected.emit(best.display_name)
+
+	state = State.TRANSITION
+	player.set_control_enabled(false, false)
+	RunState.advance_floor()
+	await _floor_transition.play(RunState.floor_number)
+	begin_room()
+
+
+func _best_audit_upgrade(offers: Array[UpgradeData]) -> UpgradeData:
+	var best: UpgradeData = null
+	var best_score := -INF
+	for upgrade in offers:
+		if upgrade == null:
+			continue
+		var score := _audit_upgrade_score(upgrade)
+		if score > best_score:
+			best = upgrade
+			best_score = score
+	return best
+
+
+func _audit_upgrade_score(upgrade: UpgradeData) -> float:
+	var stacks := RunState.upgrade_level(upgrade.upgrade_id)
+	match upgrade.upgrade_id:
+		0:
+			return 110.0 - float(stacks) * 2.0 # Weapon damage
+		4:
+			return 102.0 - float(stacks) * 3.0 # Movement speed
+		3:
+			return 100.0 if player.projectile_count < 4 else 35.0
+		1:
+			return 96.0 - float(stacks) * 2.0 # Attack speed
+		6:
+			return 92.0 + (1.0 - player.health.ratio()) * 20.0
+		5:
+			return 88.0 if player.dash_cooldown_multiplier > 0.55 else 40.0
+		8:
+			return 84.0 if player.ricochet_chance < 0.75 else 30.0
+		7:
+			return 80.0 if player.projectile_pierce < 3 else 30.0
+		2:
+			return 74.0 - float(stacks) * 2.0
+		9:
+			return 45.0
+	return 0.0
 
 
 ## Loads this floor's map in sequence, then fits the camera and player bounds.
@@ -410,6 +501,21 @@ func _on_enemy_died(enemy: EnemyBase, coin_reward: int, was_elite: bool) -> void
 
 
 func _on_room_cleared() -> void:
+	if RunState.level_audit_active:
+		state = State.CLEARED
+		player.set_control_enabled(false, false)
+		_upgrades.apply_room_clear_effects(player)
+		player.restore_full_health()
+		_despawn_hostile_projectiles()
+		_hud.show_objective("AUDIT: FLOOR CLEARED")
+		_announcement.announce(
+			"AUDIT: FLOOR CLEARED",
+			"WAITING FOR NEXT MAP",
+			Color("6fd3a5"),
+			0.8
+		)
+		audit_floor_cleared.emit(RunState.floor_number)
+		return
 	state = State.CLEARED
 	player.set_control_enabled(true, false)
 	_upgrades.apply_room_clear_effects(player)
@@ -596,6 +702,16 @@ func _on_player_died() -> void:
 		player.prepare_floor_spawn()
 		player.set_control_enabled(true, _tutorial_step >= TutorialStep.SWORD)
 		EventBus.toast_requested.emit("TRY THAT LESSON AGAIN", 1.4)
+		return
+	if RunState.level_audit_active:
+		audit_issue_reported.emit(
+			"FAIL: player died during runtime at %s" % str(player.position)
+		)
+		player.revive(1.0)
+		player.position = level_host.player_start()
+		player.prepare_floor_spawn()
+		player.set_control_enabled(true, true)
+		EventBus.toast_requested.emit("AUDIT RECOVERED PLAYER", 1.2)
 		return
 	if state == State.FINISHED:
 		return

@@ -45,6 +45,7 @@ var run_upgrades: Dictionary = {}
 var second_wind_used: bool = false
 var victory: bool = false
 var echoes_committed: bool = false
+var level_audit_active: bool = false
 var _debug_floor_override_applied: bool = false
 
 

@@ -9,6 +9,7 @@ extends Node
 const BOOT := "res://descent/scenes/boot.tscn"
 const MAIN_MENU := "res://descent/scenes/main_menu.tscn"
 const GAMEPLAY := "res://descent/scenes/gameplay.tscn"
+const LEVEL_AUDIT := "res://tools/visual_level_audit.tscn"
 
 const FADE_SCENE := preload("res://descent/scenes/ui/scene_fade.tscn")
 
@@ -27,8 +28,13 @@ func goto_main_menu() -> void:
 
 
 func goto_gameplay() -> void:
+	RunState.level_audit_active = false
 	RunState.begin_run()
 	_change_scene(GAMEPLAY)
+
+
+func goto_level_audit() -> void:
+	_change_scene(LEVEL_AUDIT)
 
 
 func quit_game() -> void:
