@@ -10,7 +10,7 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(1419, 537)
+size = Vector2(1419, 486.5)
 
 [node name="Map37ShadowTombAncientsFlat" type="Node2D" unique_id=649722880]
 script = ExtResource("1_level")
@@ -56,7 +56,7 @@ monitoring = false
 monitorable = false
 
 [node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=2141435406]
-position = Vector2(46.5, 131)
+position = Vector2(46.5, 105.75)
 shape = SubResource("Shape_walkable")
 
 [node name="PlayerStart" type="Marker2D" parent="." unique_id=36357937]

@@ -24,15 +24,14 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("Style_scrim")
 
 [node name="Frame" type="PanelContainer" parent="."]
-anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 offset_left = -330.0
-offset_top = -345.0
+offset_top = 12.0
 offset_right = 330.0
-offset_bottom = 345.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -54,9 +53,16 @@ theme_override_font_sizes/font_size = 19
 text = "ECHOES: 0"
 horizontal_alignment = 1
 
-[node name="List" type="VBoxContainer" parent="Frame/Rows"]
+[node name="Scroll" type="ScrollContainer" parent="Frame/Rows"]
 layout_mode = 2
-theme_override_constants/separation = 10
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="List" type="VBoxContainer" parent="Frame/Rows/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 8
 
 [node name="Close" type="Button" parent="Frame/Rows"]
 layout_mode = 2

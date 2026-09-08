@@ -10,7 +10,7 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(1156, 159.22821)
+size = Vector2(1156, 81.76224)
 
 [node name="Map16PoisonBlightCatacombsFlat" type="Node2D" unique_id=1416188224]
 script = ExtResource("1_level")
@@ -56,7 +56,7 @@ monitoring = false
 monitorable = false
 
 [node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=443518950]
-position = Vector2(17, 242.19928)
+position = Vector2(17, 191.69928)
 scale = Vector2(1.29682, 1.3037981)
 shape = SubResource("Shape_walkable")
 

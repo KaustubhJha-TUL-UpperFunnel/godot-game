@@ -33,7 +33,11 @@ func goto_gameplay() -> void:
 	_change_scene(GAMEPLAY)
 
 
+## Editor-only: LEVEL_AUDIT lives under tools/, which the export preset strips.
 func goto_level_audit() -> void:
+	if not ResourceLoader.exists(LEVEL_AUDIT):
+		push_warning("DESCENT: level audit is not available in exported builds")
+		return
 	_change_scene(LEVEL_AUDIT)
 
 

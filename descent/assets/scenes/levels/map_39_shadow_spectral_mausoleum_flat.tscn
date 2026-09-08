@@ -10,7 +10,7 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(1397, 484)
+size = Vector2(1397, 120)
 
 [node name="Map39ShadowSpectralMausoleumFlat" type="Node2D" unique_id=201132600]
 script = ExtResource("1_level")
@@ -39,7 +39,7 @@ position = Vector2(768, 169)
 shape = SubResource("Shape_wall_h")
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls" unique_id=1177733230]
-position = Vector2(768, 872)
+position = Vector2(770, 935)
 shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=760020749]
@@ -56,7 +56,7 @@ monitoring = false
 monitorable = false
 
 [node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=709100741]
-position = Vector2(1.5, 438)
+position = Vector2(0, 280)
 shape = SubResource("Shape_walkable")
 
 [node name="PlayerStart" type="Marker2D" parent="." unique_id=826470549]

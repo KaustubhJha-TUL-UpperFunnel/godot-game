@@ -10,7 +10,7 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(823, 349.25)
+size = Vector2(831.32007, 349.25)
 
 [node name="Map42GoldGildedVaultFlat" type="Node2D" unique_id=1865174016]
 script = ExtResource("1_level")
@@ -60,18 +60,18 @@ position = Vector2(-31.5, 86.625)
 shape = SubResource("Shape_walkable")
 
 [node name="Shape2" type="CollisionShape2D" parent="WalkableRegion" unique_id=1240581793]
-position = Vector2(792, 81)
-scale = Vector2(1.0073761, 1)
+position = Vector2(500, 107)
+scale = Vector2(0.30323562, 1)
 shape = SubResource("Shape_walkable")
 
 [node name="Shape3" type="CollisionShape2D" parent="WalkableRegion" unique_id=2030708465]
-position = Vector2(-3, 433)
-scale = Vector2(1.0777324, 1)
+position = Vector2(-17, 336)
+scale = Vector2(0.91891515, 0.54984397)
 shape = SubResource("Shape_walkable")
 
 [node name="Shape4" type="CollisionShape2D" parent="WalkableRegion" unique_id=1611258839]
-position = Vector2(-890.00006, 83)
-scale = Vector2(1.1076174, 1.003147)
+position = Vector2(-563, 97)
+scale = Vector2(0.2676177, 1.003147)
 shape = SubResource("Shape_walkable")
 
 [node name="Shape5" type="CollisionShape2D" parent="WalkableRegion" unique_id=371373432]

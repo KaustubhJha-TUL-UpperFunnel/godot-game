@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://dg4355gt0dsoe"]
 
 [ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+
 [ext_resource type="Texture2D" uid="uid://cu81mx6h2ulmi" path="res://descent/assets/maps/map_30_crystal_observatory_vertical.png" id="2_map"]
+
 [ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
+
 [ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
 
 [sub_resource type="RectangleShape2D" id="Shape_wall_v"]
@@ -11,14 +14,27 @@ size = Vector2(48, 1024)
 [sub_resource type="RectangleShape2D" id="Shape_wall_h"]
 size = Vector2(1536, 48)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7jtfn"]
-size = Vector2(746, 18)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r473j"]
 size = Vector2(1208, 108)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_afowx"]
 size = Vector2(1031, 183.625)
+
+[sub_resource type="RectangleShape2D" id="SubResource_plat_0"]
+size = Vector2(1356.0, 16.0)
+
+[sub_resource type="RectangleShape2D" id="SubResource_plat_1"]
+size = Vector2(60.0, 16.0)
+
+[sub_resource type="RectangleShape2D" id="SubResource_plat_2"]
+size = Vector2(746.0, 16.0)
+
+[sub_resource type="RectangleShape2D" id="SubResource_plat_3"]
+size = Vector2(74.0, 16.0)
+
+[sub_resource type="RectangleShape2D" id="SubResource_plat_4"]
+size = Vector2(132.0, 16.0)
+
 
 [node name="Map30CrystalObservatoryVertical" type="Node2D" unique_id=312213996]
 script = ExtResource("1_level")
@@ -49,16 +65,63 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=66984867]
 
-[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=187997178]
-position = Vector2(814, 483)
-scale = Vector2(1.88, 1)
+[node name="Upper_Observatory_Floor" type="StaticBody2D" parent="Platforms" unique_id=1785132813]
+position = Vector2(790.0, 482.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(746, 18)
+size = Vector2(1356.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=1704875849]
-shape = SubResource("RectangleShape2D_7jtfn")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Observatory_Floor" unique_id=572766395]
+shape = SubResource("SubResource_plat_0")
+
+[node name="Mid_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=466430021]
+position = Vector2(349.0, 483.0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(60.0, 16.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_1" unique_id=277682878]
+shape = SubResource("SubResource_plat_1")
+one_way_collision = true
+
+[node name="Mid_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=1264545016]
+position = Vector2(838.0, 483.0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(746.0, 16.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_2" unique_id=855093545]
+shape = SubResource("SubResource_plat_2")
+one_way_collision = true
+
+[node name="Lower_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=1375209621]
+position = Vector2(362.0, 896.0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(74.0, 16.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_1" unique_id=777324311]
+shape = SubResource("SubResource_plat_3")
+one_way_collision = true
+
+[node name="Lower_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=1833862509]
+position = Vector2(819.0, 896.0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(132.0, 16.0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_2" unique_id=864696616]
+shape = SubResource("SubResource_plat_4")
+one_way_collision = true
 
 [node name="Hazards" type="Node2D" parent="." unique_id=2095771060]
 

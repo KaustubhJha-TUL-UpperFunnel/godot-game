@@ -10,7 +10,7 @@ signal closed()
 
 var _rows: Array[PermanentUpgradeRow] = []
 
-@onready var _list: VBoxContainer = $Frame/Rows/List
+@onready var _list: VBoxContainer = $Frame/Rows/Scroll/List
 @onready var _echoes: Label = $Frame/Rows/Echoes
 @onready var _close: Button = $Frame/Rows/Close
 

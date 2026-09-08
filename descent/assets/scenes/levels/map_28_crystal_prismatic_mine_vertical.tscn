@@ -12,19 +12,19 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2delj"]
-size = Vector2(895, 18)
+size = Vector2(1063, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pvf4v"]
-size = Vector2(314, 18)
+size = Vector2(314, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4671x"]
-size = Vector2(905, 18)
+size = Vector2(1277, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50rqn"]
-size = Vector2(905, 18)
+size = Vector2(164, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4vtbt"]
-size = Vector2(141, 18)
+size = Vector2(1401, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mx6yl"]
 size = Vector2(1349, 147)
@@ -58,60 +58,56 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=474824213]
 
-[node name="Platform0" type="StaticBody2D" parent="Platforms" unique_id=1420362592]
-position = Vector2(543, 327)
-scale = Vector2(1.3125004, 0.7857138)
+[node name="Platform_UpperLeftRail" type="StaticBody2D" parent="Platforms" unique_id=1831957780]
+position = Vector2(598.5, 326)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(895, 18)
+size = Vector2(1063, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform0" unique_id=413028219]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperLeftRail" unique_id=363360252]
 shape = SubResource("RectangleShape2D_2delj")
 
-[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=240292023]
-position = Vector2(1288, 327)
+[node name="Platform_UpperRightRail" type="StaticBody2D" parent="Platforms" unique_id=658414795]
+position = Vector2(1288, 326)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(314, 18)
+size = Vector2(314, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=1936741544]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperRightRail" unique_id=626874503]
 shape = SubResource("RectangleShape2D_pvf4v")
 
-[node name="Platform2" type="StaticBody2D" parent="Platforms" unique_id=1018074367]
-position = Vector2(548, 635)
-scale = Vector2(1.76, 1)
+[node name="Platform_MidRail" type="StaticBody2D" parent="Platforms" unique_id=1111785867]
+position = Vector2(705.5, 621)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(905, 18)
+size = Vector2(1277, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform2" unique_id=1352119965]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidRail" unique_id=431466425]
 shape = SubResource("RectangleShape2D_4671x")
 
-[node name="Platform6" type="StaticBody2D" parent="Platforms" unique_id=785007880]
-position = Vector2(746, 921)
-scale = Vector2(1.76, 1)
+[node name="Platform_MidRightLedge" type="StaticBody2D" parent="Platforms" unique_id=613846403]
+position = Vector2(1423, 628)
+rotation = 0.0840033
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(905, 18)
+size = Vector2(164, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform6" unique_id=1917451928]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidRightLedge" unique_id=1563025059]
 shape = SubResource("RectangleShape2D_50rqn")
 
-[node name="Platform3" type="StaticBody2D" parent="Platforms" unique_id=954694006]
-position = Vector2(1374, 635)
+[node name="Platform_LowerRail" type="StaticBody2D" parent="Platforms" unique_id=1469928162]
+position = Vector2(767.5, 899)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-one_way = true
-size = Vector2(141, 18)
+size = Vector2(1401, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform3" unique_id=706187888]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRail" unique_id=686931345]
 shape = SubResource("RectangleShape2D_4vtbt")
-one_way_collision = true
 
 [node name="Hazards" type="Node2D" parent="." unique_id=1406361544]
 

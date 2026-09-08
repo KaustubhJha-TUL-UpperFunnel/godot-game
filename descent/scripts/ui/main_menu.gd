@@ -22,8 +22,10 @@ func _ready() -> void:
 	_permanent.closed.connect(_descend.grab_focus)
 	SaveManager.echoes_changed.connect(_on_echoes_changed)
 
+	# tools/ is stripped by the export preset, so the audit only exists when
+	# the game is run from the editor.
+	_audit_button.visible = OS.has_feature("editor")
 	# Desktop builds get a quit button; on mobile the OS owns that gesture.
-	_audit_button.visible = OS.is_debug_build()
 	_quit.visible = not OS.has_feature("mobile")
 	_on_echoes_changed(SaveManager.echoes_total)
 	_best.text = _unlock_summary()

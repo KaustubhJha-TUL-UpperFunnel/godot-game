@@ -12,16 +12,19 @@ size = Vector2(48, 1024)
 size = Vector2(1536, 48)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cael0"]
-size = Vector2(1066, 18)
+size = Vector2(1066, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_812xb"]
-size = Vector2(235, 21)
+size = Vector2(1066, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p0gwd"]
+size = Vector2(235, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8geg5"]
 size = Vector2(1384, 160)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hb3nf"]
-size = Vector2(991.5, 87)
+size = Vector2(995.74994, 87)
 
 [node name="Map41GoldKingsTreasuryVertical" type="Node2D" unique_id=1331582104]
 script = ExtResource("1_level")
@@ -52,26 +55,36 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1628952202]
 
-[node name="Platform0" type="StaticBody2D" parent="Platforms" unique_id=743570721]
-position = Vector2(610, 386)
-scale = Vector2(1.1193181, 1.0119438)
+[node name="Upper_Main_Vault_Floor" type="StaticBody2D" parent="Platforms" unique_id=710013542]
+position = Vector2(401, 394)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(1066, 18)
+size = Vector2(1066, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform0" unique_id=2073209595]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Main_Vault_Floor" unique_id=697435597]
 shape = SubResource("RectangleShape2D_cael0")
 
-[node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=208771360]
-position = Vector2(1315, 387)
+[node name="Upper_Main_Vault_Floor2" type="StaticBody2D" parent="Platforms" unique_id=138540617]
+position = Vector2(1782, 394)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(235, 21)
+size = Vector2(1066, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform1" unique_id=2048545821]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Main_Vault_Floor2" unique_id=554688146]
 shape = SubResource("RectangleShape2D_812xb")
+
+[node name="Upper_Right_Vault_Floor" type="StaticBody2D" parent="Platforms" unique_id=1428382089]
+position = Vector2(1297.0001, 959)
+scale = Vector2(1.9694024, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+size = Vector2(235, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Right_Vault_Floor" unique_id=942398303]
+shape = SubResource("RectangleShape2D_p0gwd")
 
 [node name="Hazards" type="Node2D" parent="." unique_id=28297427]
 
@@ -87,7 +100,7 @@ size = Vector2(1384, 160)
 hazard_name = "THE MOLTEN VAULT"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=75565485]
-shape = SubResource("RectangleShape2D_p0gwd")
+shape = SubResource("RectangleShape2D_8geg5")
 
 [node name="WalkableRegion" type="Area2D" parent="." unique_id=614433960]
 collision_layer = 0
@@ -100,7 +113,7 @@ position = Vector2(574.5, 822)
 shape = SubResource("RectangleShape2D_hb3nf")
 
 [node name="Shape2" type="CollisionShape2D" parent="WalkableRegion" unique_id=1424102838]
-position = Vector2(647, 911.5)
+position = Vector2(648.785, 911.5)
 scale = Vector2(0.84000003, 1)
 shape = SubResource("RectangleShape2D_hb3nf")
 

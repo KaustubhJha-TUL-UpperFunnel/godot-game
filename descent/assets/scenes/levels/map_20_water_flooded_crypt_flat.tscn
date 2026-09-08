@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://d0nat6fk1gw5"]
 
-[ext_resource type="Script" path="res://descent/scripts/world/level.gd" id="1_level"]
-[ext_resource type="Texture2D" path="res://descent/assets/maps/map_20_water_flooded_crypt_flat.png" id="2_map"]
-[ext_resource type="Script" path="res://descent/scripts/world/hazard_zone.gd" id="4_hazard"]
+[ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
+[ext_resource type="Texture2D" uid="uid://bry8bqys6glr0" path="res://descent/assets/maps/map_20_water_flooded_crypt_flat.png" id="2_map"]
+[ext_resource type="Script" uid="uid://boeerswaj1v5s" path="res://descent/scripts/world/hazard_zone.gd" id="4_hazard"]
 
 [sub_resource type="RectangleShape2D" id="Shape_wall_v"]
 size = Vector2(48, 1024)
@@ -10,132 +10,140 @@ size = Vector2(48, 1024)
 [sub_resource type="RectangleShape2D" id="Shape_wall_h"]
 size = Vector2(1536, 48)
 
-[sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(1152, 570)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y5a5v"]
+size = Vector2(80, 60)
 
-[node name="Map20WaterFloodedCryptFlat" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o0ab0"]
+size = Vector2(60, 80)
+
+[sub_resource type="RectangleShape2D" id="Shape_walkable"]
+size = Vector2(1380, 570)
+
+[node name="Map20WaterFloodedCryptFlat" type="Node2D" unique_id=1836643707]
 script = ExtResource("1_level")
-kind = 0
 hazard_kind = 3
 display_name = "FLOODED CRYPT"
 theme = "water"
-reviewed = false
-content_size = Vector2(1536, 1024)
 
-[node name="Background" type="Sprite2D" parent="."]
-centered = false
+[node name="Background" type="Sprite2D" parent="." unique_id=1672405628]
 texture = ExtResource("2_map")
+centered = false
 
-[node name="Walls" type="StaticBody2D" parent="." groups=["walls"]]
+[node name="Walls" type="StaticBody2D" parent="." unique_id=108719742 groups=["walls"]]
 collision_layer = 4
 collision_mask = 0
 
-[node name="Left" type="CollisionShape2D" parent="Walls"]
+[node name="Left" type="CollisionShape2D" parent="Walls" unique_id=1679231139]
 position = Vector2(67, 512)
 shape = SubResource("Shape_wall_v")
 
-[node name="Right" type="CollisionShape2D" parent="Walls"]
+[node name="Right" type="CollisionShape2D" parent="Walls" unique_id=871873665]
 position = Vector2(1471, 512)
 shape = SubResource("Shape_wall_v")
 
-[node name="Top" type="CollisionShape2D" parent="Walls"]
+[node name="Top" type="CollisionShape2D" parent="Walls" unique_id=763317919]
 position = Vector2(768, 94)
 shape = SubResource("Shape_wall_h")
 
-[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+[node name="Bottom" type="CollisionShape2D" parent="Walls" unique_id=836701009]
 position = Vector2(768, 913)
 shape = SubResource("Shape_wall_h")
 
-[node name="Platforms" type="Node2D" parent="."]
+[node name="Platforms" type="Node2D" parent="." unique_id=1162396718]
 
-[node name="Hazards" type="Node2D" parent="."]
+[node name="Hazards" type="Node2D" parent="." unique_id=562279796]
 
-[node name="Hazard0" type="Area2D" parent="Hazards"]
+[node name="Hazard0" type="Area2D" parent="Hazards" unique_id=537686468]
 position = Vector2(400, 210)
+collision_layer = 16
+monitoring = false
 script = ExtResource("4_hazard")
 size = Vector2(80, 60)
 damage = 12.0
-instant_death = false
 hazard_name = "DEEP WATER"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard0" unique_id=1258048976]
+shape = SubResource("RectangleShape2D_y5a5v")
 
-[node name="Hazard1" type="Area2D" parent="Hazards"]
+[node name="Hazard1" type="Area2D" parent="Hazards" unique_id=807282290]
 position = Vector2(1210, 200)
+collision_layer = 16
+monitoring = false
 script = ExtResource("4_hazard")
 size = Vector2(60, 80)
 damage = 12.0
-instant_death = false
 hazard_name = "DEEP WATER"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard1" unique_id=676198019]
+shape = SubResource("RectangleShape2D_o0ab0")
 
-[node name="DeathZones" type="Node2D" parent="."]
+[node name="DeathZones" type="Node2D" parent="." unique_id=1621512238]
 
-[node name="WalkableRegion" type="Area2D" parent="."]
+[node name="WalkableRegion" type="Area2D" parent="." unique_id=842880612]
 position = Vector2(768, 503)
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Shape" type="CollisionShape2D" parent="WalkableRegion"]
+[node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=1016513869]
+position = Vector2(15, 167)
 shape = SubResource("Shape_walkable")
 
-[node name="PlayerStart" type="Marker2D" parent="."]
+[node name="PlayerStart" type="Marker2D" parent="." unique_id=747369134]
 position = Vector2(768, 628)
 
-[node name="SpawnPoints" type="Node2D" parent="."]
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1984437855]
 
-[node name="Spawn0" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn0" type="Marker2D" parent="SpawnPoints" unique_id=398531209]
 position = Vector2(307, 309)
 
-[node name="Spawn1" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn1" type="Marker2D" parent="SpawnPoints" unique_id=35066117]
 position = Vector2(537, 309)
 
-[node name="Spawn2" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn2" type="Marker2D" parent="SpawnPoints" unique_id=437618977]
 position = Vector2(768, 309)
 
-[node name="Spawn3" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn3" type="Marker2D" parent="SpawnPoints" unique_id=815769841]
 position = Vector2(998, 309)
 
-[node name="Spawn4" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn4" type="Marker2D" parent="SpawnPoints" unique_id=190585303]
 position = Vector2(1228, 309)
 
-[node name="Spawn5" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn5" type="Marker2D" parent="SpawnPoints" unique_id=664833511]
 position = Vector2(307, 503)
 
-[node name="Spawn6" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn6" type="Marker2D" parent="SpawnPoints" unique_id=1658961026]
 position = Vector2(537, 503)
 
-[node name="Spawn7" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn7" type="Marker2D" parent="SpawnPoints" unique_id=161159968]
 position = Vector2(768, 503)
 
-[node name="Spawn8" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn8" type="Marker2D" parent="SpawnPoints" unique_id=1449987065]
 position = Vector2(998, 503)
 
-[node name="Spawn9" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn9" type="Marker2D" parent="SpawnPoints" unique_id=307198753]
 position = Vector2(1228, 503)
 
-[node name="Spawn10" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn10" type="Marker2D" parent="SpawnPoints" unique_id=2017436448]
 position = Vector2(336, 696)
 
-[node name="Spawn11" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn11" type="Marker2D" parent="SpawnPoints" unique_id=570530477]
 position = Vector2(624, 696)
 
-[node name="Spawn12" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn12" type="Marker2D" parent="SpawnPoints" unique_id=1518122629]
 position = Vector2(912, 696)
 
-[node name="Spawn13" type="Marker2D" parent="SpawnPoints"]
+[node name="Spawn13" type="Marker2D" parent="SpawnPoints" unique_id=982508841]
 position = Vector2(1200, 696)
 
-[node name="DoorAnchors" type="Node2D" parent="."]
+[node name="DoorAnchors" type="Node2D" parent="." unique_id=409866339]
 
-[node name="Loot" type="Marker2D" parent="DoorAnchors"]
+[node name="Loot" type="Marker2D" parent="DoorAnchors" unique_id=1051795779]
 position = Vector2(445, 178)
 
-[node name="Danger" type="Marker2D" parent="DoorAnchors"]
+[node name="Danger" type="Marker2D" parent="DoorAnchors" unique_id=800238257]
 position = Vector2(768, 178)
 
-[node name="Shop" type="Marker2D" parent="DoorAnchors"]
+[node name="Shop" type="Marker2D" parent="DoorAnchors" unique_id=1552651455]
 position = Vector2(1090, 178)

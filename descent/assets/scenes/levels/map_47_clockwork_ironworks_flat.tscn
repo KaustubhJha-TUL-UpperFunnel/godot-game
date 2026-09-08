@@ -17,7 +17,7 @@ size = Vector2(60, 60)
 size = Vector2(60, 60)
 
 [sub_resource type="RectangleShape2D" id="Shape_walkable"]
-size = Vector2(1376.25, 609)
+size = Vector2(1376.25, 597.5)
 
 [node name="Map47ClockworkIronworksFlat" type="Node2D" unique_id=1567065743]
 script = ExtResource("1_level")
@@ -87,7 +87,7 @@ monitoring = false
 monitorable = false
 
 [node name="Shape" type="CollisionShape2D" parent="WalkableRegion" unique_id=1284107370]
-position = Vector2(10.125, 107)
+position = Vector2(10.125, 101.25)
 shape = SubResource("Shape_walkable")
 
 [node name="PlayerStart" type="Marker2D" parent="." unique_id=1837465465]
