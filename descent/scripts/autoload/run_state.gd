@@ -45,6 +45,7 @@ var run_upgrades: Dictionary = {}
 var second_wind_used: bool = false
 var victory: bool = false
 var echoes_committed: bool = false
+var _debug_floor_override_applied: bool = false
 
 
 func _ready() -> void:
@@ -67,9 +68,30 @@ func begin_run() -> void:
 	second_wind_used = false
 	victory = false
 	echoes_committed = false
+	_debug_floor_override_applied = false
+	apply_debug_floor_override()
 	coins_changed.emit(coins)
 	floor_changed.emit(floor_number)
 	upgrades_changed.emit()
+
+
+## Development builds can start on a specific sequential map with:
+##   Godot --path <project> -- --floor=10
+## Release builds always begin on floor one.
+func apply_debug_floor_override() -> void:
+	if not OS.is_debug_build() or _debug_floor_override_applied:
+		return
+	_debug_floor_override_applied = true
+	for argument in OS.get_cmdline_user_args():
+		if not argument.begins_with("--floor="):
+			continue
+		var value := argument.trim_prefix("--floor=")
+		if not value.is_valid_int():
+			push_warning("DESCENT: invalid debug floor '%s'" % value)
+			return
+		floor_number = clampi(value.to_int(), 1, FINAL_FLOOR)
+		print("DESCENT debug start: floor %d" % floor_number)
+		return
 
 
 func room_type_name() -> String:

@@ -39,6 +39,7 @@ const WALLS_LAYER_NUMBER := 3
 const DROP_IGNORE_SECONDS := 0.12
 
 var speed: float = 120.0
+var base_damage: float = 10.0
 var contact_damage: float = 10.0
 var coin_reward: int = 2
 var is_elite: bool = false
@@ -93,10 +94,12 @@ func configure(floor_number: int, elite: bool, pressure: float) -> void:
 		speed = stats.movement_speed
 		contact_damage = stats.damage
 		coin_reward = stats.coin_reward
+	else:
+		contact_damage = base_damage
 
 	if scales_with_floor:
 		maximum *= 1.0 + float(maxi(0, floor_number - 1)) * 0.11
-		contact_damage += floor_number * 0.8
+		contact_damage = (contact_damage + float(floor_number - 1) * 1.25) * (1.0 + float(floor_number - 1) * 0.035)
 		coin_reward += int(floor_number / 3.0)
 		if is_elite:
 			maximum *= 1.75
@@ -105,6 +108,7 @@ func configure(floor_number: int, elite: bool, pressure: float) -> void:
 			coin_reward *= 2
 
 	speed *= difficulty_pressure
+	contact_damage *= difficulty_pressure
 	health.configure(maximum, true)
 
 	if is_elite:
@@ -276,6 +280,11 @@ func _on_health_changed(_current: float, _maximum: float) -> void:
 func take_hit(amount: float, direction: Vector2, style: int = EventBus.DamageStyle.NORMAL) -> float:
 	if is_dead or not combat_enabled:
 		return 0.0
+	# Distinct fire projectiles are already deduplicated per target by
+	# Projectile, so a prior hit's tiny generic invulnerability window must not
+	# make a following bolt appear to pass through harmlessly.
+	if style == EventBus.DamageStyle.FIRE:
+		health.clear_invulnerability()
 	var dealt := health.take_damage(amount, HIT_INVULNERABILITY, global_position - direction)
 	if dealt <= 0.0:
 		return 0.0

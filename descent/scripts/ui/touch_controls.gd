@@ -39,6 +39,30 @@ func reset_controls() -> void:
 	_push_state()
 
 
+func set_tutorial_enabled(enabled: bool, highlighted: bool = false) -> void:
+	var touch_available := DisplayServer.is_touchscreen_available()
+	set_process_unhandled_input(touch_available and enabled)
+	if not enabled:
+		_end()
+		_push_state()
+	_move_stick.modulate = (
+		Color(1.25, 1.2, 0.75, 1.0)
+		if highlighted
+		else Color(0.3, 0.34, 0.4, 0.35)
+	)
+
+
+func clear_tutorial_state() -> void:
+	var touch_available := DisplayServer.is_touchscreen_available()
+	set_process_unhandled_input(touch_available)
+	_move_stick.modulate = Color.WHITE
+
+
+func tutorial_icon() -> Texture2D:
+	var base := $MoveStick/Base as TextureRect
+	return base.texture
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		_handle_touch(event as InputEventScreenTouch)

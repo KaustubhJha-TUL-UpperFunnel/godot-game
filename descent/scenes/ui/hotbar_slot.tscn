@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://descent/scripts/ui/hotbar_slot.gd" id="1_slot"]
 
@@ -10,6 +10,18 @@ corner_radius_bottom_right = 42
 corner_radius_bottom_left = 42
 
 [sub_resource type="StyleBoxEmpty" id="Style_press"]
+
+[sub_resource type="StyleBoxFlat" id="Style_tutorial_ring"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.78, 0.25, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
 
 [sub_resource type="Animation" id="Animation_idle"]
 resource_name = "idle"
@@ -190,7 +202,18 @@ text = "2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="TutorialRing" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_tutorial_ring")
+
 [node name="Press" type="Button" parent="."]
+focus_mode = 0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -7,7 +7,7 @@ extends Node
 signal enemy_spawned(enemy: EnemyBase)
 
 ## Never exceed this, regardless of floor or danger stacking.
-const MAX_ENEMIES := 12
+const MAX_ENEMIES := 14
 ## Spawn points closer than this to the player are rejected as ambushes.
 const MIN_PLAYER_CLEARANCE := 170.0
 const OVERCLOCKED_PRESSURE := 1.22
@@ -32,7 +32,25 @@ func difficulty_for(floor_number: int) -> DifficultyData:
 	for entry in difficulty_table:
 		if entry != null and entry.floor_number == floor_number:
 			return entry
-	return difficulty_table.back() if not difficulty_table.is_empty() else null
+	return _synthesize_difficulty(floor_number)
+
+
+func _synthesize_difficulty(floor_number: int) -> DifficultyData:
+	var data := DifficultyData.new()
+	data.floor_number = floor_number
+	if not difficulty_table.is_empty():
+		var last: DifficultyData = difficulty_table.back()
+		if floor_number <= last.floor_number:
+			return last
+		var extra := floor_number - last.floor_number
+		data.enemy_count = clampi(last.enemy_count + int(float(extra) * 0.35), 3, MAX_ENEMIES)
+		data.pressure = last.pressure + float(extra) * 0.05
+		data.elite_chance = clampf(last.elite_chance + float(extra) * 0.015, 0.0, 0.70)
+	else:
+		data.enemy_count = clampi(2 + floor_number, 3, MAX_ENEMIES)
+		data.pressure = 1.0 + float(floor_number - 1) * 0.06
+		data.elite_chance = clampf(float(maxi(0, floor_number - 2)) * 0.07, 0.0, 0.70)
+	return data
 
 
 ## Fills `container` with the encounter for the current RunState room and

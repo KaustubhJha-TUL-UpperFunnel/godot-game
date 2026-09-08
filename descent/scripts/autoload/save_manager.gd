@@ -54,6 +54,7 @@ const TRACKS: Array = [
 
 var echoes_total: int = 0
 var permanent_levels: Array[int] = [0, 0, 0, 0, 0]
+var tutorial_completed: bool = false
 
 
 func _ready() -> void:
@@ -143,9 +144,22 @@ func buy_permanent(index: int) -> bool:
 	return true
 
 
+func complete_tutorial() -> void:
+	if tutorial_completed:
+		return
+	tutorial_completed = true
+	save_game()
+
+
+func restart_tutorial() -> void:
+	tutorial_completed = false
+	save_game()
+
+
 func reset_progress() -> void:
 	echoes_total = 0
 	permanent_levels = [0, 0, 0, 0, 0]
+	tutorial_completed = false
 	echoes_changed.emit(echoes_total)
 	for index in TRACKS.size():
 		permanent_changed.emit(index, 0)
@@ -158,6 +172,7 @@ func reset_progress() -> void:
 func load_game() -> void:
 	echoes_total = 0
 	permanent_levels = [0, 0, 0, 0, 0]
+	tutorial_completed = false
 	if not FileAccess.file_exists(SAVE_PATH):
 		return
 
@@ -171,6 +186,7 @@ func load_game() -> void:
 	if not _apply_validated(JSON.parse_string(text)):
 		echoes_total = 0
 		permanent_levels = [0, 0, 0, 0, 0]
+		tutorial_completed = false
 		push_warning("DESCENT: malformed save rejected; safe defaults loaded.")
 
 	echoes_changed.emit(echoes_total)
@@ -181,6 +197,7 @@ func save_game() -> void:
 		"schema_version": SCHEMA_VERSION,
 		"echoes": clampi(echoes_total, 0, MAX_ECHOES),
 		"permanent_levels": permanent_levels.duplicate(),
+		"tutorial_completed": tutorial_completed,
 	}
 
 	var file := FileAccess.open(TEMP_PATH, FileAccess.WRITE)
@@ -235,6 +252,11 @@ func _apply_validated(value: Variant) -> bool:
 			return false
 		validated.append(entry_level)
 
+	var loaded_tutorial: Variant = data.get("tutorial_completed", false)
+	if typeof(loaded_tutorial) != TYPE_BOOL:
+		return false
+
 	echoes_total = loaded_echoes
 	permanent_levels = validated
+	tutorial_completed = bool(loaded_tutorial)
 	return true

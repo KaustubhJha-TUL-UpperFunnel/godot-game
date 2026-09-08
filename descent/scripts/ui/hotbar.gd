@@ -1,7 +1,7 @@
 class_name Hotbar
 extends Control
 
-## Circular ability and jump buttons arranged along the right side.
+## Circular attack, ability, item, and jump buttons arranged along the bottom-right.
 ##
 ## Clicking a slot goes through the same PlayerAvatar.activate_slot() path as
 ## the keyboard, so mouse-only and keyboard play behave identically.
@@ -64,3 +64,21 @@ func _on_slot_hold_changed(index: int, held: bool) -> void:
 				_player.begin_projectile_aim()
 			else:
 				_player.release_projectile_aim()
+
+
+func set_tutorial_slot(allowed_slot: int) -> void:
+	for slot in _slots:
+		var enabled := slot.slot_index == allowed_slot
+		slot.set_tutorial_enabled(enabled, enabled)
+
+
+func clear_tutorial_slot() -> void:
+	for slot in _slots:
+		slot.set_tutorial_enabled(true)
+
+
+func tutorial_icon(slot_index: int) -> Texture2D:
+	for slot in _slots:
+		if slot.slot_index == slot_index:
+			return slot.tutorial_icon()
+	return null

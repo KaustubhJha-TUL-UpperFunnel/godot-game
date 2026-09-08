@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://descent/scripts/systems/gameplay_controller.gd" id="1_controller"]
 [ext_resource type="Script" path="res://descent/scripts/world/level_host.gd" id="2_level_host"]
@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" path="res://descent/scenes/ui/pause_menu.tscn" id="30_pause"]
 [ext_resource type="PackedScene" path="res://descent/scenes/ui/run_summary.tscn" id="31_summary"]
 [ext_resource type="PackedScene" path="res://descent/scenes/fx/floor_transition.tscn" id="32_transition"]
+[ext_resource type="PackedScene" path="res://descent/scenes/ui/tutorial_overlay.tscn" id="33_tutorial"]
 
 [node name="Gameplay" type="Node2D"]
 script = ExtResource("1_controller")
@@ -89,6 +90,8 @@ one_shot = true
 [node name="PauseMenu" parent="UI" instance=ExtResource("30_pause")]
 
 [node name="RunSummary" parent="UI" instance=ExtResource("31_summary")]
+
+[node name="TutorialOverlay" parent="UI" instance=ExtResource("33_tutorial")]
 
 [node name="TransitionLayer" type="CanvasLayer" parent="."]
 layer = 5

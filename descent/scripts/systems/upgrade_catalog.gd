@@ -94,7 +94,7 @@ func apply(upgrade: UpgradeData, player: PlayerAvatar) -> void:
 			push_warning("DESCENT: unhandled upgrade id %d" % upgrade.upgrade_id)
 
 	RunState.record_upgrade(upgrade.upgrade_id)
-	EventBus.toast_requested.emit("%s INSTALLED" % upgrade.display_name.to_upper(), 1.5)
+	EventBus.toast_requested.emit("%s UPGRADED" % upgrade.display_name.to_upper(), 1.5)
 
 
 ## Between-room trickle heal granted by Recovery Loop stacks.

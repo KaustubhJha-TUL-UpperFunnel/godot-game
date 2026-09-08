@@ -9,6 +9,11 @@ signal fireball_cast(origin: Vector2, direction: Vector2, damage: float)
 signal frost_nova_cast(origin: Vector2, radius: float, damage: float)
 signal melee_landed(target: Node2D, damage: float, combo_step: int)
 signal dash_started(origin: Vector2)
+signal jump_started()
+signal platform_climbed()
+signal platform_dropped()
+signal health_potion_used()
+signal mana_potion_used()
 signal hurt(amount: float)
 signal died()
 
@@ -32,6 +37,7 @@ const FIRE_COOLDOWN := 2.8
 const FIRE_DAMAGE_SCALE := 1.85
 const FIRE_PROJECTILE_SPEED := 720.0
 const AIM_GUIDE_LENGTH := 140.0
+const AIM_ORIGIN_OFFSET := Vector2(0.0, -44.0)
 
 const ICE_COST := 20.0
 const ICE_COOLDOWN := 4.0
@@ -200,10 +206,16 @@ func _update_platformer_velocity(delta: float) -> void:
 	elif velocity.y > 0.0:
 		velocity.y = 0.0
 
-	if input.consume_jump() and not is_dead:
+	var jump_requested := input.consume_jump()
+	if jump_requested:
+		# Jump is a movement action, so it disarms fire aiming without casting.
+		# This also covers keyboard jump, which does not pass through Hotbar.
+		_cancel_projectile_aim()
+	if jump_requested and not is_dead:
 		if is_on_floor():
 			velocity.y = -JUMP_SPEED
 			_drop_hold_time = 0.0
+			jump_started.emit()
 		else:
 			_try_climb_overhead(AIR_CLIMB_REACH, AIR_CLIMB_DURATION)
 
@@ -268,6 +280,7 @@ func _update_climb_transition(delta: float) -> void:
 	if progress >= 1.0:
 		position = _climb_target
 		_climb_duration = 0.0
+		platform_climbed.emit()
 
 
 func _update_drop_through(delta: float) -> void:
@@ -290,6 +303,7 @@ func _update_drop_through(delta: float) -> void:
 	set_collision_mask_value(WALLS_LAYER_NUMBER, false)
 	position.y += 8.0
 	velocity.y = 120.0
+	platform_dropped.emit()
 
 
 func _tick_drop_collision(delta: float) -> void:
@@ -325,8 +339,11 @@ func _update_facing() -> void:
 	)
 	if _projectile_aiming:
 		_aim_guide.points = PackedVector2Array([
-			Vector2.ZERO, _aim_direction * AIM_GUIDE_LENGTH
+			AIM_ORIGIN_OFFSET, AIM_ORIGIN_OFFSET + _aim_direction * AIM_GUIDE_LENGTH
 		])
+	else:
+		if is_instance_valid(_aim_guide):
+			_aim_guide.hide()
 	if is_attacking() or absf(_aim_direction.x) < FACING_DEADZONE:
 		return
 
@@ -415,6 +432,7 @@ func activate_slot(index: int) -> void:
 		Slot.POTION_MANA:
 			use_mana_potion()
 		Slot.JUMP:
+			_cancel_projectile_aim()
 			input.request_touch_jump()
 
 
@@ -644,6 +662,9 @@ func begin_projectile_aim() -> bool:
 		velocity.x = 0.0
 	else:
 		velocity = Vector2.ZERO
+	_aim_guide.points = PackedVector2Array([
+		AIM_ORIGIN_OFFSET, AIM_ORIGIN_OFFSET + _aim_direction * AIM_GUIDE_LENGTH
+	])
 	_aim_guide.show()
 	return true
 
@@ -667,11 +688,13 @@ func cast_fireball() -> bool:
 		return false
 	if not _fire_cooldown.is_stopped() or not mana.try_spend(FIRE_COST):
 		return false
+	_cancel_projectile_aim()
 	_fire_cooldown.start(FIRE_COOLDOWN)
+	var spawn_pos := global_position + AIM_ORIGIN_OFFSET + _aim_direction * 24.0
 	fireball_cast.emit(
-		global_position + _aim_direction * 24.0, _aim_direction, weapon_damage * FIRE_DAMAGE_SCALE
+		spawn_pos, _aim_direction, weapon_damage * FIRE_DAMAGE_SCALE
 	)
-	EventBus.burst_requested.emit(global_position, Color("ff6622"), 15, 170.0, 4.0)
+	EventBus.burst_requested.emit(spawn_pos, Color("ff6622"), 15, 170.0, 4.0)
 	EventBus.shake_requested.emit(3.5, 0.09)
 	return true
 
@@ -696,6 +719,7 @@ func use_health_potion() -> bool:
 	EventBus.damage_number_requested.emit(
 		global_position, gained, EventBus.DamageStyle.HEAL
 	)
+	health_potion_used.emit()
 	return true
 
 
@@ -706,6 +730,7 @@ func use_mana_potion() -> bool:
 	mana.restore(POTION_MANA_RESTORE)
 	_speed_buff_left = POTION_SPEED_BUFF_DURATION
 	EventBus.toast_requested.emit("ELIXIR: +MANA, +40% SPEED", 1.4)
+	mana_potion_used.emit()
 	return true
 
 

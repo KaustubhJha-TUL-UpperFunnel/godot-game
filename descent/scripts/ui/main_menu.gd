@@ -5,6 +5,7 @@ extends Control
 
 @onready var _descend: Button = $Panel/Rows/Descend
 @onready var _upgrades_button: Button = $Panel/Rows/Upgrades
+@onready var _tutorial_button: Button = $Panel/Rows/Tutorial
 @onready var _quit: Button = $Panel/Rows/Quit
 @onready var _echoes: Label = $Panel/Rows/Echoes
 @onready var _best: Label = $Panel/Rows/Best
@@ -14,6 +15,7 @@ extends Control
 func _ready() -> void:
 	_descend.pressed.connect(func() -> void: SceneRouter.goto_gameplay())
 	_upgrades_button.pressed.connect(_permanent.open)
+	_tutorial_button.pressed.connect(_start_tutorial)
 	_quit.pressed.connect(func() -> void: SceneRouter.quit_game())
 	_permanent.closed.connect(_descend.grab_focus)
 	SaveManager.echoes_changed.connect(_on_echoes_changed)
@@ -23,6 +25,11 @@ func _ready() -> void:
 	_on_echoes_changed(SaveManager.echoes_total)
 	_best.text = _unlock_summary()
 	_descend.grab_focus()
+
+
+func _start_tutorial() -> void:
+	SaveManager.restart_tutorial()
+	SceneRouter.goto_gameplay()
 
 
 func _on_echoes_changed(total: int) -> void:

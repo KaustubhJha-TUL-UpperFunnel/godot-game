@@ -10,11 +10,49 @@ extends Node2D
 ## everything crosses through here or through EventBus.
 
 enum State { INTRO, COMBAT, CLEARED, REWARD, TRANSITION, FINISHED }
+enum TutorialStep {
+	MOVE,
+	JUMP,
+	CLIMB,
+	DROP,
+	SWORD,
+	FIRE,
+	ICE,
+	DASH,
+	HEALTH_POTION,
+	MANA_POTION,
+}
 
 const INTRO_SECONDS := 1.05
 const CLEARED_SECONDS := 0.8
 const UPGRADE_OFFER_COUNT := 3
 const SECOND_WIND_FRACTION := 0.5
+const TUTORIAL_MOVE_DISTANCE := 130.0
+const TUTORIAL_STEP_COUNT := 10
+const TUTORIAL_TITLES: Array[String] = [
+	"MOVE",
+	"JUMP",
+	"CLIMB TO THE PLATFORM",
+	"DROP TO A LOWER PLATFORM",
+	"SWORD COMBO",
+	"FIREBALL",
+	"FROST NOVA",
+	"DASH",
+	"HEALTH POTION",
+	"MANA ELIXIR",
+]
+const TUTORIAL_INSTRUCTIONS: Array[String] = [
+	"Drag the movement stick and move the knight.",
+	"Tap the green Jump button while standing on the platform.",
+	"While airborne below the upper platform, tap Jump again to climb onto it.",
+	"Hold the movement stick DOWN while standing on the upper platform.",
+	"Move close and hold Sword to chain three hits; the third is strongest. Land a strike now.",
+	"Hold the Fire button to aim, then release it to cast the fireball.",
+	"Move near the enemies and tap the Ice button to hit everything around you.",
+	"Move and tap Dash. It briefly avoids damage; hold the stick UP in air to dash upward.",
+	"Your health has been lowered. Tap the red Health Potion button.",
+	"Your mana has been lowered. Tap the blue Mana Elixir button.",
+]
 
 const FIREBALL_SPREAD := 0.16
 const ENEMY_SHOT_SPEED := 340.0
@@ -37,6 +75,10 @@ var living_enemies: Array[EnemyBase] = []
 
 var _rng := RandomNumberGenerator.new()
 var _spike_pulse_timer: float = 0.0
+var _tutorial_active: bool = false
+var _tutorial_step: int = -1
+var _tutorial_advancing: bool = false
+var _tutorial_move_origin: Vector2 = Vector2.ZERO
 @onready var level_host: LevelHost = $LevelHost
 @onready var player: PlayerAvatar = $Actors/Player
 @onready var _enemies: Node2D = $Actors/Enemies
@@ -57,10 +99,12 @@ var _spike_pulse_timer: float = 0.0
 @onready var _touch_controls: TouchControls = $UI/TouchControls
 @onready var _pause_menu: PauseMenu = $UI/PauseMenu
 @onready var _run_summary: RunSummary = $UI/RunSummary
+@onready var _tutorial: TutorialOverlay = $UI/TutorialOverlay
 @onready var _floor_transition: FloorTransition = $TransitionLayer/FloorTransition
 
 
 func _ready() -> void:
+	RunState.apply_debug_floor_override()
 	_rng.randomize()
 	_connect_player()
 	_connect_ui()
@@ -80,6 +124,13 @@ func _ready() -> void:
 func _connect_player() -> void:
 	player.fireball_cast.connect(_on_fireball_cast)
 	player.frost_nova_cast.connect(_on_frost_nova_cast)
+	player.melee_landed.connect(_on_tutorial_melee_landed)
+	player.dash_started.connect(_on_tutorial_dash_started)
+	player.jump_started.connect(_on_tutorial_jump_started)
+	player.platform_climbed.connect(_on_tutorial_platform_climbed)
+	player.platform_dropped.connect(_on_tutorial_platform_dropped)
+	player.health_potion_used.connect(_on_tutorial_health_potion_used)
+	player.mana_potion_used.connect(_on_tutorial_mana_potion_used)
 	player.died.connect(_on_player_died)
 
 
@@ -90,7 +141,167 @@ func _connect_ui() -> void:
 	_pause_menu.pause_requested.connect(_set_paused.bind(true))
 	_pause_menu.resume_requested.connect(_set_paused.bind(false))
 	_pause_menu.abandon_requested.connect(_on_abandon_requested)
+	_tutorial.skip_requested.connect(_finish_tutorial)
 	_run_summary.continue_requested.connect(func() -> void: SceneRouter.goto_main_menu())
+
+
+# --- Interactive tutorial ---------------------------------------------------
+
+
+func _start_tutorial() -> void:
+	_tutorial_active = true
+	_tutorial_advancing = false
+	state = State.INTRO
+	_hud.show_objective("TRAINING")
+	_set_tutorial_step(TutorialStep.MOVE)
+
+
+func _set_tutorial_step(step: TutorialStep) -> void:
+	_tutorial_step = step
+	var allowed_slot := _tutorial_slot_for(step)
+	var stick_lesson := step == TutorialStep.MOVE or step == TutorialStep.DROP
+
+	player.set_control_enabled(true, step >= TutorialStep.SWORD)
+	player.input.set_tutorial_restrictions(true, allowed_slot)
+	_hotbar.set_tutorial_slot(allowed_slot)
+	_touch_controls.set_tutorial_enabled(true, stick_lesson)
+
+	if step == TutorialStep.MOVE:
+		_tutorial_move_origin = player.position
+	if step >= TutorialStep.SWORD:
+		_ensure_tutorial_enemies()
+	if step == TutorialStep.HEALTH_POTION:
+		_prepare_health_potion_lesson()
+	elif step == TutorialStep.MANA_POTION:
+		_prepare_mana_potion_lesson()
+
+	var icon := (
+		_touch_controls.tutorial_icon()
+		if stick_lesson
+		else _hotbar.tutorial_icon(allowed_slot)
+	)
+	_tutorial.show_step(
+		TUTORIAL_TITLES[step],
+		TUTORIAL_INSTRUCTIONS[step],
+		icon,
+		step + 1,
+		TUTORIAL_STEP_COUNT
+	)
+
+
+func _tutorial_slot_for(step: TutorialStep) -> int:
+	match step:
+		TutorialStep.JUMP, TutorialStep.CLIMB:
+			return PlayerAvatar.Slot.JUMP
+		TutorialStep.SWORD:
+			return PlayerAvatar.Slot.SWORD
+		TutorialStep.FIRE:
+			return PlayerAvatar.Slot.FIRE
+		TutorialStep.ICE:
+			return PlayerAvatar.Slot.ICE
+		TutorialStep.DASH:
+			return PlayerAvatar.Slot.DASH
+		TutorialStep.HEALTH_POTION:
+			return PlayerAvatar.Slot.POTION_HEALTH
+		TutorialStep.MANA_POTION:
+			return PlayerAvatar.Slot.POTION_MANA
+	return -1
+
+
+func _ensure_tutorial_enemies() -> void:
+	if living_enemies.is_empty():
+		living_enemies = _spawn_director.populate(level_host, player, _enemies, _rng)
+		for enemy in living_enemies:
+			_bind_enemy(enemy)
+	for enemy in living_enemies:
+		enemy.set_combat_enabled(false)
+	state = State.COMBAT
+	_hud.set_enemies_remaining(living_enemies.size())
+
+
+func _prepare_health_potion_lesson() -> void:
+	if player.health.current >= player.health.maximum - 0.1:
+		player.health.clear_invulnerability()
+		player.take_damage(25.0, player.global_position + Vector2.LEFT)
+
+
+func _prepare_mana_potion_lesson() -> void:
+	var amount_to_spend := maxf(0.0, player.mana.current - 10.0)
+	if amount_to_spend > 0.0:
+		player.mana.try_spend(amount_to_spend)
+
+
+func _request_tutorial_advance(expected_step: TutorialStep) -> void:
+	if (
+		not _tutorial_active
+		or _tutorial_advancing
+		or _tutorial_step != expected_step
+	):
+		return
+	_tutorial_advancing = true
+	_advance_tutorial.call_deferred()
+
+
+func _advance_tutorial() -> void:
+	_tutorial_advancing = false
+	if not _tutorial_active:
+		return
+	if _tutorial_step >= TutorialStep.MANA_POTION:
+		_finish_tutorial()
+		return
+	_set_tutorial_step((_tutorial_step + 1) as TutorialStep)
+
+
+func _finish_tutorial() -> void:
+	if not _tutorial_active:
+		return
+	_tutorial_active = false
+	_tutorial_advancing = false
+	_tutorial.finish()
+	SaveManager.complete_tutorial()
+	player.input.clear_tutorial_restrictions()
+	_hotbar.clear_tutorial_slot()
+	_touch_controls.clear_tutorial_state()
+	player.set_control_enabled(true, true)
+	_ensure_tutorial_enemies()
+	for enemy in living_enemies:
+		enemy.set_combat_enabled(true)
+	state = State.COMBAT
+	_hud.set_enemies_remaining(living_enemies.size())
+	_announcement.announce(
+		"TUTORIAL COMPLETE",
+		"CLEAR THE FLOOR",
+		Color("6fd3a5"),
+		1.2
+	)
+
+
+func _on_tutorial_jump_started() -> void:
+	_request_tutorial_advance(TutorialStep.JUMP)
+
+
+func _on_tutorial_platform_climbed() -> void:
+	_request_tutorial_advance(TutorialStep.CLIMB)
+
+
+func _on_tutorial_platform_dropped() -> void:
+	_request_tutorial_advance(TutorialStep.DROP)
+
+
+func _on_tutorial_melee_landed(_target: Node2D, _damage: float, _combo_step: int) -> void:
+	_request_tutorial_advance(TutorialStep.SWORD)
+
+
+func _on_tutorial_dash_started(_origin: Vector2) -> void:
+	_request_tutorial_advance(TutorialStep.DASH)
+
+
+func _on_tutorial_health_potion_used() -> void:
+	_request_tutorial_advance(TutorialStep.HEALTH_POTION)
+
+
+func _on_tutorial_mana_potion_used() -> void:
+	_request_tutorial_advance(TutorialStep.MANA_POTION)
 
 
 # --- Room lifecycle ----------------------------------------------------------
@@ -113,6 +324,9 @@ func begin_room() -> void:
 	_hud.refresh_room_header()
 	_hud.hide_boss()
 	_spike_pulse_timer = SPIKE_PULSE_INTERVAL
+	if RunState.floor_number == 1 and not SaveManager.tutorial_completed:
+		_start_tutorial.call_deferred()
+		return
 	_enter_encounter()
 
 
@@ -185,6 +399,9 @@ func _on_enemy_died(enemy: EnemyBase, coin_reward: int, was_elite: bool) -> void
 	if was_elite:
 		RunState.echoes_earned += 1
 
+	if _tutorial_active:
+		_hud.set_enemies_remaining(living_enemies.size())
+		return
 	if state != State.COMBAT:
 		return
 	_hud.set_enemies_remaining(living_enemies.size())
@@ -244,6 +461,9 @@ func _bind_enemy(enemy: EnemyBase) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if _tutorial_active and _tutorial_step == TutorialStep.MOVE:
+		if player.position.distance_to(_tutorial_move_origin) >= TUTORIAL_MOVE_DISTANCE:
+			_request_tutorial_advance(TutorialStep.MOVE)
 	if state != State.COMBAT:
 		return
 	_apply_contact_damage()
@@ -296,6 +516,7 @@ func _on_fireball_cast(origin: Vector2, direction: Vector2, damage: float) -> vo
 			true, origin, heading * speed, damage, player.projectile_pierce, ricochets,
 			Projectile.Element.FIRE
 		)
+	_request_tutorial_advance(TutorialStep.FIRE)
 
 
 func _on_frost_nova_cast(origin: Vector2, radius: float, damage: float) -> void:
@@ -305,6 +526,7 @@ func _on_frost_nova_cast(origin: Vector2, radius: float, damage: float) -> void:
 		if origin.distance_to(enemy.global_position) > radius + enemy.projectile_radius:
 			continue
 		enemy.take_hit(damage, enemy.global_position - origin, EventBus.DamageStyle.ICE)
+	_request_tutorial_advance(TutorialStep.ICE)
 
 
 func _on_enemy_shot_requested(origin: Vector2, direction: Vector2, damage: float) -> void:
@@ -368,6 +590,13 @@ func _clear_transient_nodes() -> void:
 
 
 func _on_player_died() -> void:
+	if _tutorial_active:
+		player.revive(1.0)
+		player.position = level_host.player_start()
+		player.prepare_floor_spawn()
+		player.set_control_enabled(true, _tutorial_step >= TutorialStep.SWORD)
+		EventBus.toast_requested.emit("TRY THAT LESSON AGAIN", 1.4)
+		return
 	if state == State.FINISHED:
 		return
 	if SaveManager.has_second_wind() and not RunState.second_wind_used:

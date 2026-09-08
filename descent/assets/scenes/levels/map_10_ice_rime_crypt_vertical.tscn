@@ -60,7 +60,7 @@ size = Vector2(1310, 18)
 shape = SubResource("RectangleShape2D_q0sfr")
 
 [node name="Platform1" type="StaticBody2D" parent="Platforms" unique_id=1896294673]
-position = Vector2(771, 927)
+position = Vector2(771.00006, 885)
 scale = Vector2(1.1496922, 1)
 collision_layer = 4
 collision_mask = 0

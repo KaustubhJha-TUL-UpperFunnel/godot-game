@@ -14,6 +14,7 @@ const MAX_SEQUENCE_FRAMES := 16
 @export var attack_interval: float = 1.05
 
 var _attacking: bool = false
+var _visual_foot_offset: float = 0.0
 
 @onready var _sprite: AnimatedSprite2D = $Sprite
 @onready var _body_shape: CollisionShape2D = $CollisionShape2D
@@ -33,7 +34,8 @@ func _on_ready_configured() -> void:
 	# Small stat differences keep the eighteen visual variants readable without
 	# reintroducing the old hard-coded slime/goblin/sorcerer archetypes.
 	speed = 108.0 + float(monster_id % 5) * 7.0
-	contact_damage = 8.0 + float(monster_id % 4)
+	base_damage = 8.0 + float(monster_id % 4)
+	contact_damage = base_damage
 	coin_reward = 2 + int(monster_id / 6.0)
 
 
@@ -55,14 +57,23 @@ func _build_animations() -> void:
 		var height := maxf(1.0, float(move_first.get_height()))
 		var visual_scale := clampf(82.0 / height, 0.68, 1.2)
 		_sprite.scale = Vector2.ONE * visual_scale
+		var body_radius := clampf(
+			float(move_first.get_width()) * visual_scale * 0.22, 16.0, 27.0
+		)
+		var visual_height := _maximum_frame_height(frames) * visual_scale
+		var capsule := CapsuleShape2D.new()
+		capsule.radius = body_radius
+		capsule.height = maxf(body_radius * 2.0, visual_height)
+		_body_shape.shape = capsule
+		# Keep the capsule's bottom at the floor while extending its hit area up
+		# through the visible torso instead of leaving a tiny circle at the feet.
+		_body_shape.position.y = body_radius - capsule.height * 0.5
+		_visual_foot_offset = body_radius
 		_align_current_frame_to_feet()
-		var circle := _body_shape.shape as CircleShape2D
-		if circle != null:
-			circle.radius = clampf(float(move_first.get_width()) * visual_scale * 0.22, 16.0, 27.0)
-			projectile_radius = circle.radius + 6.0
-			contact_radius = circle.radius + 24.0
-			health_bar_height = _maximum_frame_height(frames) * visual_scale + 12.0
-			_health_bar.position.y = -health_bar_height
+		projectile_radius = body_radius + 6.0
+		contact_radius = body_radius + 24.0
+		health_bar_height = visual_height - body_radius + 12.0
+		_health_bar.position.y = -health_bar_height
 
 
 func _append_sequence(
@@ -99,7 +110,10 @@ func _align_current_frame_to_feet() -> void:
 		return
 	var texture := _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame)
 	if texture != null:
-		_sprite.position = Vector2(0.0, -float(texture.get_height()) * _sprite.scale.y * 0.5)
+		_sprite.position = Vector2(
+			0.0,
+			_visual_foot_offset - float(texture.get_height()) * _sprite.scale.y * 0.5
+		)
 
 
 func _steer(_delta: float, direction: Vector2, distance: float) -> Vector2:

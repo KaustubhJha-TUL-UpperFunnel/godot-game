@@ -35,6 +35,9 @@ var touch_move: Vector2 = Vector2.ZERO
 var touch_aim: Vector2 = Vector2.ZERO
 var touch_attack: bool = false
 var _touch_jump_queued: bool = false
+var _tutorial_restricted: bool = false
+var _tutorial_movement_allowed: bool = true
+var _tutorial_allowed_slot: int = -1
 
 @onready var _actor: Node2D = get_parent()
 
@@ -47,7 +50,7 @@ func _process(_delta: float) -> void:
 
 
 func _read_movement() -> void:
-	if not movement_enabled:
+	if not movement_enabled or (_tutorial_restricted and not _tutorial_movement_allowed):
 		move_vector = Vector2.ZERO
 		return
 
@@ -71,13 +74,21 @@ func _read_aim() -> void:
 
 
 func _read_attack_hold() -> void:
-	attack_held = attack_enabled and (Input.is_action_pressed("attack") or touch_attack)
+	var attack_allowed := not _tutorial_restricted or _tutorial_allowed_slot == 0
+	attack_held = (
+		attack_enabled
+		and attack_allowed
+		and (Input.is_action_pressed("attack") or touch_attack)
+	)
 
 
 func _read_slot_presses() -> void:
 	if not movement_enabled:
 		return
 	for action: String in SLOT_ACTIONS:
+		var slot: int = SLOT_ACTIONS[action]
+		if _tutorial_restricted and slot != _tutorial_allowed_slot:
+			continue
 		# The attack slot is driven by attack_held so the combo can be chained.
 		if action == "attack":
 			continue
@@ -104,7 +115,8 @@ func request_touch_jump() -> void:
 
 
 func jump_requested() -> bool:
-	return movement_enabled and (
+	var jump_allowed := not _tutorial_restricted or _tutorial_allowed_slot == 6
+	return movement_enabled and jump_allowed and (
 		Input.is_action_just_pressed(&"jump") or _touch_jump_queued
 	)
 
@@ -119,14 +131,16 @@ func consume_jump() -> bool:
 
 
 func up_held() -> bool:
-	return movement_enabled and (
+	var movement_allowed := not _tutorial_restricted or _tutorial_movement_allowed
+	return movement_enabled and movement_allowed and (
 		Input.is_action_pressed(&"move_up")
 		or touch_move.y <= -TOUCH_STICK_RADIUS * 0.65
 	)
 
 
 func drop_held() -> bool:
-	return movement_enabled and (
+	var movement_allowed := not _tutorial_restricted or _tutorial_movement_allowed
+	return movement_enabled and movement_allowed and (
 		Input.is_action_pressed(&"move_down")
 		or touch_move.y >= TOUCH_STICK_RADIUS * 0.65
 	)
@@ -137,3 +151,21 @@ func clear_touch_state() -> void:
 	touch_aim = Vector2.ZERO
 	touch_attack = false
 	_touch_jump_queued = false
+
+
+func set_tutorial_restrictions(movement_allowed: bool, allowed_slot: int) -> void:
+	_tutorial_restricted = true
+	_tutorial_movement_allowed = movement_allowed
+	_tutorial_allowed_slot = allowed_slot
+	if not movement_allowed:
+		touch_move = Vector2.ZERO
+	if allowed_slot != 0:
+		touch_attack = false
+	if allowed_slot != 6:
+		_touch_jump_queued = false
+
+
+func clear_tutorial_restrictions() -> void:
+	_tutorial_restricted = false
+	_tutorial_movement_allowed = true
+	_tutorial_allowed_slot = -1

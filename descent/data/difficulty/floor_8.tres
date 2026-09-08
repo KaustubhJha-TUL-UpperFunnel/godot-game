@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_script")
 floor_number = 8
-enemy_count = 1
+enemy_count = 10
 pressure = 1.42
 elite_chance = 0.42
