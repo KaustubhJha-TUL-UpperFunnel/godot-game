@@ -60,7 +60,7 @@ size = Vector2(1314, 18)
 shape = SubResource("RectangleShape2D_wwhqg")
 
 [node name="Platform6" type="StaticBody2D" parent="Platforms" unique_id=1881931299]
-position = Vector2(764, 886)
+position = Vector2(764, 904)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
@@ -74,10 +74,11 @@ shape = SubResource("RectangleShape2D_3r8ef")
 [node name="DeathZones" type="Node2D" parent="." unique_id=1574815467]
 
 [node name="Pit" type="Area2D" parent="DeathZones" unique_id=238631389]
-position = Vector2(762, 992)
+position = Vector2(758, 1040)
 collision_layer = 16
 collision_mask = 3
 monitoring = false
+monitorable = false
 script = ExtResource("5_death")
 size = Vector2(1314, 181)
 hazard_name = "THE VOID BELOW"

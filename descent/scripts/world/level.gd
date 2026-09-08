@@ -316,8 +316,45 @@ func is_hazardous(point: Vector2, margin: float = 20.0) -> bool:
 	return false
 
 
+## Safe centre bounds inside the authored outer wall collision. Content bounds
+## alone include the thickness of those walls, which allowed large monsters to
+## appear partly inside or beyond the room frame.
+func spawn_bounds(actor_radius: float = 20.0) -> Rect2:
+	var safe := Rect2(Vector2.ZERO, content_size).grow(-actor_radius)
+	var walls := get_node_or_null("Walls") as Node2D
+	if walls == null:
+		return safe
+
+	var left := safe.position.x
+	var top := safe.position.y
+	var right := safe.end.x
+	var bottom := safe.end.y
+	for child in walls.get_children():
+		var shape := child as CollisionShape2D
+		if shape == null:
+			continue
+		var rectangle := shape.shape as RectangleShape2D
+		if rectangle == null:
+			continue
+		var scale_x := shape.global_transform.x.length()
+		var scale_y := shape.global_transform.y.length()
+		var size := Vector2(rectangle.size.x * scale_x, rectangle.size.y * scale_y)
+		var center := to_local(shape.global_position)
+		if size.y >= content_size.y * 0.5:
+			if center.x < content_size.x * 0.5:
+				left = maxf(left, center.x + size.x * 0.5 + actor_radius)
+			else:
+				right = minf(right, center.x - size.x * 0.5 - actor_radius)
+		elif size.x >= content_size.x * 0.5:
+			if center.y < content_size.y * 0.5:
+				top = maxf(top, center.y + size.y * 0.5 + actor_radius)
+			else:
+				bottom = minf(bottom, center.y - size.y * 0.5 - actor_radius)
+	return Rect2(Vector2(left, top), Vector2(maxf(0.0, right - left), maxf(0.0, bottom - top)))
+
+
 func is_safe_spawn(point: Vector2, actor_radius: float = 20.0) -> bool:
-	var bounds := Rect2(Vector2.ZERO, content_size).grow(-actor_radius)
+	var bounds := spawn_bounds(actor_radius)
 	if not bounds.has_point(point) or is_hazardous(point, actor_radius):
 		return false
 	if not is_vertical():
@@ -330,7 +367,11 @@ func is_safe_spawn(point: Vector2, actor_radius: float = 20.0) -> bool:
 ## Vector2.INF lets callers reject a room/marker instead of spawning over a pit.
 func safe_spawn_position(preferred: Vector2, actor_radius: float = 20.0) -> Vector2:
 	if not is_vertical():
-		var bounds := walkable_bounds().grow(-actor_radius)
+		var bounds := walkable_bounds().grow(-actor_radius).intersection(
+			spawn_bounds(actor_radius)
+		)
+		if bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
+			return Vector2.INF
 		var clamped := Vector2(
 			clampf(preferred.x, bounds.position.x, bounds.end.x),
 			clampf(preferred.y, bounds.position.y, bounds.end.y)
@@ -359,7 +400,7 @@ func safe_spawn_position(preferred: Vector2, actor_radius: float = 20.0) -> Vect
 		var candidate := Vector2(candidate_x, surface_y - actor_radius - 2.0)
 		if is_hazardous(candidate, actor_radius):
 			continue
-		var content_bounds := Rect2(Vector2.ZERO, content_size).grow(-actor_radius)
+		var content_bounds := spawn_bounds(actor_radius)
 		if not content_bounds.has_point(candidate):
 			continue
 		var score := candidate.distance_squared_to(preferred)

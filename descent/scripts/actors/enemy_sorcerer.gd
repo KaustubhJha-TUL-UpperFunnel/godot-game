@@ -59,7 +59,8 @@ func _release_bolt() -> void:
 	shot_requested.emit(
 		global_position + locked_direction * 20.0,
 		locked_direction,
-		contact_damage * BOLT_DAMAGE_SCALE
+		contact_damage * BOLT_DAMAGE_SCALE,
+		Projectile.Visual.DEFAULT
 	)
 
 

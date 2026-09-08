@@ -55,8 +55,15 @@ func _fire_volley(direction: Vector2) -> void:
 	var count := PHASE_TWO_VOLLEY if phase == 2 else PHASE_ONE_VOLLEY
 	for index in count:
 		var angle := TAU * float(index) / float(count) + _spin
-		shot_requested.emit(global_position, Vector2.from_angle(angle), RADIAL_DAMAGE)
-	shot_requested.emit(global_position, direction, AIMED_DAMAGE)
+		shot_requested.emit(
+			global_position,
+			Vector2.from_angle(angle),
+			RADIAL_DAMAGE,
+			Projectile.Visual.DEFAULT
+		)
+	shot_requested.emit(
+		global_position, direction, AIMED_DAMAGE, Projectile.Visual.DEFAULT
+	)
 
 	if phase == 2 and _volley_index % 2 == 0:
 		summon_requested.emit(global_position - direction * 70.0)

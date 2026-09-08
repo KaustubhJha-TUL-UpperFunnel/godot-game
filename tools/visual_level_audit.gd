@@ -15,6 +15,7 @@ var _results: Dictionary = {}
 var _index: int = -1
 var _paused: bool = false
 var _finished: bool = false
+var _last_bot_status: String = ""
 
 @onready var _pause: Button = $AuditUI/Controls/Pause
 @onready var _exit: Button = $AuditUI/Controls/Exit
@@ -36,6 +37,7 @@ func _ready() -> void:
 	_bot = BOT_SCRIPT.new() as LevelAuditBot
 	add_child(_bot)
 	_bot.bind(_gameplay)
+	_bot.status_changed.connect(_on_bot_status_changed)
 	_bot.issue_detected.connect(_on_runtime_issue)
 
 	_gameplay.audit_floor_started.connect(_on_floor_started)
@@ -57,6 +59,7 @@ func _on_floor_started(floor_number: int) -> void:
 		_results[path] = [] as Array[String]
 
 	_bot.set_enabled(true)
+	_last_bot_status = ""
 	_bot.floor_started()
 	print("LEVEL AUDIT: starting floor %02d - %s" % [floor_number, path])
 	_write_report()
@@ -136,6 +139,8 @@ func _inspect_current_level() -> Array[String]:
 	for enemy in _gameplay.living_enemies:
 		if not is_instance_valid(enemy):
 			findings.append("FAIL: encounter contains an invalid enemy")
+		elif not level.spawn_bounds(enemy.projectile_radius).has_point(enemy.position):
+			findings.append("FAIL: enemy moved outside inner wall bounds")
 		elif level.is_hazardous(enemy.position, enemy.projectile_radius):
 			findings.append("FAIL: enemy entered an authored hazard")
 
@@ -186,12 +191,23 @@ func _record_findings(path: String, incoming: Array[String]) -> void:
 		if not findings.has(finding):
 			findings.append(finding)
 			print("LEVEL AUDIT %s: %s" % [path.get_file(), finding])
+			if finding.begins_with("FAIL:"):
+				push_error("LEVEL AUDIT %s: %s" % [path.get_file(), finding])
+			elif finding.begins_with("WARN:"):
+				push_warning("LEVEL AUDIT %s: %s" % [path.get_file(), finding])
 	_results[path] = findings
 	_write_report()
 
 
 func _on_runtime_issue(message: String) -> void:
 	_record_findings(RunState.current_level_path, [message])
+
+
+func _on_bot_status_changed(message: String) -> void:
+	if message == _last_bot_status:
+		return
+	_last_bot_status = message
+	print("LEVEL AUDIT BOT: %s" % message)
 
 
 func _toggle_pause() -> void:

@@ -8,6 +8,7 @@ extends Area2D
 ## walls/platform layer and only collide with their target actor layer.
 
 enum Element { PLAIN, FIRE, ICE }
+enum Visual { DEFAULT, ARROW, PURPLE_ORB, DRAGON_FIRE, BLUE_SKULL, RED_ORB }
 
 const ELEMENT_COLORS := {
 	Element.PLAIN: Color("58e6ff"),
@@ -16,6 +17,23 @@ const ELEMENT_COLORS := {
 }
 
 const HOSTILE_COLOR := Color("ff4f62")
+const VISUAL_TEXTURES := {
+	Visual.ARROW: preload("res://descent/assets/generated/projectiles/monster_2_arrow.png"),
+	Visual.PURPLE_ORB: preload("res://descent/assets/generated/projectiles/monster_6_purple_orb.png"),
+	Visual.DRAGON_FIRE: preload("res://descent/assets/generated/projectiles/monster_7_dragon_fireball.png"),
+	Visual.BLUE_SKULL: preload("res://descent/assets/generated/projectiles/monster_10_blue_skull.png"),
+	Visual.RED_ORB: preload("res://descent/assets/generated/projectiles/monster_16_red_orb.png"),
+}
+const VISUAL_RADII := {
+	Visual.ARROW: 5.0,
+	Visual.PURPLE_ORB: 8.0,
+	Visual.DRAGON_FIRE: 10.0,
+	Visual.BLUE_SKULL: 9.0,
+	Visual.RED_ORB: 8.0,
+}
+const VISUAL_SCALES := {
+	Visual.ARROW: 0.62,
+}
 const FRIENDLY_LIFETIME := 1.7
 const HOSTILE_LIFETIME := 3.2
 const FRIENDLY_RADIUS := 5.0
@@ -33,6 +51,7 @@ var damage: float = 10.0
 var pierce: int = 0
 var ricochets: int = 0
 var element: Element = Element.PLAIN
+var visual: Visual = Visual.DEFAULT
 var bounds: Rect2 = Rect2(105, 380, 1070, 240)
 
 var _velocity: Vector2 = Vector2.RIGHT
@@ -40,6 +59,8 @@ var _life_left: float = FRIENDLY_LIFETIME
 var _radius: float = FRIENDLY_RADIUS
 var _resolved: bool = false
 var _hit_actor_ids: Dictionary = {}
+var _visual_time: float = 0.0
+var _base_visual_scale: float = 1.0
 
 @onready var _shape: CollisionShape2D = $CollisionShape2D
 @onready var _core: Sprite2D = $Core
@@ -54,7 +75,8 @@ func setup(
 	shot_damage: float,
 	shot_pierce: int = 0,
 	shot_ricochets: int = 0,
-	shot_element: Element = Element.PLAIN
+	shot_element: Element = Element.PLAIN,
+	shot_visual: Visual = Visual.DEFAULT
 ) -> void:
 	friendly = is_friendly
 	global_position = spawn_position
@@ -63,8 +85,13 @@ func setup(
 	pierce = shot_pierce
 	ricochets = shot_ricochets
 	element = shot_element
+	visual = shot_visual
 	_life_left = FRIENDLY_LIFETIME if friendly else HOSTILE_LIFETIME
-	_radius = FRIENDLY_RADIUS if friendly else HOSTILE_RADIUS
+	_radius = (
+		float(VISUAL_RADII.get(visual, HOSTILE_RADIUS))
+		if not friendly and visual != Visual.DEFAULT
+		else (FRIENDLY_RADIUS if friendly else HOSTILE_RADIUS)
+	)
 
 	if friendly:
 		collision_layer = LAYER_PLAYER_ATTACKS
@@ -76,11 +103,15 @@ func setup(
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	area_entered.connect(_on_body_entered)
 	_apply_appearance()
 	rotation = _velocity.angle()
 
 
 func _apply_appearance() -> void:
+	if not friendly and visual != Visual.DEFAULT:
+		_apply_custom_visual()
+		return
 	var color: Color = ELEMENT_COLORS[element] if friendly else HOSTILE_COLOR
 	var sprite_scale := _radius / 16.0
 	_core.scale = Vector2.ONE * sprite_scale
@@ -89,6 +120,16 @@ func _apply_appearance() -> void:
 	_core.modulate = color
 	_trail.default_color = Color(color, 0.6)
 	_trail.width = _radius * 1.5
+	_shape.shape.radius = _radius
+
+
+func _apply_custom_visual() -> void:
+	_core.texture = VISUAL_TEXTURES.get(visual)
+	_base_visual_scale = float(VISUAL_SCALES.get(visual, 1.0))
+	_core.scale = Vector2.ONE * _base_visual_scale
+	_core.modulate = Color.WHITE
+	_glow.hide()
+	_trail.hide()
 	_shape.shape.radius = _radius
 
 
@@ -105,7 +146,7 @@ func _physics_process(delta: float) -> void:
 	var query := PhysicsRayQueryParameters2D.create(
 		previous, next, collision_mask, [get_rid()]
 	)
-	query.collide_with_areas = false
+	query.collide_with_areas = true
 	query.hit_from_inside = true
 	var hit := get_world_2d().direct_space_state.intersect_ray(query)
 	global_position = next
@@ -117,9 +158,18 @@ func _physics_process(delta: float) -> void:
 			if _resolved:
 				return
 	rotation = _velocity.angle()
+	_animate_custom_visual(delta)
 
 	if not bounds.has_point(global_position):
 		_hit_boundary()
+
+
+func _animate_custom_visual(delta: float) -> void:
+	if visual == Visual.DEFAULT or visual == Visual.ARROW:
+		return
+	_visual_time += delta
+	var pulse := 1.0 + sin(_visual_time * 12.0) * 0.08
+	_core.scale = Vector2.ONE * (_base_visual_scale * pulse)
 
 
 ## Reflects off the arena edge when the projectile has ricochets left,
@@ -140,14 +190,17 @@ func _hit_boundary() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if _resolved:
 		return
-	if not body.has_method("take_hit"):
+	var target := body
+	if not target.has_method("take_hit"):
+		target = body.get_parent() as Node2D
+	if target == null or not target.has_method("take_hit"):
 		return
 
-	var actor_id := body.get_instance_id()
+	var actor_id := target.get_instance_id()
 	if _hit_actor_ids.has(actor_id):
 		global_position += _velocity.normalized() * (_radius * 2.0 + 2.0)
 		return
-	var dealt := float(body.call(
+	var dealt := float(target.call(
 		&"take_hit", damage, _velocity.normalized(), _damage_style()
 	))
 	# Do not consume a projectile on an invulnerability frame. This matters for

@@ -180,14 +180,18 @@ func _spawn(
 	var enemy: EnemyBase = scene.instantiate()
 	if enemy is AnimatedMonster:
 		(enemy as AnimatedMonster).configure_variant(variant)
-	var safe := level.safe_spawn_position(at, maxf(20.0, enemy.projectile_radius))
-	if safe == Vector2.INF:
-		enemy.free()
-		return null
-	enemy.position = safe
 	enemy.player = player
 	enemy.movement_bounds = level.walkable_bounds()
 	container.add_child(enemy)
 	enemy.configure_navigation(level.current_level)
+
+	# AnimatedMonster calculates its real body radius in _ready(). Resolve the
+	# spawn only after that, otherwise large variants can overlap outer walls.
+	var safe := level.safe_spawn_position(at, maxf(20.0, enemy.projectile_radius))
+	if safe == Vector2.INF:
+		container.remove_child(enemy)
+		enemy.free()
+		return null
+	enemy.position = safe
 	enemy_spawned.emit(enemy)
 	return enemy

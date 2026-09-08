@@ -8,12 +8,52 @@ extends EnemyBase
 const MOVEMENT_ROOT := "res://descent/assets/animations/movement"
 const ATTACK_ROOT := "res://descent/assets/animations/attacks"
 const MAX_SEQUENCE_FRAMES := 16
+const MELEE_RANGE := 62.0
+const RANGED_CONFIGS := {
+	2: {
+		"visual": Projectile.Visual.ARROW,
+		"range": 460.0,
+		"interval": 1.55,
+		"damage_scale": 0.9,
+		"origin_y": -34.0,
+	},
+	6: {
+		"visual": Projectile.Visual.PURPLE_ORB,
+		"range": 420.0,
+		"interval": 1.7,
+		"damage_scale": 0.85,
+		"origin_y": -48.0,
+	},
+	7: {
+		"visual": Projectile.Visual.DRAGON_FIRE,
+		"range": 390.0,
+		"interval": 1.85,
+		"damage_scale": 1.0,
+		"origin_y": -30.0,
+	},
+	10: {
+		"visual": Projectile.Visual.BLUE_SKULL,
+		"range": 440.0,
+		"interval": 1.75,
+		"damage_scale": 0.9,
+		"origin_y": -42.0,
+	},
+	16: {
+		"visual": Projectile.Visual.RED_ORB,
+		"range": 430.0,
+		"interval": 1.65,
+		"damage_scale": 0.95,
+		"origin_y": -48.0,
+	},
+}
 
 @export_range(1, 18, 1) var monster_id: int = 1
 @export var attack_range: float = 62.0
 @export var attack_interval: float = 1.05
 
 var _attacking: bool = false
+var _ranged_attack: bool = false
+var _shot_fired: bool = false
 var _visual_foot_offset: float = 0.0
 
 @onready var _sprite: AnimatedSprite2D = $Sprite
@@ -28,6 +68,7 @@ func _on_ready_configured() -> void:
 	_build_animations()
 	_sprite.animation_finished.connect(_on_animation_finished)
 	_sprite.frame_changed.connect(_align_current_frame_to_feet)
+	_sprite.frame_changed.connect(_on_attack_frame_changed)
 	_sprite.play(&"move")
 	_align_current_frame_to_feet()
 
@@ -120,28 +161,91 @@ func _steer(_delta: float, direction: Vector2, distance: float) -> Vector2:
 	_sprite.flip_h = direction.x < 0.0
 	if _attacking:
 		return Vector2.ZERO
-	if distance <= attack_range and _attack_timer <= 0.0:
-		_attacking = true
-		_attack_timer = attack_interval
-		_sprite.play(&"attack")
+	if _attack_timer <= 0.0:
+		if distance <= MELEE_RANGE:
+			_begin_attack(direction, false)
+			return Vector2.ZERO
+		if _has_ranged_attack() and distance <= _ranged_range():
+			_begin_attack(direction, true)
+			return Vector2.ZERO
+	if _has_ranged_attack() and distance > MELEE_RANGE and distance <= _ranged_range():
 		return Vector2.ZERO
 	if _sprite.animation != &"move":
 		_sprite.play(&"move")
 	return direction * speed
 
 
+func _begin_attack(direction: Vector2, ranged: bool) -> void:
+	_attacking = true
+	_ranged_attack = ranged
+	_shot_fired = false
+	locked_direction = direction
+	_attack_timer = _ranged_interval() if ranged else attack_interval
+	if ranged:
+		_show_telegraph(direction, minf(120.0, _ranged_range()), 3.0)
+	else:
+		_hide_telegraph()
+	_sprite.play(&"attack")
+
+
 func can_damage_player() -> bool:
-	if not _attacking or _sprite.animation != &"attack":
+	if _ranged_attack or not _attacking or _sprite.animation != &"attack":
 		return false
 	var frame_count := _sprite.sprite_frames.get_frame_count(&"attack")
 	return _sprite.frame >= maxi(1, int(frame_count * 0.45))
+
+
+func _on_attack_frame_changed() -> void:
+	if (
+		not _attacking
+		or not _ranged_attack
+		or _shot_fired
+		or _sprite.animation != &"attack"
+	):
+		return
+	var frame_count := _sprite.sprite_frames.get_frame_count(&"attack")
+	if _sprite.frame < maxi(1, int(float(frame_count) * 0.55)):
+		return
+	_shot_fired = true
+	_hide_telegraph()
+	var config: Dictionary = RANGED_CONFIGS[monster_id]
+	var origin := (
+		global_position
+		+ Vector2(0.0, float(config["origin_y"]))
+		+ locked_direction * 24.0
+	)
+	shot_requested.emit(
+		origin,
+		locked_direction,
+		contact_damage * float(config["damage_scale"]),
+		int(config["visual"])
+	)
 
 
 func _on_animation_finished() -> void:
 	if _sprite.animation != &"attack":
 		return
 	_attacking = false
+	_ranged_attack = false
+	_shot_fired = false
+	_hide_telegraph()
 	_sprite.play(&"move")
+
+
+func _has_ranged_attack() -> bool:
+	return RANGED_CONFIGS.has(monster_id)
+
+
+func _ranged_range() -> float:
+	if not _has_ranged_attack():
+		return 0.0
+	return float((RANGED_CONFIGS[monster_id] as Dictionary)["range"])
+
+
+func _ranged_interval() -> float:
+	if not _has_ranged_attack():
+		return attack_interval
+	return float((RANGED_CONFIGS[monster_id] as Dictionary)["interval"]) / difficulty_pressure
 
 
 func _impact_color() -> Color:

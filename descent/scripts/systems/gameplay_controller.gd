@@ -62,6 +62,13 @@ const TUTORIAL_INSTRUCTIONS: Array[String] = [
 
 const FIREBALL_SPREAD := 0.16
 const ENEMY_SHOT_SPEED := 340.0
+const ENEMY_PROJECTILE_SPEEDS := {
+	Projectile.Visual.ARROW: 520.0,
+	Projectile.Visual.PURPLE_ORB: 310.0,
+	Projectile.Visual.DRAGON_FIRE: 380.0,
+	Projectile.Visual.BLUE_SKULL: 285.0,
+	Projectile.Visual.RED_ORB: 400.0,
+}
 const CROSSFIRE_SPREAD := 0.32
 const SPIKE_PULSE_INTERVAL := 3.4
 const SPIKE_PULSE_RADIUS := 62.0
@@ -635,8 +642,20 @@ func _on_frost_nova_cast(origin: Vector2, radius: float, damage: float) -> void:
 	_request_tutorial_advance(TutorialStep.ICE)
 
 
-func _on_enemy_shot_requested(origin: Vector2, direction: Vector2, damage: float) -> void:
-	_spawn_projectile(false, origin, direction.normalized() * ENEMY_SHOT_SPEED, damage)
+func _on_enemy_shot_requested(
+	origin: Vector2, direction: Vector2, damage: float, visual: int
+) -> void:
+	var speed := float(ENEMY_PROJECTILE_SPEEDS.get(visual, ENEMY_SHOT_SPEED))
+	_spawn_projectile(
+		false,
+		origin,
+		direction.normalized() * speed,
+		damage,
+		0,
+		0,
+		Projectile.Element.PLAIN,
+		visual as Projectile.Visual
+	)
 
 	if RunState.danger_modifier != "CROSSFIRE":
 		return
@@ -644,8 +663,12 @@ func _on_enemy_shot_requested(origin: Vector2, direction: Vector2, damage: float
 		_spawn_projectile(
 			false,
 			origin,
-			direction.normalized().rotated(offset) * ENEMY_SHOT_SPEED,
-			damage * 0.7
+			direction.normalized().rotated(offset) * speed,
+			damage * 0.7,
+			0,
+			0,
+			Projectile.Element.PLAIN,
+			visual as Projectile.Visual
 		)
 
 
@@ -660,13 +683,14 @@ func _spawn_projectile(
 	damage: float,
 	pierce: int = 0,
 	ricochets: int = 0,
-	element: Projectile.Element = Projectile.Element.PLAIN
+	element: Projectile.Element = Projectile.Element.PLAIN,
+	visual: Projectile.Visual = Projectile.Visual.DEFAULT
 ) -> void:
 	if projectile_scene == null:
 		return
 	var bolt: Projectile = projectile_scene.instantiate()
 	bolt.bounds = level_host.walkable_bounds().grow(30.0)
-	bolt.setup(friendly, origin, shot_velocity, damage, pierce, ricochets, element)
+	bolt.setup(friendly, origin, shot_velocity, damage, pierce, ricochets, element, visual)
 	_projectiles.add_child(bolt)
 
 

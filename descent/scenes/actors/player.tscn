@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://descent/scripts/actors/player_avatar.gd" id="1_player"]
 [ext_resource type="Script" path="res://descent/scripts/actors/player_input.gd" id="2_input"]
@@ -13,6 +13,10 @@
 [sub_resource type="CircleShape2D" id="Shape_body"]
 radius = 17.0
 
+[sub_resource type="CapsuleShape2D" id="Shape_projectile_hurtbox"]
+radius = 22.0
+height = 106.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 1
 collision_mask = 4
@@ -21,6 +25,16 @@ script = ExtResource("1_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("Shape_body")
+
+[node name="ProjectileHurtbox" type="Area2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+monitoring = false
+monitorable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ProjectileHurtbox"]
+position = Vector2(0, -46)
+shape = SubResource("Shape_projectile_hurtbox")
 
 [node name="Shadow" parent="." instance=ExtResource("7_shadow")]
 

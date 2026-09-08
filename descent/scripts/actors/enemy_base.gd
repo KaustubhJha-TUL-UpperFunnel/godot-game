@@ -9,7 +9,7 @@ extends CharacterBody2D
 ## summon, a floor hazard) is emitted as a signal for GameplayController.
 
 signal died(enemy: EnemyBase, coin_reward: int, was_elite: bool)
-signal shot_requested(origin: Vector2, direction: Vector2, damage: float)
+signal shot_requested(origin: Vector2, direction: Vector2, damage: float, visual: int)
 signal summon_requested(origin: Vector2)
 signal hazard_requested(origin: Vector2, radius: float)
 
@@ -34,6 +34,7 @@ const STEERING_ACCELERATION := 1000.0
 const PLATFORM_GRAVITY := 1850.0
 const PLATFORM_JUMP_SPEED := 840.0
 const MAX_PLATFORM_SWITCH_HEIGHT := 190.0
+const MAX_PLATFORM_DROP_HEIGHT := 900.0
 const SAFE_EDGE_LOOKAHEAD := 34.0
 const WALLS_LAYER_NUMBER := 3
 const DROP_IGNORE_SECONDS := 0.12
@@ -172,22 +173,14 @@ func _update_platform_navigation(desired: Vector2, delta: float) -> void:
 		var route_target := level.next_platform_toward(
 			current,
 			target,
-			(projectile_radius + 4.0) * 2.0,
-			MAX_PLATFORM_SWITCH_HEIGHT
+			maxf(30.0, projectile_radius * 1.15),
+			MAX_PLATFORM_SWITCH_HEIGHT,
+			MAX_PLATFORM_DROP_HEIGHT
 		)
+		if route_target == null and target.position.y > current.position.y + 24.0:
+			route_target = _nearest_lower_platform(current)
 		if route_target != null:
-			if level.platforms_share_route(current, route_target):
-				var route_range := route_target.navigation_x_range()
-				var route_x := (route_range.x + route_range.y) * 0.5
-				if route_range.y - route_range.x >= projectile_radius * 2.0:
-					route_x = clampf(
-						player.position.x,
-						route_range.x + projectile_radius,
-						route_range.y - projectile_radius
-					)
-				horizontal = signf(route_x - position.x) * maxf(absf(horizontal), speed * 0.7)
-			else:
-				horizontal = _approach_platform_switch(current, route_target, horizontal)
+			horizontal = _approach_platform_switch(current, route_target, horizontal)
 
 	if is_on_floor() and current != null and absf(horizontal) > 0.1:
 		var look_x := position.x + signf(horizontal) * (projectile_radius + SAFE_EDGE_LOOKAHEAD)
@@ -232,6 +225,30 @@ func _approach_platform_switch(
 	elif height_delta < -28.0 and is_on_floor() and _drop_ignore_time <= 0.0:
 		_begin_controlled_drop()
 	return toward_switch
+
+
+func _nearest_lower_platform(current: LevelPlatform) -> LevelPlatform:
+	var current_range := current.navigation_x_range()
+	var current_y := current.surface_y_at(
+		clampf(position.x, current_range.x, current_range.y), 4.0
+	)
+	var nearest: LevelPlatform = null
+	var nearest_drop := INF
+	for candidate in level.platforms():
+		if candidate == current:
+			continue
+		var candidate_range := candidate.navigation_x_range()
+		var left := maxf(current_range.x, candidate_range.x)
+		var right := minf(current_range.y, candidate_range.y)
+		if right - left < maxf(26.0, projectile_radius):
+			continue
+		var sample_x := (left + right) * 0.5
+		var candidate_y := candidate.surface_y_at(sample_x, 4.0)
+		var drop := candidate_y - current_y
+		if drop > 28.0 and drop <= MAX_PLATFORM_DROP_HEIGHT and drop < nearest_drop:
+			nearest = candidate
+			nearest_drop = drop
+	return nearest
 
 
 func _begin_controlled_drop() -> void:
