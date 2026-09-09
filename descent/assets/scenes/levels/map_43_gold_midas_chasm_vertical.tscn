@@ -119,17 +119,17 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1285770348]
 
-[node name="Top_Left" type="StaticBody2D" parent="Platforms" unique_id=2107519849]
+[node name="Top_Left" type="StaticBody2D" parent="Platforms" unique_id=254135505]
 position = Vector2(408.5, 325.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(683.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Left" unique_id=1487527709]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Left" unique_id=1052206202]
 shape = SubResource("SubResource_plat_0")
 
-[node name="Top_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=1616075393]
+[node name="Top_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=1184062413]
 position = Vector2(782.292, 329.38)
 rotation = 0.13265
 collision_layer = 4
@@ -139,11 +139,11 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(67.29, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_1" unique_id=2005875866]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_1" unique_id=852916322]
 shape = SubResource("SubResource_plat_1")
 one_way_collision = true
 
-[node name="Top_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=2027890679]
+[node name="Top_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=1800275357]
 position = Vector2(849.365, 336.525)
 rotation = 0.079412
 collision_layer = 4
@@ -153,11 +153,11 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(66.81, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_2" unique_id=783861280]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_2" unique_id=1297633188]
 shape = SubResource("SubResource_plat_2")
 one_way_collision = true
 
-[node name="Top_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=831392775]
+[node name="Top_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=509309034]
 position = Vector2(916.434, 340.097)
 rotation = 0.02698
 collision_layer = 4
@@ -167,11 +167,11 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(66.72, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_3" unique_id=2126035953]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_3" unique_id=1572478750]
 shape = SubResource("SubResource_plat_3")
 one_way_collision = true
 
-[node name="Top_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=1919395798]
+[node name="Top_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=1326230508]
 position = Vector2(983.566, 340.097)
 rotation = -0.02698
 collision_layer = 4
@@ -181,11 +181,11 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(66.72, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_4" unique_id=109457372]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_4" unique_id=1841049964]
 shape = SubResource("SubResource_plat_4")
 one_way_collision = true
 
-[node name="Top_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1811722510]
+[node name="Top_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1693340097]
 position = Vector2(1050.635, 336.525)
 rotation = -0.079412
 collision_layer = 4
@@ -195,11 +195,11 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(66.81, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_5" unique_id=2111023699]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_5" unique_id=1317816423]
 shape = SubResource("SubResource_plat_5")
 one_way_collision = true
 
-[node name="Top_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=1499193282]
+[node name="Top_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=642648013]
 position = Vector2(1117.708, 329.38)
 rotation = -0.13265
 collision_layer = 4
@@ -209,31 +209,31 @@ one_way = true
 traversal_group = &"top_bridge"
 size = Vector2(67.29, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_6" unique_id=1095110896]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Bridge_6" unique_id=1145439330]
 shape = SubResource("SubResource_plat_6")
 one_way_collision = true
 
-[node name="Top_Right" type="StaticBody2D" parent="Platforms" unique_id=848386544]
+[node name="Top_Right" type="StaticBody2D" parent="Platforms" unique_id=1582616752]
 position = Vector2(1307.5, 325.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(315.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Right" unique_id=731830856]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Right" unique_id=1460181708]
 shape = SubResource("SubResource_plat_7")
 
-[node name="Mid_Left" type="StaticBody2D" parent="Platforms" unique_id=141515068]
+[node name="Mid_Left" type="StaticBody2D" parent="Platforms" unique_id=385552272]
 position = Vector2(423.5, 598.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(713.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Left" unique_id=1640750019]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Left" unique_id=2094994024]
 shape = SubResource("SubResource_plat_8")
 
-[node name="Mid_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=1197560784]
+[node name="Mid_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=591445287]
 position = Vector2(811.284, 602.907)
 rotation = 0.152649
 collision_layer = 4
@@ -243,11 +243,11 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.76, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_1" unique_id=531796970]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_1" unique_id=584568555]
 shape = SubResource("SubResource_plat_9")
 one_way_collision = true
 
-[node name="Mid_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=1140136620]
+[node name="Mid_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=1016201844]
 position = Vector2(876.765, 610.966)
 rotation = 0.092047
 collision_layer = 4
@@ -257,11 +257,11 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.28, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_2" unique_id=2137130035]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_2" unique_id=641409815]
 shape = SubResource("SubResource_plat_10")
 one_way_collision = true
 
-[node name="Mid_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=2076070246]
+[node name="Mid_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=1356251978]
 position = Vector2(942.254, 614.996)
 rotation = 0.03076
 collision_layer = 4
@@ -271,11 +271,11 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.03, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_3" unique_id=2078420072]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_3" unique_id=1409459445]
 shape = SubResource("SubResource_plat_11")
 one_way_collision = true
 
-[node name="Mid_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=2056659688]
+[node name="Mid_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=335401652]
 position = Vector2(1007.746, 614.996)
 rotation = -0.03076
 collision_layer = 4
@@ -285,11 +285,11 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.03, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_4" unique_id=2125962734]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_4" unique_id=117178271]
 shape = SubResource("SubResource_plat_12")
 one_way_collision = true
 
-[node name="Mid_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1684970461]
+[node name="Mid_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1963268761]
 position = Vector2(1073.235, 610.966)
 rotation = -0.092047
 collision_layer = 4
@@ -299,11 +299,11 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.28, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_5" unique_id=316749989]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_5" unique_id=1478623050]
 shape = SubResource("SubResource_plat_13")
 one_way_collision = true
 
-[node name="Mid_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=197418440]
+[node name="Mid_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=579500995]
 position = Vector2(1138.716, 602.907)
 rotation = -0.152649
 collision_layer = 4
@@ -313,31 +313,31 @@ one_way = true
 traversal_group = &"mid_bridge"
 size = Vector2(65.76, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_6" unique_id=2142180851]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Bridge_6" unique_id=1150641447]
 shape = SubResource("SubResource_plat_14")
 one_way_collision = true
 
-[node name="Mid_Right" type="StaticBody2D" parent="Platforms" unique_id=625468845]
+[node name="Mid_Right" type="StaticBody2D" parent="Platforms" unique_id=1546380953]
 position = Vector2(1317.5, 598.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(295.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Right" unique_id=1794302047]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Right" unique_id=748771356]
 shape = SubResource("SubResource_plat_15")
 
-[node name="Lower_Left" type="StaticBody2D" parent="Platforms" unique_id=1424511174]
+[node name="Lower_Left" type="StaticBody2D" parent="Platforms" unique_id=1808280476]
 position = Vector2(433.5, 869.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(733.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Left" unique_id=446305922]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Left" unique_id=1345763377]
 shape = SubResource("SubResource_plat_16")
 
-[node name="Lower_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=2067680050]
+[node name="Lower_Bridge_1" type="StaticBody2D" parent="Platforms" unique_id=811783352]
 position = Vector2(830.536, 873.372)
 rotation = 0.139685
 collision_layer = 4
@@ -347,11 +347,11 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.92, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_1" unique_id=957854400]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_1" unique_id=813201353]
 shape = SubResource("SubResource_plat_17")
 one_way_collision = true
 
-[node name="Lower_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=499091854]
+[node name="Lower_Bridge_2" type="StaticBody2D" parent="Platforms" unique_id=616116966]
 position = Vector2(894.334, 880.522)
 rotation = 0.083402
 collision_layer = 4
@@ -361,11 +361,11 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.62, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_2" unique_id=1774990359]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_2" unique_id=1485057040]
 shape = SubResource("SubResource_plat_18")
 one_way_collision = true
 
-[node name="Lower_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=1857116360]
+[node name="Lower_Bridge_3" type="StaticBody2D" parent="Platforms" unique_id=1500440542]
 position = Vector2(958.123, 884.097)
 rotation = 0.028428
 collision_layer = 4
@@ -375,11 +375,11 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.33, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_3" unique_id=618677363]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_3" unique_id=1695128161]
 shape = SubResource("SubResource_plat_19")
 one_way_collision = true
 
-[node name="Lower_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=150836471]
+[node name="Lower_Bridge_4" type="StaticBody2D" parent="Platforms" unique_id=779603027]
 position = Vector2(1021.877, 884.097)
 rotation = -0.028428
 collision_layer = 4
@@ -389,11 +389,11 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.33, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_4" unique_id=349387619]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_4" unique_id=884912395]
 shape = SubResource("SubResource_plat_20")
 one_way_collision = true
 
-[node name="Lower_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1235600901]
+[node name="Lower_Bridge_5" type="StaticBody2D" parent="Platforms" unique_id=1766865817]
 position = Vector2(1085.666, 880.522)
 rotation = -0.083402
 collision_layer = 4
@@ -403,11 +403,11 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.62, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_5" unique_id=321839332]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_5" unique_id=2122129894]
 shape = SubResource("SubResource_plat_21")
 one_way_collision = true
 
-[node name="Lower_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=1886220981]
+[node name="Lower_Bridge_6" type="StaticBody2D" parent="Platforms" unique_id=119613434]
 position = Vector2(1149.464, 873.372)
 rotation = -0.139685
 collision_layer = 4
@@ -417,18 +417,18 @@ one_way = true
 traversal_group = &"lower_bridge"
 size = Vector2(63.92, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_6" unique_id=1623935489]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Bridge_6" unique_id=868911034]
 shape = SubResource("SubResource_plat_22")
 one_way_collision = true
 
-[node name="Lower_Right" type="StaticBody2D" parent="Platforms" unique_id=123126900]
+[node name="Lower_Right" type="StaticBody2D" parent="Platforms" unique_id=526601866]
 position = Vector2(1322.5, 869.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(285.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Right" unique_id=1315127680]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Right" unique_id=395878308]
 shape = SubResource("SubResource_plat_23")
 
 [node name="Hazards" type="Node2D" parent="." unique_id=1834136516]

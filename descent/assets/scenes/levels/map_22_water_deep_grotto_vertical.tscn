@@ -59,17 +59,17 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1694851585]
 
-[node name="Platform_UpperFloor" type="StaticBody2D" parent="Platforms" unique_id=135991942]
+[node name="Platform_UpperFloor" type="StaticBody2D" parent="Platforms" unique_id=545082394]
 position = Vector2(559.5, 384.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(985.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperFloor" unique_id=2001775395]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperFloor" unique_id=1445220930]
 shape = SubResource("SubResource_plat_0")
 
-[node name="Platform_UpperRightStep" type="StaticBody2D" parent="Platforms" unique_id=1418211250]
+[node name="Platform_UpperRightStep" type="StaticBody2D" parent="Platforms" unique_id=291580572]
 position = Vector2(1084.5, 378.0)
 collision_layer = 4
 collision_mask = 0
@@ -77,28 +77,28 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(103.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperRightStep" unique_id=897858900]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperRightStep" unique_id=2130487296]
 shape = SubResource("SubResource_plat_1")
 one_way_collision = true
 
-[node name="Platform_LowerLeftLedge" type="StaticBody2D" parent="Platforms" unique_id=591967765]
+[node name="Platform_LowerLeftLedge" type="StaticBody2D" parent="Platforms" unique_id=1262221359]
 position = Vector2(294.0, 799.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(454.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerLeftLedge" unique_id=845501664]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerLeftLedge" unique_id=612947409]
 shape = SubResource("SubResource_plat_2")
 
-[node name="Platform_LowerRightLedge" type="StaticBody2D" parent="Platforms" unique_id=995897848]
+[node name="Platform_LowerRightLedge" type="StaticBody2D" parent="Platforms" unique_id=1787761047]
 position = Vector2(1215.5, 805.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(505.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRightLedge" unique_id=666145718]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRightLedge" unique_id=1750849965]
 shape = SubResource("SubResource_plat_3")
 
 [node name="Hazards" type="Node2D" parent="." unique_id=882692009]

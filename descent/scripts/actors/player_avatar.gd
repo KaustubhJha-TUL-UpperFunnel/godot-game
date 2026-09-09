@@ -126,6 +126,7 @@ var _climb_duration: float = 0.0
 @onready var _fire_cooldown: Timer = $FireCooldown
 @onready var _ice_cooldown: Timer = $IceCooldown
 @onready var _dash_trail: CPUParticles2D = $DashTrail
+@onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 
 func _ready() -> void:
@@ -134,6 +135,7 @@ func _ready() -> void:
 	input.slot_hold_changed.connect(_on_input_slot_hold_changed)
 	_hitbox.hit_landed.connect(_on_melee_hit_landed)
 	_sprite.animation_finished.connect(_on_sprite_animation_finished)
+	_update_collider_offset()
 
 
 func _physics_process(delta: float) -> void:
@@ -195,6 +197,13 @@ func configure_level(level: Level) -> void:
 	_drop_consumed = false
 	_climb_duration = 0.0
 	set_collision_mask_value(WALLS_LAYER_NUMBER, true)
+	_update_collider_offset()
+
+
+func _update_collider_offset() -> void:
+	var shape_node := _collision_shape if _collision_shape != null else get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if shape_node != null:
+		shape_node.position.y = -BODY_RADIUS if _vertical_level else 0.0
 
 
 func _update_platformer_velocity(delta: float) -> void:
@@ -246,7 +255,7 @@ func _try_climb_overhead(max_height: float, duration: float = AIR_CLIMB_DURATION
 		var surface_y := platform.surface_y_at(target_x, 1.0)
 		if is_inf(surface_y):
 			continue
-		var target := Vector2(target_x, surface_y - BODY_RADIUS - 2.0)
+		var target := Vector2(target_x, surface_y - 2.0)
 		var climb_height := position.y - target.y
 		if climb_height < BODY_RADIUS or climb_height > max_height:
 			continue

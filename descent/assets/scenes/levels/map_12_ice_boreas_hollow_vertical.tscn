@@ -80,7 +80,7 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=1969316695]
 
-[node name="Top_Float_Left" type="StaticBody2D" parent="Platforms" unique_id=1642140551]
+[node name="Top_Float_Left" type="StaticBody2D" parent="Platforms" unique_id=415148746]
 position = Vector2(542.0, 229.0)
 collision_layer = 4
 collision_mask = 0
@@ -88,11 +88,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(78.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Float_Left" unique_id=781538247]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Float_Left" unique_id=105242274]
 shape = SubResource("SubResource_plat_0")
 one_way_collision = true
 
-[node name="Top_Float_Right" type="StaticBody2D" parent="Platforms" unique_id=1639939010]
+[node name="Top_Float_Right" type="StaticBody2D" parent="Platforms" unique_id=696518380]
 position = Vector2(994.5, 229.0)
 collision_layer = 4
 collision_mask = 0
@@ -100,11 +100,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(77.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Float_Right" unique_id=1120176278]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Top_Float_Right" unique_id=1475097392]
 shape = SubResource("SubResource_plat_1")
 one_way_collision = true
 
-[node name="Upper_Ledge_Left" type="StaticBody2D" parent="Platforms" unique_id=1665945684]
+[node name="Upper_Ledge_Left" type="StaticBody2D" parent="Platforms" unique_id=1343258419]
 position = Vector2(223.0, 364.0)
 collision_layer = 4
 collision_mask = 0
@@ -112,21 +112,21 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(66.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Left" unique_id=2120488561]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Left" unique_id=568683145]
 shape = SubResource("SubResource_plat_2")
 one_way_collision = true
 
-[node name="Upper_Ledge_Center" type="StaticBody2D" parent="Platforms" unique_id=844661574]
+[node name="Upper_Ledge_Center" type="StaticBody2D" parent="Platforms" unique_id=262698004]
 position = Vector2(768.5, 364.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(353.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Center" unique_id=1993208555]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Center" unique_id=2109743544]
 shape = SubResource("SubResource_plat_3")
 
-[node name="Upper_Ledge_Right" type="StaticBody2D" parent="Platforms" unique_id=1778689633]
+[node name="Upper_Ledge_Right" type="StaticBody2D" parent="Platforms" unique_id=885789117]
 position = Vector2(1148.5, 364.0)
 collision_layer = 4
 collision_mask = 0
@@ -134,11 +134,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(83.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Right" unique_id=1062348038]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Ledge_Right" unique_id=1529932137]
 shape = SubResource("SubResource_plat_4")
 one_way_collision = true
 
-[node name="Mid_Step_Left" type="StaticBody2D" parent="Platforms" unique_id=172486952]
+[node name="Mid_Step_Left" type="StaticBody2D" parent="Platforms" unique_id=679694233]
 position = Vector2(497.5, 621.0)
 collision_layer = 4
 collision_mask = 0
@@ -146,21 +146,21 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(111.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Step_Left" unique_id=665097629]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Step_Left" unique_id=1093698091]
 shape = SubResource("SubResource_plat_5")
 one_way_collision = true
 
-[node name="Mid_Floor_PlayerStart" type="StaticBody2D" parent="Platforms" unique_id=1418969429]
+[node name="Mid_Floor_PlayerStart" type="StaticBody2D" parent="Platforms" unique_id=1633604983]
 position = Vector2(767.5, 613.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(355.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Floor_PlayerStart" unique_id=1802527114]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Floor_PlayerStart" unique_id=1871019271]
 shape = SubResource("SubResource_plat_6")
 
-[node name="Mid_Step_Right" type="StaticBody2D" parent="Platforms" unique_id=638894905]
+[node name="Mid_Step_Right" type="StaticBody2D" parent="Platforms" unique_id=229686186]
 position = Vector2(1048.0, 621.0)
 collision_layer = 4
 collision_mask = 0
@@ -168,11 +168,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(62.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Step_Right" unique_id=187234789]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Step_Right" unique_id=203093801]
 shape = SubResource("SubResource_plat_7")
 one_way_collision = true
 
-[node name="Lower_Step_Right" type="StaticBody2D" parent="Platforms" unique_id=704999759]
+[node name="Lower_Step_Right" type="StaticBody2D" parent="Platforms" unique_id=1914858972]
 position = Vector2(1192.5, 839.0)
 collision_layer = 4
 collision_mask = 0
@@ -180,11 +180,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(117.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_Right" unique_id=1464553485]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_Right" unique_id=806898809]
 shape = SubResource("SubResource_plat_8")
 one_way_collision = true
 
-[node name="Lower_Step_Left" type="StaticBody2D" parent="Platforms" unique_id=1566765929]
+[node name="Lower_Step_Left" type="StaticBody2D" parent="Platforms" unique_id=938314455]
 position = Vector2(220.0, 872.0)
 collision_layer = 4
 collision_mask = 0
@@ -192,7 +192,7 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(64.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_Left" unique_id=811722570]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_Left" unique_id=438996503]
 shape = SubResource("SubResource_plat_9")
 one_way_collision = true
 

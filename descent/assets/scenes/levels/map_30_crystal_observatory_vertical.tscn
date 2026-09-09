@@ -65,17 +65,17 @@ shape = SubResource("Shape_wall_h")
 
 [node name="Platforms" type="Node2D" parent="." unique_id=66984867]
 
-[node name="Upper_Observatory_Floor" type="StaticBody2D" parent="Platforms" unique_id=1785132813]
+[node name="Upper_Observatory_Floor" type="StaticBody2D" parent="Platforms" unique_id=1141035024]
 position = Vector2(790.0, 482.0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 size = Vector2(1356.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Observatory_Floor" unique_id=572766395]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Observatory_Floor" unique_id=1567751915]
 shape = SubResource("SubResource_plat_0")
 
-[node name="Mid_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=466430021]
+[node name="Mid_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=824090149]
 position = Vector2(349.0, 483.0)
 collision_layer = 4
 collision_mask = 0
@@ -83,11 +83,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(60.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_1" unique_id=277682878]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_1" unique_id=1102046021]
 shape = SubResource("SubResource_plat_1")
 one_way_collision = true
 
-[node name="Mid_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=1264545016]
+[node name="Mid_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=669057995]
 position = Vector2(838.0, 483.0)
 collision_layer = 4
 collision_mask = 0
@@ -95,11 +95,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(746.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_2" unique_id=855093545]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Crystal_Plat_2" unique_id=981867595]
 shape = SubResource("SubResource_plat_2")
 one_way_collision = true
 
-[node name="Lower_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=1375209621]
+[node name="Lower_Crystal_Plat_1" type="StaticBody2D" parent="Platforms" unique_id=1867498858]
 position = Vector2(362.0, 896.0)
 collision_layer = 4
 collision_mask = 0
@@ -107,11 +107,11 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(74.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_1" unique_id=777324311]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_1" unique_id=268793459]
 shape = SubResource("SubResource_plat_3")
 one_way_collision = true
 
-[node name="Lower_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=1833862509]
+[node name="Lower_Crystal_Plat_2" type="StaticBody2D" parent="Platforms" unique_id=1023786686]
 position = Vector2(819.0, 896.0)
 collision_layer = 4
 collision_mask = 0
@@ -119,7 +119,7 @@ script = ExtResource("3_platform")
 one_way = true
 size = Vector2(132.0, 16.0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_2" unique_id=864696616]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Crystal_Plat_2" unique_id=809270510]
 shape = SubResource("SubResource_plat_4")
 one_way_collision = true
 

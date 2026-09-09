@@ -24,7 +24,7 @@ func _run() -> void:
 	var x_range := platform.navigation_x_range()
 	var x := (x_range.x + x_range.y) * 0.5
 	var surface_y := platform.surface_y_at(x)
-	var expected_y := surface_y - 19.0
+	var expected_y := surface_y - 2.0
 	player.position = Vector2(x, expected_y + 120.0)
 
 	if not player._try_climb_overhead(220.0):
