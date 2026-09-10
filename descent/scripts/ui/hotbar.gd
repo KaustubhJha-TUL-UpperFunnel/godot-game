@@ -1,21 +1,17 @@
 class_name Hotbar
 extends Control
 
-## Circular attack, ability, item, and jump buttons arranged along the bottom-right.
-##
-## Clicking a slot goes through the same PlayerAvatar.activate_slot() path as
-## the keyboard, so mouse-only and keyboard play behave identically.
+## Action cluster in the bottom-right: a large sword, with fire/ice at its
+## top-left, potions above, and jump/dash/drop underneath.
 
 signal slot_pressed(index: int)
 
 var _player: PlayerAvatar
 var _slots: Array[HotbarSlot] = []
 
-@onready var _row: GridContainer = $Row
-
 
 func _ready() -> void:
-	for child in _row.get_children():
+	for child in get_children():
 		if child is HotbarSlot:
 			var slot: HotbarSlot = child
 			_slots.append(slot)
@@ -44,10 +40,12 @@ func _on_slot_activated(index: int) -> void:
 	slot_pressed.emit(index)
 	if _player == null:
 		return
-	# Fire releases from hold_changed; Button.pressed follows button_up and
-	# must not start a second aim cycle.
-	if index != PlayerAvatar.Slot.FIRE:
+	# Fire aims on hold and casts on release. Sword fires on finger-down so
+	# a tap does not also swing again when the button comes up.
+	if index != PlayerAvatar.Slot.FIRE and index != PlayerAvatar.Slot.SWORD:
 		_player.activate_slot(index)
+	if index == PlayerAvatar.Slot.SWORD:
+		return
 	for slot in _slots:
 		if slot.slot_index == index:
 			slot.flash_use()
@@ -58,7 +56,11 @@ func _on_slot_hold_changed(index: int, held: bool) -> void:
 		return
 	match index:
 		PlayerAvatar.Slot.SWORD:
-			_player.input.touch_attack = held
+			if held:
+				_player.activate_slot(PlayerAvatar.Slot.SWORD)
+				for slot in _slots:
+					if slot.slot_index == index:
+						slot.flash_use()
 		PlayerAvatar.Slot.FIRE:
 			if held:
 				_player.begin_projectile_aim()

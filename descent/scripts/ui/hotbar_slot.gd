@@ -25,6 +25,8 @@ var _on_cooldown: bool = false
 
 
 func _ready() -> void:
+	resized.connect(_center_pivot)
+	_center_pivot()
 	_icon.texture = icon
 	_icon.modulate = accent.lightened(0.35)
 	_hotkey.text = hotkey
@@ -85,3 +87,7 @@ func set_tutorial_enabled(enabled: bool, highlighted: bool = false) -> void:
 
 func tutorial_icon() -> Texture2D:
 	return icon
+
+
+func _center_pivot() -> void:
+	pivot_offset = size * 0.5

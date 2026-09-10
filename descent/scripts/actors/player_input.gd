@@ -35,6 +35,7 @@ var touch_move: Vector2 = Vector2.ZERO
 var touch_aim: Vector2 = Vector2.ZERO
 var touch_attack: bool = false
 var _touch_jump_queued: bool = false
+var _touch_drop_queued: bool = false
 var _tutorial_restricted: bool = false
 var _tutorial_movement_allowed: bool = true
 var _tutorial_allowed_slot: int = -1
@@ -47,6 +48,15 @@ func _process(_delta: float) -> void:
 	_read_aim()
 	_read_attack_hold()
 	_read_slot_presses()
+
+
+func _is_mobile() -> bool:
+	return OS.has_feature("mobile") or OS.get_name() == "Android"
+
+
+func _gui_blocks_click_attack() -> bool:
+	var hovered := get_viewport().gui_get_hovered_control()
+	return hovered != null and hovered.mouse_filter != Control.MOUSE_FILTER_IGNORE
 
 
 func _read_movement() -> void:
@@ -74,10 +84,13 @@ func _read_aim() -> void:
 
 
 func _read_attack_hold() -> void:
+	# Android emulates a mouse from every finger, so a held stick must never
+	# look like a held sword. Attacks are one tap on the hotbar (or key 1).
 	var attack_allowed := not _tutorial_restricted or _tutorial_allowed_slot == 0
 	attack_held = (
 		attack_enabled
 		and attack_allowed
+		and not _is_mobile()
 		and (Input.is_action_pressed("attack") or touch_attack)
 	)
 
@@ -89,8 +102,15 @@ func _read_slot_presses() -> void:
 		var slot: int = SLOT_ACTIONS[action]
 		if _tutorial_restricted and slot != _tutorial_allowed_slot:
 			continue
-		# The attack slot is driven by attack_held so the combo can be chained.
+		# Mobile attacks come from the sword hotbar button. Emulated mouse
+		# presses from the movement stick must not swing the blade.
 		if action == "attack":
+			if (
+				not _is_mobile()
+				and Input.is_action_just_pressed(action)
+				and not _gui_blocks_click_attack()
+			):
+				slot_activated.emit(slot)
 			continue
 		# Fire is charged while held and released through a separate signal.
 		if action == "ability_fire":
@@ -115,7 +135,7 @@ func request_touch_jump() -> void:
 
 
 func jump_requested() -> bool:
-	var jump_allowed := not _tutorial_restricted or _tutorial_allowed_slot == 6
+	var jump_allowed := not _tutorial_restricted or _tutorial_allowed_slot == PlayerAvatar.Slot.JUMP
 	return movement_enabled and jump_allowed and (
 		Input.is_action_just_pressed(&"jump") or _touch_jump_queued
 	)
@@ -130,6 +150,24 @@ func consume_jump() -> bool:
 	return requested
 
 
+func request_touch_drop() -> void:
+	_touch_drop_queued = true
+
+
+func drop_requested() -> bool:
+	var drop_allowed := not _tutorial_restricted or _tutorial_allowed_slot == PlayerAvatar.Slot.DROP
+	return movement_enabled and drop_allowed and _touch_drop_queued
+
+
+func consume_drop() -> bool:
+	if not movement_enabled:
+		_touch_drop_queued = false
+		return false
+	var requested := drop_requested()
+	_touch_drop_queued = false
+	return requested
+
+
 func up_held() -> bool:
 	var movement_allowed := not _tutorial_restricted or _tutorial_movement_allowed
 	return movement_enabled and movement_allowed and (
@@ -139,11 +177,10 @@ func up_held() -> bool:
 
 
 func drop_held() -> bool:
-	var movement_allowed := not _tutorial_restricted or _tutorial_movement_allowed
-	return movement_enabled and movement_allowed and (
-		Input.is_action_pressed(&"move_down")
-		or touch_move.y >= TOUCH_STICK_RADIUS * 0.65
-	)
+	# Stick-down no longer drops through platforms; that is the Drop button.
+	# Keyboard S still works on desktop.
+	var drop_allowed := not _tutorial_restricted or _tutorial_allowed_slot == PlayerAvatar.Slot.DROP
+	return movement_enabled and drop_allowed and Input.is_action_pressed(&"move_down")
 
 
 func clear_touch_state() -> void:
@@ -151,6 +188,7 @@ func clear_touch_state() -> void:
 	touch_aim = Vector2.ZERO
 	touch_attack = false
 	_touch_jump_queued = false
+	_touch_drop_queued = false
 
 
 func set_tutorial_restrictions(movement_allowed: bool, allowed_slot: int) -> void:
@@ -159,10 +197,12 @@ func set_tutorial_restrictions(movement_allowed: bool, allowed_slot: int) -> voi
 	_tutorial_allowed_slot = allowed_slot
 	if not movement_allowed:
 		touch_move = Vector2.ZERO
-	if allowed_slot != 0:
+	if allowed_slot != PlayerAvatar.Slot.SWORD:
 		touch_attack = false
-	if allowed_slot != 6:
+	if allowed_slot != PlayerAvatar.Slot.JUMP:
 		_touch_jump_queued = false
+	if allowed_slot != PlayerAvatar.Slot.DROP:
+		_touch_drop_queued = false
 
 
 func clear_tutorial_restrictions() -> void:

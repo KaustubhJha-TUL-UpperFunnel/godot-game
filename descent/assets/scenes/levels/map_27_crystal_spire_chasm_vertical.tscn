@@ -1,13 +1,9 @@
 [gd_scene format=3 uid="uid://2k3lbug3sqrw"]
 
 [ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
-
 [ext_resource type="Texture2D" uid="uid://d1kl2g2eoo17b" path="res://descent/assets/maps/map_27_crystal_spire_chasm_vertical.png" id="2_map"]
-
 [ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
-
 [ext_resource type="Script" uid="uid://boeerswaj1v5s" path="res://descent/scripts/world/hazard_zone.gd" id="4_hazard"]
-
 [ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
 
 [sub_resource type="RectangleShape2D" id="Shape_wall_v"]
@@ -16,75 +12,77 @@ size = Vector2(48, 1024)
 [sub_resource type="RectangleShape2D" id="Shape_wall_h"]
 size = Vector2(1536, 48)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4uoec"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c8pqw"]
+size = Vector2(554, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jrxqo"]
+size = Vector2(670, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tror8"]
+size = Vector2(98, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvk0g"]
+size = Vector2(98, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3nd7m"]
+size = Vector2(269, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efugn"]
+size = Vector2(81.44, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_puv6x"]
+size = Vector2(292, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0w1o0"]
+size = Vector2(122, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_776yh"]
+size = Vector2(515, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bmljb"]
+size = Vector2(104, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pccf5"]
+size = Vector2(104, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mswu"]
+size = Vector2(483, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xk6ed"]
+size = Vector2(86.2, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqh4a"]
+size = Vector2(86.68, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2v8fm"]
+size = Vector2(86.68, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w5q62"]
+size = Vector2(86.2, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5h4ha"]
+size = Vector2(105.8, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_af7i3"]
+size = Vector2(106.28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nae18"]
+size = Vector2(106.28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fpyta"]
+size = Vector2(105.8, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q0i1n"]
+size = Vector2(422.18, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32wqn"]
+size = Vector2(303, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b8of5"]
 size = Vector2(40, 80)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_34sy7"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_urlla"]
 size = Vector2(1346, 60)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_0"]
-size = Vector2(554.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_1"]
-size = Vector2(670.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_2"]
-size = Vector2(98.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_3"]
-size = Vector2(269.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_4"]
-size = Vector2(81.44, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_5"]
-size = Vector2(292.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_6"]
-size = Vector2(122.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_7"]
-size = Vector2(515.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_8"]
-size = Vector2(104.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_9"]
-size = Vector2(104.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_10"]
-size = Vector2(483.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_11"]
-size = Vector2(86.2, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_12"]
-size = Vector2(86.68, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_13"]
-size = Vector2(86.68, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_14"]
-size = Vector2(86.2, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_15"]
-size = Vector2(105.8, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_16"]
-size = Vector2(106.28, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_17"]
-size = Vector2(106.28, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_18"]
-size = Vector2(105.8, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_19"]
-size = Vector2(422.18, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_20"]
-size = Vector2(303.0, 16.0)
-
 
 [node name="Map27CrystalSpireChasmVertical" type="Node2D" unique_id=926152433]
 script = ExtResource("1_level")
@@ -116,125 +114,138 @@ shape = SubResource("Shape_wall_h")
 [node name="Platforms" type="Node2D" parent="." unique_id=2035171521]
 
 [node name="Platform_UpperLeftStone" type="StaticBody2D" parent="Platforms" unique_id=133661744]
-position = Vector2(344.0, 305.0)
+position = Vector2(344, 305)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(554.0, 16.0)
+size = Vector2(554, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperLeftStone" unique_id=1755438820]
-shape = SubResource("SubResource_plat_0")
+shape = SubResource("RectangleShape2D_c8pqw")
 
 [node name="Platform_UpperRightStone" type="StaticBody2D" parent="Platforms" unique_id=950318558]
-position = Vector2(1133.0, 304.0)
+position = Vector2(1133, 304)
+scale = Vector2(1.6, 1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(670.0, 16.0)
+size = Vector2(670, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperRightStone" unique_id=277189558]
-shape = SubResource("SubResource_plat_1")
+shape = SubResource("RectangleShape2D_jrxqo")
 
 [node name="Platform_UpperStep" type="StaticBody2D" parent="Platforms" unique_id=1709276516]
-position = Vector2(875.0, 363.0)
+position = Vector2(877, 376)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
-size = Vector2(98.0, 16.0)
+size = Vector2(98, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperStep" unique_id=202304188]
-shape = SubResource("SubResource_plat_2")
+shape = SubResource("RectangleShape2D_tror8")
+one_way_collision = true
+
+[node name="Platform_UpperStep2" type="StaticBody2D" parent="Platforms" unique_id=472581106]
+position = Vector2(685, 470)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+size = Vector2(98, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_UpperStep2" unique_id=2065954292]
+shape = SubResource("RectangleShape2D_kvk0g")
 one_way_collision = true
 
 [node name="Platform_MidLeftStone" type="StaticBody2D" parent="Platforms" unique_id=1444689705]
-position = Vector2(201.5, 607.0)
+position = Vector2(201.5, 607)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(269.0, 16.0)
+size = Vector2(269, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidLeftStone" unique_id=1431743346]
-shape = SubResource("SubResource_plat_3")
+shape = SubResource("RectangleShape2D_3nd7m")
 
 [node name="Platform_MidLeftSlope" type="StaticBody2D" parent="Platforms" unique_id=429302003]
-position = Vector2(336.34, 589.269)
-rotation = -0.430693
+position = Vector2(357, 590.00006)
+rotation = -0.5461214
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
-size = Vector2(81.44, 16.0)
+size = Vector2(81.44, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidLeftSlope" unique_id=2052339331]
-shape = SubResource("SubResource_plat_4")
+shape = SubResource("RectangleShape2D_efugn")
 one_way_collision = true
 
 [node name="Platform_MidLeftCrystal" type="StaticBody2D" parent="Platforms" unique_id=1552907914]
-position = Vector2(497.0, 560.0)
+position = Vector2(531, 570)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(292.0, 16.0)
+size = Vector2(292, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidLeftCrystal" unique_id=911337410]
-shape = SubResource("SubResource_plat_5")
+shape = SubResource("RectangleShape2D_puv6x")
 
 [node name="Platform_MidStep1" type="StaticBody2D" parent="Platforms" unique_id=543591336]
-position = Vector2(890.0, 593.0)
+position = Vector2(890, 593)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
-size = Vector2(122.0, 16.0)
+size = Vector2(122, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidStep1" unique_id=1311443509]
-shape = SubResource("SubResource_plat_6")
+shape = SubResource("RectangleShape2D_0w1o0")
 one_way_collision = true
 
 [node name="Platform_MidRightCrystal" type="StaticBody2D" parent="Platforms" unique_id=1417585787]
-position = Vector2(1210.5, 587.0)
+position = Vector2(1210.5, 587)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(515.0, 16.0)
+size = Vector2(515, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidRightCrystal" unique_id=1805213906]
-shape = SubResource("SubResource_plat_7")
+shape = SubResource("RectangleShape2D_776yh")
 
 [node name="Platform_MidStep2" type="StaticBody2D" parent="Platforms" unique_id=1583013314]
-position = Vector2(717.0, 668.0)
+position = Vector2(717, 668)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
-size = Vector2(104.0, 16.0)
+size = Vector2(104, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidStep2" unique_id=1401175295]
-shape = SubResource("SubResource_plat_8")
+shape = SubResource("RectangleShape2D_bmljb")
 one_way_collision = true
 
 [node name="Platform_MidStep3" type="StaticBody2D" parent="Platforms" unique_id=1360169861]
-position = Vector2(604.0, 765.0)
+position = Vector2(604, 765)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
-size = Vector2(104.0, 16.0)
+size = Vector2(104, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_MidStep3" unique_id=513392004]
-shape = SubResource("SubResource_plat_9")
+shape = SubResource("RectangleShape2D_pccf5")
 one_way_collision = true
 
 [node name="Platform_LowerLeftStone" type="StaticBody2D" parent="Platforms" unique_id=2026060512]
-position = Vector2(308.5, 884.0)
+position = Vector2(308.5, 884)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(483.0, 16.0)
+size = Vector2(483, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerLeftStone" unique_id=815030289]
-shape = SubResource("SubResource_plat_10")
+shape = SubResource("RectangleShape2D_4mswu")
 
 [node name="Platform_LowerRampLeft_1" type="StaticBody2D" parent="Platforms" unique_id=318354552]
 position = Vector2(437.57, 906.156)
@@ -244,10 +255,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_left"
-size = Vector2(86.2, 16.0)
+size = Vector2(86.2, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampLeft_1" unique_id=2002349125]
-shape = SubResource("SubResource_plat_11")
+shape = SubResource("RectangleShape2D_xk6ed")
 one_way_collision = true
 
 [node name="Platform_LowerRampLeft_2" type="StaticBody2D" parent="Platforms" unique_id=1778449241]
@@ -258,10 +269,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_left"
-size = Vector2(86.68, 16.0)
+size = Vector2(86.68, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampLeft_2" unique_id=259236215]
-shape = SubResource("SubResource_plat_12")
+shape = SubResource("RectangleShape2D_aqh4a")
 one_way_collision = true
 
 [node name="Platform_LowerRampLeft_3" type="StaticBody2D" parent="Platforms" unique_id=142017717]
@@ -272,10 +283,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_left"
-size = Vector2(86.68, 16.0)
+size = Vector2(86.68, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampLeft_3" unique_id=2056067987]
-shape = SubResource("SubResource_plat_13")
+shape = SubResource("RectangleShape2D_2v8fm")
 one_way_collision = true
 
 [node name="Platform_LowerRampLeft_4" type="StaticBody2D" parent="Platforms" unique_id=1237260399]
@@ -286,10 +297,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_left"
-size = Vector2(86.2, 16.0)
+size = Vector2(86.2, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampLeft_4" unique_id=277905541]
-shape = SubResource("SubResource_plat_14")
+shape = SubResource("RectangleShape2D_w5q62")
 one_way_collision = true
 
 [node name="Platform_LowerRampMid_1" type="StaticBody2D" parent="Platforms" unique_id=859006253]
@@ -300,10 +311,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_mid"
-size = Vector2(105.8, 16.0)
+size = Vector2(105.8, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampMid_1" unique_id=1647576954]
-shape = SubResource("SubResource_plat_15")
+shape = SubResource("RectangleShape2D_5h4ha")
 one_way_collision = true
 
 [node name="Platform_LowerRampMid_2" type="StaticBody2D" parent="Platforms" unique_id=995652939]
@@ -314,10 +325,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_mid"
-size = Vector2(106.28, 16.0)
+size = Vector2(106.28, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampMid_2" unique_id=881897490]
-shape = SubResource("SubResource_plat_16")
+shape = SubResource("RectangleShape2D_af7i3")
 one_way_collision = true
 
 [node name="Platform_LowerRampMid_3" type="StaticBody2D" parent="Platforms" unique_id=1869414284]
@@ -328,10 +339,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_mid"
-size = Vector2(106.28, 16.0)
+size = Vector2(106.28, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampMid_3" unique_id=1279246095]
-shape = SubResource("SubResource_plat_17")
+shape = SubResource("RectangleShape2D_nae18")
 one_way_collision = true
 
 [node name="Platform_LowerRampMid_4" type="StaticBody2D" parent="Platforms" unique_id=358223063]
@@ -342,10 +353,10 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_mid"
-size = Vector2(105.8, 16.0)
+size = Vector2(105.8, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRampMid_4" unique_id=218595583]
-shape = SubResource("SubResource_plat_18")
+shape = SubResource("RectangleShape2D_fpyta")
 one_way_collision = true
 
 [node name="Platform_LowerRightSlope" type="StaticBody2D" parent="Platforms" unique_id=2017029848]
@@ -356,21 +367,21 @@ collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"ramp_right"
-size = Vector2(422.18, 16.0)
+size = Vector2(422.18, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRightSlope" unique_id=332504313]
-shape = SubResource("SubResource_plat_19")
+shape = SubResource("RectangleShape2D_q0i1n")
 one_way_collision = true
 
 [node name="Platform_LowerRightStone" type="StaticBody2D" parent="Platforms" unique_id=2004719593]
-position = Vector2(1316.5, 903.0)
+position = Vector2(1316.5, 903)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(303.0, 16.0)
+size = Vector2(303, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Platform_LowerRightStone" unique_id=334510775]
-shape = SubResource("SubResource_plat_20")
+shape = SubResource("RectangleShape2D_32wqn")
 
 [node name="Hazards" type="Node2D" parent="." unique_id=2127162157]
 
@@ -384,7 +395,7 @@ damage = 16.0
 hazard_name = "ARCANE VENT"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hazards/Hazard1" unique_id=1846301812]
-shape = SubResource("RectangleShape2D_4uoec")
+shape = SubResource("RectangleShape2D_b8of5")
 
 [node name="DeathZones" type="Node2D" parent="." unique_id=2134965631]
 
@@ -398,7 +409,7 @@ size = Vector2(1346, 60)
 hazard_name = "THE CHASM"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=366132427]
-shape = SubResource("RectangleShape2D_34sy7")
+shape = SubResource("RectangleShape2D_urlla")
 
 [node name="WalkableRegion" type="Area2D" parent="." unique_id=1310630007]
 collision_layer = 0

@@ -51,8 +51,8 @@ const TUTORIAL_INSTRUCTIONS: Array[String] = [
 	"Drag the movement stick and move the knight.",
 	"Tap the green Jump button while standing on the platform.",
 	"While airborne below the upper platform, tap Jump again to climb onto it.",
-	"Hold the movement stick DOWN while standing on the upper platform.",
-	"Move close and hold Sword to chain three hits; the third is strongest. Land a strike now.",
+	"Tap the Drop button while standing on the upper platform.",
+	"Move close and tap Sword to attack. Tap again to chain three hits; the third is strongest. Land a strike now.",
 	"Hold the Fire button to aim, then release it to cast the fireball.",
 	"Move near the enemies and tap the Ice button to hit everything around you.",
 	"Move and tap Dash. It briefly avoids damage; hold the stick UP in air to dash upward.",
@@ -175,7 +175,7 @@ func _start_tutorial() -> void:
 func _set_tutorial_step(step: TutorialStep) -> void:
 	_tutorial_step = step
 	var allowed_slot := _tutorial_slot_for(step)
-	var stick_lesson := step == TutorialStep.MOVE or step == TutorialStep.DROP
+	var stick_lesson := step == TutorialStep.MOVE
 
 	player.set_control_enabled(true, step >= TutorialStep.SWORD)
 	player.input.set_tutorial_restrictions(true, allowed_slot)
@@ -209,6 +209,8 @@ func _tutorial_slot_for(step: TutorialStep) -> int:
 	match step:
 		TutorialStep.JUMP, TutorialStep.CLIMB:
 			return PlayerAvatar.Slot.JUMP
+		TutorialStep.DROP:
+			return PlayerAvatar.Slot.DROP
 		TutorialStep.SWORD:
 			return PlayerAvatar.Slot.SWORD
 		TutorialStep.FIRE:

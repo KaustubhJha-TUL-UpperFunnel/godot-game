@@ -2,7 +2,7 @@ class_name PlayerAvatar
 extends CharacterBody2D
 
 ## The armoured knight. Owns movement, the three-step sword combo, the dash,
-## and the six hotbar slots. Damage numbers and impact bursts are announced
+## and the hotbar slots. Damage numbers and impact bursts are announced
 ## through EventBus so the knight never needs a reference to the HUD or camera.
 
 signal fireball_cast(origin: Vector2, direction: Vector2, damage: float)
@@ -17,7 +17,7 @@ signal mana_potion_used()
 signal hurt(amount: float)
 signal died()
 
-enum Slot { SWORD, FIRE, ICE, DASH, POTION_HEALTH, POTION_MANA, JUMP }
+enum Slot { SWORD, FIRE, ICE, DASH, POTION_HEALTH, POTION_MANA, JUMP, DROP }
 
 const COMBO_DURATIONS: Array[float] = [0.30, 0.28, 0.38]
 ## Fraction of each swing's duration at which the blade actually connects.
@@ -293,6 +293,9 @@ func _update_climb_transition(delta: float) -> void:
 
 
 func _update_drop_through(delta: float) -> void:
+	if input.consume_drop():
+		_begin_platform_drop()
+		return
 	if not input.drop_held():
 		_drop_hold_time = 0.0
 		_drop_consumed = false
@@ -305,7 +308,14 @@ func _update_drop_through(delta: float) -> void:
 	_drop_hold_time += delta
 	if _drop_hold_time < DROP_HOLD_SECONDS:
 		return
+	_begin_platform_drop()
 
+
+func _begin_platform_drop() -> void:
+	if _drop_ignore_time > 0.0:
+		return
+	if _drop_consumed or not is_on_floor() or not _floor_is_platform():
+		return
 	_drop_hold_time = 0.0
 	_drop_consumed = true
 	_drop_ignore_time = DROP_IGNORE_SECONDS
@@ -443,6 +453,10 @@ func activate_slot(index: int) -> void:
 		Slot.JUMP:
 			_cancel_projectile_aim()
 			input.request_touch_jump()
+		Slot.DROP:
+			_cancel_projectile_aim()
+			if _vertical_level:
+				input.request_touch_drop()
 
 
 func _on_input_slot_hold_changed(index: int, held: bool) -> void:
@@ -549,9 +563,6 @@ func _update_attack(delta: float) -> void:
 	if _projectile_aiming:
 		_cancel_attack()
 		return
-
-	if input.attack_held:
-		_request_attack()
 
 	if _attack_duration <= 0.0:
 		if _combo_window > 0.0:

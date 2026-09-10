@@ -68,10 +68,8 @@ func _physics_process(delta: float) -> void:
 	var desired := _desired_movement(_target)
 	if _drop_hold_left > 0.0:
 		_drop_hold_left = maxf(0.0, _drop_hold_left - delta)
-		_player.input.set_touch_state(Vector2(0.0, STICK_RADIUS), Vector2.ZERO, false)
-		_player.input.touch_attack = false
 		_use_survival_items()
-		status_changed.emit("HOLDING DOWN TO DROP")
+		status_changed.emit("DROPPING TO LOWER PLATFORM")
 		return
 
 	var dodge := _dodge_direction()
@@ -85,7 +83,8 @@ func _physics_process(delta: float) -> void:
 	_player.input.set_touch_state(desired * STICK_RADIUS, aim, false)
 
 	var distance := aim.length()
-	_player.input.touch_attack = distance <= MELEE_DISTANCE and _same_platform(_target)
+	if distance <= MELEE_DISTANCE and _same_platform(_target):
+		_player.activate_slot(PlayerAvatar.Slot.SWORD)
 	_use_survival_items()
 	_use_combat_abilities(distance)
 	_tick_stuck_recovery(delta, desired)
@@ -178,7 +177,8 @@ func _vertical_movement(enemy: EnemyBase, offset: Vector2) -> Vector2:
 
 	if next_surface > current_surface + 24.0:
 		if absf(target_x - _player.position.x) <= 44.0 and _player.is_on_floor():
-			return Vector2(0.0, 1.0)
+			_player.activate_slot(PlayerAvatar.Slot.DROP)
+			return Vector2.ZERO
 		return Vector2(horizontal, 0.15)
 
 	return Vector2(horizontal, 0.0)
@@ -205,9 +205,10 @@ func _direct_drop_movement(
 		status_changed.emit("ALIGNING ABOVE LOWER ENEMY")
 		return Vector2(signf(horizontal_distance), 0.0)
 	if _player.is_on_floor():
+		_player.activate_slot(PlayerAvatar.Slot.DROP)
 		_drop_hold_left = DROP_HOLD_SECONDS
 		status_changed.emit("DROPPING TO ENEMY BELOW")
-		return Vector2(0.0, 1.0)
+		return Vector2.ZERO
 	return Vector2.ZERO
 
 
@@ -421,4 +422,3 @@ func _stop_input() -> void:
 	if _player == null:
 		return
 	_player.input.set_touch_state(Vector2.ZERO, Vector2.ZERO, false)
-	_player.input.touch_attack = false

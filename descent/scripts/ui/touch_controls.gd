@@ -72,7 +72,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _handle_touch(event: InputEventScreenTouch) -> void:
 	if event.pressed:
-		if event.position.x < size.x * 0.55 and _move_touch == -1:
+		if event.position.x < size.x * 0.40 and _move_touch == -1:
 			_begin(event.index, event.position)
 	elif event.index == _move_touch:
 		_end()

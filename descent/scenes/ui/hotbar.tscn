@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene format=3 uid="uid://domxwwntacyuq"]
 
-[ext_resource type="Script" path="res://descent/scripts/ui/hotbar.gd" id="1_hotbar"]
+[ext_resource type="Script" uid="uid://dcfu4su6qljgh" path="res://descent/scripts/ui/hotbar.gd" id="1_hotbar"]
 [ext_resource type="PackedScene" path="res://descent/scenes/ui/hotbar_slot.tscn" id="2_slot"]
-[ext_resource type="Texture2D" path="res://descent/assets/generated/ui/action_icon_atlas_cut.png" id="3_atlas"]
-[ext_resource type="Texture2D" path="res://descent/assets/generated/ui/jump_icon_cut.png" id="4_jump"]
+[ext_resource type="Texture2D" uid="uid://by88daygy53k1" path="res://descent/assets/generated/ui/action_icon_atlas_cut.png" id="3_atlas"]
+[ext_resource type="Texture2D" uid="uid://dfnw1u5ht713y" path="res://descent/assets/generated/ui/jump_icon_cut.png" id="4_jump"]
+[ext_resource type="Texture2D" uid="uid://dxtgv266gmg8d" path="res://descent/assets/generated/ui/drop_icon_cut.png" id="5_drop"]
 
 [sub_resource type="AtlasTexture" id="Atlas_sword"]
 atlas = ExtResource("3_atlas")
@@ -17,10 +18,6 @@ region = Rect2(512, 0, 512, 341.333)
 atlas = ExtResource("3_atlas")
 region = Rect2(0, 341.333, 512, 341.334)
 
-[sub_resource type="AtlasTexture" id="Atlas_dash"]
-atlas = ExtResource("3_atlas")
-region = Rect2(512, 341.333, 512, 341.334)
-
 [sub_resource type="AtlasTexture" id="Atlas_health"]
 atlas = ExtResource("3_atlas")
 region = Rect2(0, 682.667, 512, 341.333)
@@ -29,77 +26,117 @@ region = Rect2(0, 682.667, 512, 341.333)
 atlas = ExtResource("3_atlas")
 region = Rect2(512, 682.667, 512, 341.333)
 
-[node name="Hotbar" type="Control"]
+[sub_resource type="AtlasTexture" id="Atlas_dash"]
+atlas = ExtResource("3_atlas")
+region = Rect2(512, 341.333, 512, 341.334)
+
+[node name="Hotbar" type="Control" unique_id=939003284]
+layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -472.0
-offset_top = -80.0
-offset_right = -24.0
-offset_bottom = -20.0
+offset_left = -312.0
+offset_top = -328.0
+offset_right = -12.0
+offset_bottom = -12.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_hotbar")
 
-[node name="Row" type="GridContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
-columns = 7
-
-[node name="Sword" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
-slot_index = 0
+[node name="Sword" parent="." unique_id=1402911700 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(140, 140)
+anchors_preset = 0
+offset_left = 28.0
+offset_top = 96.0
+offset_right = 168.0
+offset_bottom = 236.0
 hotkey = "1 / LMB"
 icon = SubResource("Atlas_sword")
 accent = Color(0.886, 0.682, 0.322, 1)
 
-[node name="Fire" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
+[node name="Fire" parent="." unique_id=1718350006 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(72, 72)
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 84.0
+offset_bottom = 84.0
 slot_index = 1
 hotkey = "2"
 icon = SubResource("Atlas_fire")
 accent = Color(1, 0.4, 0.133, 1)
 
-[node name="Ice" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
+[node name="Ice" parent="." unique_id=653344978 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(72, 72)
+anchors_preset = 0
+offset_left = 96.0
+offset_top = 12.0
+offset_right = 168.0
+offset_bottom = 84.0
 slot_index = 2
 hotkey = "3"
 icon = SubResource("Atlas_ice")
 accent = Color(0.4, 0.933, 1, 1)
 
-[node name="Dash" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
-slot_index = 3
-hotkey = "4"
-icon = SubResource("Atlas_dash")
-accent = Color(0.6, 0.85, 1, 1)
-
-[node name="HealthPotion" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
+[node name="HealthPotion" parent="." unique_id=220492410 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 251.0
+offset_top = 120.0
+offset_right = 303.0
+offset_bottom = 172.0
 slot_index = 4
 hotkey = "5"
 icon = SubResource("Atlas_health")
 accent = Color(1, 0.31, 0.384, 1)
 
-[node name="ManaPotion" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
+[node name="ManaPotion" parent="." unique_id=891463955 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(52, 52)
+anchors_preset = 0
+offset_left = 251.0
+offset_top = 176.0
+offset_right = 303.0
+offset_bottom = 228.0
 slot_index = 5
 hotkey = "6"
 icon = SubResource("Atlas_mana")
 accent = Color(0.4, 0.6, 1, 1)
 
-[node name="Jump" parent="Row" instance=ExtResource("2_slot")]
-layout_mode = 2
+[node name="Jump" parent="." unique_id=1579508233 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 248.0
+offset_right = 76.0
+offset_bottom = 312.0
 slot_index = 6
 hotkey = "SPC / W"
 icon = ExtResource("4_jump")
 accent = Color(0.45, 0.95, 0.7, 1)
+
+[node name="Dash" parent="." unique_id=331682872 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 0
+offset_left = 88.0
+offset_top = 248.0
+offset_right = 152.0
+offset_bottom = 312.0
+slot_index = 3
+hotkey = "4"
+icon = SubResource("Atlas_dash")
+accent = Color(0.6, 0.85, 1, 1)
+
+[node name="Drop" parent="." unique_id=681844668 instance=ExtResource("2_slot")]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 0
+offset_left = 164.0
+offset_top = 248.0
+offset_right = 228.0
+offset_bottom = 312.0
+slot_index = 7
+hotkey = "S"
+icon = ExtResource("5_drop")
+accent = Color(0.85, 0.78, 0.45, 1)

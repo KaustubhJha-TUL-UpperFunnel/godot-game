@@ -1,11 +1,8 @@
 [gd_scene format=3 uid="uid://rn4tcd572v24"]
 
 [ext_resource type="Script" uid="uid://domrdqluo7qqu" path="res://descent/scripts/world/level.gd" id="1_level"]
-
 [ext_resource type="Texture2D" uid="uid://5iy6s8mwxl5a" path="res://descent/assets/maps/map_21_water_aqueduct_chasm_vertical.png" id="2_map"]
-
 [ext_resource type="Script" uid="uid://d1hyku3ww5p1f" path="res://descent/scripts/world/level_platform.gd" id="3_platform"]
-
 [ext_resource type="Script" uid="uid://krpolox2ieh" path="res://descent/scripts/world/death_zone.gd" id="5_death"]
 
 [sub_resource type="RectangleShape2D" id="Shape_wall_v"]
@@ -14,60 +11,86 @@ size = Vector2(48, 1024)
 [sub_resource type="RectangleShape2D" id="Shape_wall_h"]
 size = Vector2(1536, 48)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fgvp4"]
+size = Vector2(533, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ybpup"]
+size = Vector2(80.28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14d36"]
+size = Vector2(80.1, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1rfnb"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ob7dp"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rkt0n"]
+size = Vector2(80.28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fat08"]
+size = Vector2(80.28, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g70xk"]
+size = Vector2(80.1, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k1eiq"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c0n4p"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_48gld"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ve7rb"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yyif2"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_owah1"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jnog8"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dt41a"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_30rwm"]
+size = Vector2(80.1, 16)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mmti7"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lquk8"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oihk8"]
+size = Vector2(80.01, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vc2he"]
+size = Vector2(80.1, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dhlmq"]
+size = Vector2(385, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eighf"]
+size = Vector2(917, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4s070"]
+size = Vector2(319.26, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lb7uw"]
+size = Vector2(532, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dcq1n"]
+size = Vector2(532, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xyxwm"]
 size = Vector2(1298, 60)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_0"]
-size = Vector2(533.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_1"]
-size = Vector2(80.28, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_2"]
-size = Vector2(80.1, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_3"]
-size = Vector2(80.01, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_4"]
-size = Vector2(80.01, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_5"]
-size = Vector2(80.1, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_6"]
-size = Vector2(80.28, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_7"]
-size = Vector2(385.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_8"]
-size = Vector2(917.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_9"]
-size = Vector2(109.46, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_10"]
-size = Vector2(319.26, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_11"]
-size = Vector2(532.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_12"]
-size = Vector2(221.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_13"]
-size = Vector2(232.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_14"]
-size = Vector2(232.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_15"]
-size = Vector2(232.0, 16.0)
-
-[sub_resource type="RectangleShape2D" id="SubResource_plat_16"]
-size = Vector2(235.0, 16.0)
-
 
 [node name="Map21WaterAqueductChasmVertical" type="Node2D" unique_id=423915685]
 script = ExtResource("1_level")
@@ -99,219 +122,358 @@ shape = SubResource("Shape_wall_h")
 [node name="Platforms" type="Node2D" parent="." unique_id=1026079651]
 
 [node name="Upper_Aqueduct_Left" type="StaticBody2D" parent="Platforms" unique_id=1602216922]
-position = Vector2(333.5, 300.0)
+position = Vector2(334, 310)
+scale = Vector2(1.56, 1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(533.0, 16.0)
+size = Vector2(533, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Left" unique_id=488297825]
-shape = SubResource("SubResource_plat_0")
+shape = SubResource("RectangleShape2D_fgvp4")
 
 [node name="Upper_Aqueduct_Span_1" type="StaticBody2D" parent="Platforms" unique_id=247071507]
-position = Vector2(639.332, 303.322)
-rotation = 0.083555
+position = Vector2(783.99994, 319.99997)
+rotation = 0.26502913
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"upper_aqueduct"
-size = Vector2(80.28, 16.0)
+size = Vector2(80.28, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_1" unique_id=232187190]
-shape = SubResource("SubResource_plat_1")
+shape = SubResource("RectangleShape2D_ybpup")
 one_way_collision = true
 
 [node name="Upper_Aqueduct_Span_2" type="StaticBody2D" parent="Platforms" unique_id=1901444312]
-position = Vector2(719.6, 308.69)
+position = Vector2(859, 332.99997)
 rotation = 0.049958
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"upper_aqueduct"
-size = Vector2(80.1, 16.0)
+size = Vector2(80.1, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_2" unique_id=2058425281]
-shape = SubResource("SubResource_plat_2")
+shape = SubResource("RectangleShape2D_14d36")
 one_way_collision = true
 
 [node name="Upper_Aqueduct_Span_3" type="StaticBody2D" parent="Platforms" unique_id=1107260428]
-position = Vector2(799.87, 311.349)
+position = Vector2(931, 334.99997)
 rotation = 0.016249
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"upper_aqueduct"
-size = Vector2(80.01, 16.0)
+size = Vector2(80.01, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_3" unique_id=1718803744]
-shape = SubResource("SubResource_plat_3")
+shape = SubResource("RectangleShape2D_1rfnb")
 one_way_collision = true
 
 [node name="Upper_Aqueduct_Span_4" type="StaticBody2D" parent="Platforms" unique_id=1533262856]
-position = Vector2(880.13, 311.349)
-rotation = -0.016249
+position = Vector2(997, 328.99997)
+rotation = -0.17629778
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"upper_aqueduct"
-size = Vector2(80.01, 16.0)
+size = Vector2(80.01, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_4" unique_id=355288193]
-shape = SubResource("SubResource_plat_4")
+shape = SubResource("RectangleShape2D_ob7dp")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_6" type="StaticBody2D" parent="Platforms" unique_id=264263824]
+position = Vector2(821, 596)
+rotation = 0.26502913
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.28, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_6" unique_id=1135004955]
+shape = SubResource("RectangleShape2D_rkt0n")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_11" type="StaticBody2D" parent="Platforms" unique_id=1384172836]
+position = Vector2(630.00006, 847)
+rotation = 0.40207326
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.28, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_11" unique_id=1830533273]
+shape = SubResource("RectangleShape2D_fat08")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_12" type="StaticBody2D" parent="Platforms" unique_id=1797930700]
+position = Vector2(697.00006, 873.00006)
+rotation = 0.345769
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.1, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_12" unique_id=791543138]
+shape = SubResource("RectangleShape2D_g70xk")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_13" type="StaticBody2D" parent="Platforms" unique_id=750978956]
+position = Vector2(767.99994, 892.99994)
+rotation = 0.20061493
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_13" unique_id=1752453140]
+shape = SubResource("RectangleShape2D_k1eiq")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_14" type="StaticBody2D" parent="Platforms" unique_id=1466074512]
+position = Vector2(839, 900)
+rotation = -0.031267405
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_14" unique_id=489868804]
+shape = SubResource("RectangleShape2D_c0n4p")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_15" type="StaticBody2D" parent="Platforms" unique_id=1646278129]
+position = Vector2(911.99994, 892)
+rotation = -0.17978774
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_15" unique_id=799477558]
+shape = SubResource("RectangleShape2D_48gld")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_16" type="StaticBody2D" parent="Platforms" unique_id=977965419]
+position = Vector2(944.99994, 884.99994)
+rotation = -0.28025335
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_16" unique_id=470134562]
+shape = SubResource("RectangleShape2D_ve7rb")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_17" type="StaticBody2D" parent="Platforms" unique_id=753163361]
+position = Vector2(1018.9999, 876)
+rotation = 0.046456575
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_17" unique_id=242997079]
+shape = SubResource("RectangleShape2D_yyif2")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_18" type="StaticBody2D" parent="Platforms" unique_id=1433067801]
+position = Vector2(1076, 875.00006)
+rotation = -0.041902512
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_18" unique_id=485010812]
+shape = SubResource("RectangleShape2D_owah1")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_19" type="StaticBody2D" parent="Platforms" unique_id=584152206]
+position = Vector2(1142.9999, 865.9999)
+rotation = -0.21290311
+scale = Vector2(0.8800098, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_19" unique_id=343042144]
+shape = SubResource("RectangleShape2D_jnog8")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_20" type="StaticBody2D" parent="Platforms" unique_id=1012617497]
+position = Vector2(1318.0001, 859)
+rotation = 0.00043936074
+scale = Vector2(3.5913768, 1)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_20" unique_id=1452216182]
+shape = SubResource("RectangleShape2D_dt41a")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_7" type="StaticBody2D" parent="Platforms" unique_id=740510912]
+position = Vector2(896.00006, 609)
+rotation = 0.049958
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.1, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_7" unique_id=1772814149]
+shape = SubResource("RectangleShape2D_30rwm")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_8" type="StaticBody2D" parent="Platforms" unique_id=1794223881]
+position = Vector2(968.00006, 611)
+rotation = 0.016249
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_8" unique_id=61647521]
+shape = SubResource("RectangleShape2D_mmti7")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_9" type="StaticBody2D" parent="Platforms" unique_id=932086796]
+position = Vector2(1001, 604)
+rotation = -0.17629778
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_9" unique_id=541976605]
+shape = SubResource("RectangleShape2D_lquk8")
+one_way_collision = true
+
+[node name="Upper_Aqueduct_Span_10" type="StaticBody2D" parent="Platforms" unique_id=1340241519]
+position = Vector2(1074.0001, 594.00006)
+rotation = -0.08871641
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_platform")
+one_way = true
+traversal_group = &"upper_aqueduct"
+size = Vector2(80.01, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_10" unique_id=1525417925]
+shape = SubResource("RectangleShape2D_oihk8")
 one_way_collision = true
 
 [node name="Upper_Aqueduct_Span_5" type="StaticBody2D" parent="Platforms" unique_id=747958903]
-position = Vector2(960.4, 308.69)
-rotation = -0.049958
+position = Vector2(1046.0001, 314.00003)
+rotation = -0.367541
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 one_way = true
 traversal_group = &"upper_aqueduct"
-size = Vector2(80.1, 16.0)
+size = Vector2(80.1, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_5" unique_id=825765182]
-shape = SubResource("SubResource_plat_5")
-one_way_collision = true
-
-[node name="Upper_Aqueduct_Span_6" type="StaticBody2D" parent="Platforms" unique_id=924714366]
-position = Vector2(1040.668, 303.322)
-rotation = -0.083555
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-one_way = true
-traversal_group = &"upper_aqueduct"
-size = Vector2(80.28, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Span_6" unique_id=939989910]
-shape = SubResource("SubResource_plat_6")
+shape = SubResource("RectangleShape2D_vc2he")
 one_way_collision = true
 
 [node name="Upper_Aqueduct_Right" type="StaticBody2D" parent="Platforms" unique_id=686772204]
-position = Vector2(1272.5, 300.0)
+position = Vector2(1272.5, 300)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(385.0, 16.0)
+size = Vector2(385, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Upper_Aqueduct_Right" unique_id=1505028988]
-shape = SubResource("SubResource_plat_7")
+shape = SubResource("RectangleShape2D_dhlmq")
 
 [node name="Mid_Left_Ledge" type="StaticBody2D" parent="Platforms" unique_id=1976993013]
-position = Vector2(525.5, 578.0)
+position = Vector2(420, 586)
+scale = Vector2(0.8, 1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(917.0, 16.0)
+size = Vector2(917, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Left_Ledge" unique_id=1653625768]
-shape = SubResource("SubResource_plat_8")
-
-[node name="Mid_Right_Ramp" type="StaticBody2D" parent="Platforms" unique_id=1430043743]
-position = Vector2(1037.769, 582.967)
-rotation = 0.091487
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-one_way = true
-traversal_group = &"mid_right"
-size = Vector2(109.46, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Right_Ramp" unique_id=290327753]
-shape = SubResource("SubResource_plat_9")
-one_way_collision = true
+shape = SubResource("RectangleShape2D_eighf")
 
 [node name="Mid_Right_Ledge" type="StaticBody2D" parent="Platforms" unique_id=2048618488]
-position = Vector2(1252.174, 594.493)
+position = Vector2(1269, 597.00006)
 rotation = 0.04073
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
 traversal_group = &"mid_right"
-size = Vector2(319.26, 16.0)
+size = Vector2(319.26, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Mid_Right_Ledge" unique_id=294464231]
-shape = SubResource("SubResource_plat_10")
+shape = SubResource("RectangleShape2D_4s070")
 
 [node name="Lower_Left_Ledge" type="StaticBody2D" parent="Platforms" unique_id=1379612375]
-position = Vector2(333.0, 831.0)
+position = Vector2(333, 831)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-size = Vector2(532.0, 16.0)
+size = Vector2(532, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Left_Ledge" unique_id=1817622503]
-shape = SubResource("SubResource_plat_11")
+shape = SubResource("RectangleShape2D_lb7uw")
 
-[node name="Lower_Step_1" type="StaticBody2D" parent="Platforms" unique_id=929087851]
-position = Vector2(666.5, 830.0)
+[node name="Lower_Left_Ledge2" type="StaticBody2D" parent="Platforms" unique_id=1732380179]
+position = Vector2(756, 1002)
+scale = Vector2(2.52, 1)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_platform")
-one_way = true
-size = Vector2(221.0, 16.0)
+size = Vector2(532, 16)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_1" unique_id=2080147099]
-shape = SubResource("SubResource_plat_12")
-one_way_collision = true
-
-[node name="Lower_Step_2" type="StaticBody2D" parent="Platforms" unique_id=1142438245]
-position = Vector2(857.0, 880.0)
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-one_way = true
-size = Vector2(232.0, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_2" unique_id=1573824003]
-shape = SubResource("SubResource_plat_13")
-one_way_collision = true
-
-[node name="Lower_Step_3" type="StaticBody2D" parent="Platforms" unique_id=1236400225]
-position = Vector2(1075.0, 882.0)
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-one_way = true
-size = Vector2(232.0, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_3" unique_id=1843684915]
-shape = SubResource("SubResource_plat_14")
-one_way_collision = true
-
-[node name="Lower_Step_4" type="StaticBody2D" parent="Platforms" unique_id=1869054513]
-position = Vector2(1302.0, 881.0)
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-one_way = true
-size = Vector2(232.0, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Step_4" unique_id=2146142170]
-shape = SubResource("SubResource_plat_15")
-one_way_collision = true
-
-[node name="Lower_Right_Ledge" type="StaticBody2D" parent="Platforms" unique_id=1073104671]
-position = Vector2(1353.5, 846.0)
-collision_layer = 4
-collision_mask = 0
-script = ExtResource("3_platform")
-size = Vector2(235.0, 16.0)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Right_Ledge" unique_id=1464200265]
-shape = SubResource("SubResource_plat_16")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Lower_Left_Ledge2" unique_id=384840967]
+shape = SubResource("RectangleShape2D_dcq1n")
 
 [node name="Hazards" type="Node2D" parent="." unique_id=840976104]
 
 [node name="DeathZones" type="Node2D" parent="." unique_id=1531640963]
 
 [node name="Pit" type="Area2D" parent="DeathZones" unique_id=1615142600]
-position = Vector2(768, 997)
+position = Vector2(752, 1061)
 collision_layer = 16
 collision_mask = 3
 monitoring = false
@@ -320,7 +482,7 @@ size = Vector2(1298, 60)
 hazard_name = "THE DEPTHS"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/Pit" unique_id=345276334]
-shape = SubResource("RectangleShape2D_mmti7")
+shape = SubResource("RectangleShape2D_xyxwm")
 
 [node name="WalkableRegion" type="Area2D" parent="." unique_id=710779237]
 collision_layer = 0
