@@ -23,6 +23,7 @@ SaveManager="*res://descent/scripts/autoload/save_manager.gd"
 RunState="*res://descent/scripts/autoload/run_state.gd"
 EventBus="*res://descent/scripts/autoload/event_bus.gd"
 SceneRouter="*res://descent/scripts/autoload/scene_router.gd"
+AdsManager="*res://descent/scripts/autoload/ads_manager.gd"
 
 [display]
 
@@ -36,6 +37,10 @@ window/stretch/mode="canvas_items"
 [editor]
 
 movie_writer/movie_file="D:/startup-ideas/godot/clips/test.avi"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/admob/plugin.cfg")
 
 [input]
 
