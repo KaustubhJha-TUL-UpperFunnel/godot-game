@@ -15,7 +15,8 @@ var track_index: int = 0
 
 
 func _ready() -> void:
-	_buy.pressed.connect(func() -> void: buy_requested.emit(track_index))
+	_buy.custom_minimum_size.y = 44.0
+	_buy.pressed.connect(_request_buy)
 
 
 func bind(index: int) -> void:
@@ -41,6 +42,12 @@ func refresh() -> void:
 	_buy.disabled = not SaveManager.can_afford(track_index)
 
 
+func _request_buy() -> void:
+	if _buy.disabled:
+		return
+	buy_requested.emit(track_index)
+
+
 func _build_pips(max_level: int) -> void:
 	for child in _pips.get_children():
 		child.queue_free()
@@ -48,4 +55,5 @@ func _build_pips(max_level: int) -> void:
 		var pip := ColorRect.new()
 		pip.custom_minimum_size = Vector2(18, 8)
 		pip.color = Color(0.16, 0.19, 0.23)
+		pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_pips.add_child(pip)

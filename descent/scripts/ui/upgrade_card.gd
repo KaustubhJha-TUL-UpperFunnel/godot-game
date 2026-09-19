@@ -73,6 +73,7 @@ const UPGRADE_METADATA := {
 }
 
 var upgrade: UpgradeData
+var _committed: bool = false
 
 @onready var _rarity: Label = $Rows/RarityHeader/Rarity
 @onready var _category_label: Label = $Rows/CategoryPill/CategoryLabel
@@ -88,13 +89,17 @@ var upgrade: UpgradeData
 
 func _ready() -> void:
 	_take.focus_mode = Control.FOCUS_NONE
+	_take.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_take.custom_minimum_size.y = 48.0
 	_take.pressed.connect(_on_take_pressed)
+	_passthrough_clicks(self)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
 
 func configure(data: UpgradeData) -> void:
 	upgrade = data
+	_committed = false
 	visible = data != null
 	if data == null:
 		return
@@ -151,9 +156,17 @@ func lock() -> void:
 	_take.disabled = true
 
 
-func _on_take_pressed() -> void:
-	if upgrade == null:
+func _gui_input(event: InputEvent) -> void:
+	if not _is_select_tap(event):
 		return
+	accept_event()
+	_on_take_pressed()
+
+
+func _on_take_pressed() -> void:
+	if upgrade == null or _committed or _take.disabled:
+		return
+	_committed = true
 	_take.disabled = true
 	_take.release_focus()
 	_animation.play(&"take")
@@ -161,11 +174,35 @@ func _on_take_pressed() -> void:
 
 
 func _on_mouse_entered() -> void:
-	if not _take.disabled:
-		var tween := create_tween()
-		tween.tween_property(self, "scale", Vector2(1.03, 1.03), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	# Scaling under a finger slides the Take button off the touch and cancels it.
+	if DisplayServer.is_touchscreen_available() or _take.disabled:
+		return
+	var tween := create_tween()
+	tween.tween_property(self, "scale", Vector2(1.03, 1.03), 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 
 func _on_mouse_exited() -> void:
+	if DisplayServer.is_touchscreen_available():
+		return
 	var tween := create_tween()
 	tween.tween_property(self, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+
+func _is_select_tap(event: InputEvent) -> bool:
+	if event is InputEventScreenTouch:
+		return (event as InputEventScreenTouch).pressed
+	if event is InputEventMouseButton:
+		var mouse := event as InputEventMouseButton
+		return mouse.pressed and mouse.button_index == MOUSE_BUTTON_LEFT
+	return false
+
+
+func _passthrough_clicks(root: Control) -> void:
+	for child in root.get_children():
+		if not child is Control:
+			continue
+		var control := child as Control
+		if control == _take:
+			continue
+		control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_passthrough_clicks(control)

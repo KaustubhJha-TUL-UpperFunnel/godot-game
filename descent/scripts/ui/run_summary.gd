@@ -19,7 +19,7 @@ const DEFEAT_ACCENT := Color("ff4f62")
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_continue.pressed.connect(func() -> void: continue_requested.emit())
+	_continue.pressed.connect(_on_continue_pressed)
 	hide()
 
 
@@ -36,9 +36,15 @@ func present(victory: bool) -> void:
 	_fill_stats()
 	_reward.text = "ECHOES BANKED: %d" % RunState.echoes_earned
 	_reward.add_theme_color_override(&"font_color", accent)
+	_continue.disabled = false
 
 	show()
 	_continue.grab_focus()
+
+
+func _on_continue_pressed() -> void:
+	_continue.disabled = true
+	continue_requested.emit()
 
 
 func _fill_stats() -> void:

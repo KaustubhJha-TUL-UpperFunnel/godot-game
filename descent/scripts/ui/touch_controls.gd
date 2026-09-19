@@ -32,6 +32,15 @@ func bind(player_input: PlayerInput) -> void:
 	_player_input = player_input
 
 
+func set_enabled(enabled: bool) -> void:
+	var touch_available := DisplayServer.is_touchscreen_available()
+	visible = touch_available and enabled
+	set_process_unhandled_input(touch_available and enabled)
+	if not enabled:
+		_end()
+		_push_state()
+
+
 ## Floor/UI transitions invalidate the active finger so a held joystick cannot
 ## carry movement or a drop command into the next map.
 func reset_controls() -> void:
@@ -64,6 +73,8 @@ func tutorial_icon() -> Texture2D:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
 	if event is InputEventScreenTouch:
 		_handle_touch(event as InputEventScreenTouch)
 	elif event is InputEventScreenDrag:

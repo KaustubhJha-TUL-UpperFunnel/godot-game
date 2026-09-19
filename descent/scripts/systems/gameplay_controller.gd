@@ -92,6 +92,8 @@ var _tutorial_active: bool = false
 var _tutorial_step: int = -1
 var _tutorial_advancing: bool = false
 var _tutorial_move_origin: Vector2 = Vector2.ZERO
+var _revive_prompt_open: bool = false
+var _leaving_summary: bool = false
 @onready var level_host: LevelHost = $LevelHost
 @onready var player: PlayerAvatar = $Actors/Player
 @onready var _enemies: Node2D = $Actors/Enemies
@@ -111,6 +113,7 @@ var _tutorial_move_origin: Vector2 = Vector2.ZERO
 @onready var _announcement: Announcement = $UI/Announcement
 @onready var _touch_controls: TouchControls = $UI/TouchControls
 @onready var _pause_menu: PauseMenu = $UI/PauseMenu
+@onready var _revive_offer: RewardedRevive = $UI/RewardedRevive
 @onready var _run_summary: RunSummary = $UI/RunSummary
 @onready var _tutorial: TutorialOverlay = $UI/TutorialOverlay
 @onready var _floor_transition: FloorTransition = $TransitionLayer/FloorTransition
@@ -158,7 +161,9 @@ func _connect_ui() -> void:
 	_pause_menu.resume_requested.connect(_set_paused.bind(false))
 	_pause_menu.abandon_requested.connect(_on_abandon_requested)
 	_tutorial.skip_requested.connect(_finish_tutorial)
-	_run_summary.continue_requested.connect(func() -> void: SceneRouter.goto_main_menu())
+	_revive_offer.revive_requested.connect(_on_ad_revive_requested)
+	_revive_offer.declined.connect(_on_ad_revive_declined)
+	_run_summary.continue_requested.connect(_on_summary_continue)
 
 
 # --- Interactive tutorial ---------------------------------------------------
@@ -328,6 +333,7 @@ func _on_tutorial_mana_potion_used() -> void:
 ## Builds the room for the current floor and starts the appropriate state.
 func begin_room() -> void:
 	_clear_transient_nodes()
+	_set_combat_chrome_visible(true)
 	_touch_controls.reset_controls()
 
 	RunState.current_room_type = RunState.RoomType.STANDARD
@@ -548,6 +554,7 @@ func _on_cleared_finished() -> void:
 func _enter_reward() -> void:
 	state = State.REWARD
 	player.set_control_enabled(false, false)
+	_set_combat_chrome_visible(false)
 	_upgrade_selection.present(_upgrades.draw_offers(UPGRADE_OFFER_COUNT, _rng))
 
 
@@ -743,20 +750,18 @@ func _on_player_died() -> void:
 		return
 	if SaveManager.has_second_wind() and not RunState.second_wind_used:
 		RunState.second_wind_used = true
-		player.revive(SECOND_WIND_FRACTION)
-		# Reviving where you died would put the knight back inside the pit that
-		# killed him, with no floor to land on.
-		if level_host.is_vertical():
-			player.position = level_host.player_start()
-		player.set_control_enabled(true, state == State.COMBAT)
-		EventBus.toast_requested.emit("SECOND WIND", 2.0)
-		EventBus.shake_requested.emit(10.0, 0.35)
+		_apply_revive(SECOND_WIND_FRACTION, "SECOND WIND")
+		return
+	if not RunState.ad_revive_used and AdsManager.is_rewarded_ready():
+		_open_ad_revive()
 		return
 	_finish_run(false)
 
 
 func _finish_run(victory: bool) -> void:
 	state = State.FINISHED
+	_revive_prompt_open = false
+	get_tree().paused = false
 	player.set_control_enabled(false, false)
 	for enemy in living_enemies:
 		enemy.set_combat_enabled(false)
@@ -772,11 +777,64 @@ func _on_abandon_requested() -> void:
 	_finish_run(false)
 
 
+func _open_ad_revive() -> void:
+	_revive_prompt_open = true
+	get_tree().paused = true
+	_pause_menu.close()
+	_revive_offer.open()
+
+
+func _on_ad_revive_requested() -> void:
+	_revive_offer.hide()
+	var earned := await AdsManager.present_rewarded()
+	if not is_inside_tree() or state == State.FINISHED:
+		return
+	if not earned:
+		EventBus.toast_requested.emit("AD NOT COMPLETED", 1.4)
+		_revive_offer.restore_choices()
+		return
+	RunState.ad_revive_used = true
+	_revive_prompt_open = false
+	_revive_offer.close()
+	get_tree().paused = false
+	_apply_revive(AdsManager.REVIVE_HEALTH_FRACTION, "AD REVIVE")
+
+
+func _on_ad_revive_declined() -> void:
+	_revive_prompt_open = false
+	get_tree().paused = false
+	_finish_run(false)
+
+
+func _on_summary_continue() -> void:
+	if _leaving_summary:
+		return
+	_leaving_summary = true
+	await AdsManager.present_interstitial()
+	SceneRouter.goto_main_menu()
+
+
+func _apply_revive(health_fraction: float, toast: String) -> void:
+	player.revive(health_fraction)
+	# Reviving where you died would put the knight back inside the pit that
+	# killed him, with no floor to land on.
+	if level_host.is_vertical():
+		player.position = level_host.player_start()
+	player.set_control_enabled(true, state == State.COMBAT)
+	EventBus.toast_requested.emit(toast, 2.0)
+	EventBus.shake_requested.emit(10.0, 0.35)
+
+
 # --- Input -------------------------------------------------------------------
 
 
+func _set_combat_chrome_visible(shown: bool) -> void:
+	_hotbar.visible = shown
+	_touch_controls.set_enabled(shown)
+
+
 func _set_paused(paused: bool) -> void:
-	if state == State.FINISHED:
+	if state == State.FINISHED or _revive_prompt_open:
 		return
 	get_tree().paused = paused
 	if paused:

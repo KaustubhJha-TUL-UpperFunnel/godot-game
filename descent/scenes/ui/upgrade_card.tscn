@@ -189,6 +189,7 @@ text = "OWNED x1"
 horizontal_alignment = 1
 
 [node name="Take" type="Button" parent="Rows"]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 focus_mode = 0
 text = "UPGRADE"

@@ -14,6 +14,8 @@ var _cards: Array[UpgradeCard] = []
 
 
 func _ready() -> void:
+	z_index = 10
+	mouse_filter = Control.MOUSE_FILTER_STOP
 	for child in _row.get_children():
 		if child is UpgradeCard:
 			var card: UpgradeCard = child

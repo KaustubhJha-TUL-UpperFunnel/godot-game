@@ -43,6 +43,7 @@ var current_level_path: String = ""
 var run_upgrades: Dictionary = {}
 
 var second_wind_used: bool = false
+var ad_revive_used: bool = false
 var victory: bool = false
 var echoes_committed: bool = false
 var level_audit_active: bool = false
@@ -67,6 +68,7 @@ func begin_run() -> void:
 	current_level_path = ""
 	run_upgrades.clear()
 	second_wind_used = false
+	ad_revive_used = false
 	victory = false
 	echoes_committed = false
 	_debug_floor_override_applied = false
